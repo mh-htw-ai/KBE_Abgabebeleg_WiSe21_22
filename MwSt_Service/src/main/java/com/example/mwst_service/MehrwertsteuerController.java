@@ -18,7 +18,7 @@ public class MehrwertsteuerController {
      */
     @GetMapping()
     @RequestMapping("/holen")
-    public ResponseEntity<String> getMwStFromPrice(@RequestBody String price){
+    public ResponseEntity<String> cutMwStFromPrice(@RequestBody String price){
         try {
             double preis = Double.parseDouble(price);
             double erg = preis / 1.19;
@@ -41,6 +41,25 @@ public class MehrwertsteuerController {
         try {
             double preis = Double.parseDouble(price);
             double erg = preis * 1.19;
+            String ausg = String.valueOf(erg);
+            return ResponseEntity.ok(ausg);
+        }
+        catch (NumberFormatException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Funktion addiert die Mehrwertsteuer zu dem Preis.
+     * @param price = Endpreis eines Produktes
+     * @return Mehrwertsteuer des Preises
+     */
+    @GetMapping()
+    @RequestMapping("/steueranteil")
+    public ResponseEntity<String> getMwStFromPrice(@RequestBody String price){
+        try {
+            double preis = Double.parseDouble(price);
+            double erg = preis - (preis / 1.19);
             String ausg = String.valueOf(erg);
             return ResponseEntity.ok(ausg);
         }
