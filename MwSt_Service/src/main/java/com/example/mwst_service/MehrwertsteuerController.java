@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MehrwertsteuerController {
 
     /**
-     * Funktion berechnet aus den uebergebenen Preis den Mehrwert-Steuer Anteil.
+     * Funktion berechnet aus den uebergebenen Preis den Mehrwert-Steuer Anteil heraus.
      * @param price = Endpreis eines Produktes
      * @return Mehrwertsteuer des Preises
      */
@@ -26,7 +26,7 @@ public class MehrwertsteuerController {
             return ResponseEntity.ok(ausg);
         }
         catch (NumberFormatException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Fehlerhafter Datensatz ermittelt." , HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -45,12 +45,12 @@ public class MehrwertsteuerController {
             return ResponseEntity.ok(ausg);
         }
         catch (NumberFormatException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Fehlerhafter Datensatz ermittelt." , HttpStatus.BAD_REQUEST);
         }
     }
 
     /**
-     * Funktion addiert die Mehrwertsteuer zu dem Preis.
+     * Funktion holt den MwSt-Anteil und gibt ihn zurück
      * @param price = Endpreis eines Produktes
      * @return Mehrwertsteuer des Preises
      */
@@ -64,7 +64,7 @@ public class MehrwertsteuerController {
             return ResponseEntity.ok(ausg);
         }
         catch (NumberFormatException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Fehlerhafter Datensatz ermittelt." ,HttpStatus.BAD_REQUEST);
         }
     }
 
