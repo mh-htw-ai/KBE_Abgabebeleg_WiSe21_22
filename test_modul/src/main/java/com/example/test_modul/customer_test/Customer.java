@@ -1,4 +1,4 @@
-package com.example.test_modul.entity;
+package com.example.test_modul.customer_test;
 
 
 

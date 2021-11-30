@@ -1,8 +1,6 @@
-package com.example.test_modul.controller;
+package com.example.test_modul.customer_test;
 
 
-import com.example.test_modul.entity.Customer;
-import com.example.test_modul.repository.CustomerRepository;
 import com.example.test_modul.uuidtest.Test_01;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,5 @@
-package com.example.test_modul.repository;
+package com.example.test_modul.customer_test;
 
-import com.example.test_modul.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
