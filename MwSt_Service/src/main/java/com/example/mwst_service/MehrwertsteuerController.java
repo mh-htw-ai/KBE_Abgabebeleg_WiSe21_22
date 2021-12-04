@@ -1,5 +1,7 @@
 package com.example.mwst_service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +14,8 @@ import javax.validation.constraints.Min;
 @Validated
 @RequestMapping("/mwst")
 public class MehrwertsteuerController {
+
+    private static final Logger log = LoggerFactory.getLogger(MehrwertsteuerController.class);
 
     /**
      * Funktion berechnet aus den uebergebenen Preis den Mehrwert-Steuer Anteil heraus.
@@ -72,6 +76,7 @@ public class MehrwertsteuerController {
         }
     }
 
+
     /**
      * Funktion addiert die Mehrwertsteuer zu dem Preis.
      * @param price = Endpreis eines Produktes
@@ -90,6 +95,7 @@ public class MehrwertsteuerController {
             return new ResponseEntity<>("Fehlerhafter Datensatz ermittelt." , HttpStatus.BAD_REQUEST);
         }
     }
+
 
     /**
      * Funktion holt den MwSt-Anteil und gibt ihn zurück
