@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="MyFilmClasses_Modul" />
+        <module name="Gateway_Microservice" />
+        <module name="Data_Warehouse_Microservice" />
+        <module name="Experimental_Modul" />
+        <module name="MwSt_Microservice" />
+        <module name="Main_Component_Microservice" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Data_Warehouse_Microservice" target="11" />
+      <module name="Experimental_Modul" target="11" />
+      <module name="Gateway_Microservice" target="11" />
+      <module name="Main_Component_Microservice" target="11" />
+      <module name="MwSt_Microservice" target="11" />
+      <module name="MyFilmClasses_Modul" target="16" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Data_Warehouse_Microservice" options="-parameters" />
+      <module name="Experimental_Modul" options="-parameters" />
+      <module name="Gateway_Microservice" options="-parameters" />
+      <module name="Main_Component_Microservice" options="-parameters" />
+      <module name="MwSt_Microservice" options="-parameters" />
+    </option>
+  </component>
+</project>
