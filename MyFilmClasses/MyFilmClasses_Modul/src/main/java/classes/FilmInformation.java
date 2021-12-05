@@ -1,28 +1,32 @@
 package classes;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Time;
 import java.util.Date;
 import java.util.UUID;
 
 
+@AllArgsConstructor
 public class FilmInformation extends Film {
+
+    private static final Logger log = LoggerFactory.getLogger(FilmInformation.class);
 
     @Getter
     @Setter
-    private String titel;
+    protected String titel;
     @Getter
     @Setter
-    private Date erscheinungsdatum;
+    protected Date erscheinungsdatum;
     @Getter
     @Setter
-    private Time laufzeit;
+    protected Time laufzeit;
     @Getter
     @Setter
-    private double leihPreis;
+    protected double leihPreis;
 
     public FilmInformation(UUID uuid_Film) {
         super(uuid_Film);
@@ -36,6 +40,7 @@ public class FilmInformation extends Film {
         this.leihPreis = leihPreis;
     }
 
-
-
+    public FilmInformation() {
+        super();
+    }
 }
