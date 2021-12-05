@@ -17,18 +17,8 @@ public class Film {
     @Getter
     protected UUID uuid_Film;
 
-    /**
-     * Funktion zum Testen
-     */
-    public void testLogAusgabe(){
-        log.info("testLogAusgabe() wurde ausgeführt.");
+    public Film() {
+        this.uuid_Film = UUID.randomUUID();
     }
 
-
-    /**
-     * Funktion zum Testen
-     */
-    public void testLogAusgabe2(){
-        log.info("testLogAusgabe() wurde ausgeführt.");
-    }
 }

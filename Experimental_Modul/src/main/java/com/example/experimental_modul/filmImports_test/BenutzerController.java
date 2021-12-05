@@ -32,8 +32,6 @@ public class BenutzerController {
         log.info("getAlleBenutzer() wird ausgeführt.");
         UUID uuid = UUID.randomUUID();
         Film film = new Film(uuid);
-        film.testLogAusgabe();
-        film.testLogAusgabe2();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
