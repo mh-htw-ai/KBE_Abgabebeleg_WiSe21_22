@@ -1,6 +1,7 @@
 package com.example.experimental_modul.filmImports_test;
 
 
+import classes.Film;
 import lombok.*;
 import org.hibernate.internal.build.AllowPrintStacktrace;
 
@@ -9,7 +10,7 @@ import javax.persistence.Id;
 import java.util.Date;
 import java.util.UUID;
 
-/*
+
 public class FilmVerleih extends Film {
     private Date tag;
 
@@ -26,7 +27,8 @@ public class FilmVerleih extends Film {
         this.tag = tag;
     }
 }
-*/
+
+/*
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,3 +49,4 @@ public class FilmVerleih  {
 
 
 }
+*/
