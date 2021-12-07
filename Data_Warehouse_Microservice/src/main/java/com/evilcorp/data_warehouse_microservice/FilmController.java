@@ -1,5 +1,7 @@
 package com.evilcorp.data_warehouse_microservice;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+//@Service("filmRestController")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/film")
@@ -20,9 +21,12 @@ public class FilmController {
 
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
-    private final FilmRepository filmRepository;
+    private final FilmObjRepository filmObjRepository;
 
-
+    /*
+    public FilmController(FilmObjRepository filmObjRepository) {
+        this.filmObjRepository = filmObjRepository;
+    }*/
 
     /**
      * Funktion ist der Endpoint um saemtliche Filminformationen der Datenbank abzurufen
@@ -31,16 +35,25 @@ public class FilmController {
      */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<String> getFilmAll(
-            @RequestHeader(HttpHeaders.ACCEPT) String accept){
+            @RequestHeader(HttpHeaders.ACCEPT) String accept) {
         log.info("getFilmAll() wird ausgeführt.");
         MediaType mt = DataWarehouseLogik.checkAccept(accept);
         if(mt == null){
-            return new ResponseEntity<>("Accept-Type wird nicht unterstützt.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        List<FilmObj> filmListe = filmRepository.findAll();
+        List<FilmObj> filmListe = filmObjRepository.findAll();
+        ObjectMapper mapper = new ObjectMapper();
+        String ausgabe = "";
+        try {
+            ausgabe = mapper.writeValueAsString(filmListe);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            log.error("Fehler beim Umwandeln zur JSON-Liste.");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         //TODO: Umwandlung in Zielformat XML oder JSON und abschicken in der Payload
         //TODO: Abschicken der Liste an Objekten
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(ausgabe, HttpStatus.OK);
     }
 
 
@@ -49,25 +62,25 @@ public class FilmController {
             ){
         log.info("getInitial() wird ausgeführt.");
         FilmObj f1 = FilmObj.builder()
-                .uuid_Film(UUID.randomUUID())
+                .uuid_film(UUID.randomUUID())
                 .titel("Dune")
                 .leihPreis(2.0)
                 .build();
-        this.filmRepository.save(f1);
+        this.filmObjRepository.save(f1);
         FilmObj f2 = FilmObj.builder()
-                .uuid_Film(UUID.randomUUID())
+                .uuid_film(UUID.randomUUID())
                 .titel("Matrix")
                 .leihPreis(3.0)
                 .build();
-        this.filmRepository.save(f2);
+        this.filmObjRepository.save(f2);
         FilmObj f3 = FilmObj.builder()
-                .uuid_Film(UUID.randomUUID())
+                .uuid_film(UUID.randomUUID())
                 .titel("Crank")
                 .leihPreis(4.5)
                 .build();
-        this.filmRepository.save(f3);
+        this.filmObjRepository.save(f3);
         String ausgabe = "Anzahl der Filme in DB: ";
-        ausgabe += this.filmRepository.count();
+        ausgabe += this.filmObjRepository.count();
         return new ResponseEntity<>(ausgabe, HttpStatus.OK);
     }
 
