@@ -22,7 +22,6 @@ public class BenutzerController {
     @RequestMapping("/all")
     public ResponseEntity<String> getAlleBenutzer() {
         log.info("getAlleBenutzer() wird ausgeführt.");
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
