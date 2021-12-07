@@ -44,10 +44,11 @@ public class FilmController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<FilmObj> filmListe = filmObjRepository.findAll();
-        if(filmListe.size() == 0){
-            this.getInitial();
-            filmListe = filmObjRepository.findAll();
-        }
+
+        //if(filmListe.size() == 0){
+        //    this.getInitial();
+        //    filmListe = filmObjRepository.findAll();
+        //}
         String ausgabe = "";
         HttpHeaders header = new HttpHeaders();
         if(mt.equals(MediaType.APPLICATION_XML)) {
@@ -60,9 +61,6 @@ public class FilmController {
                 e.printStackTrace();
                 log.error("Fehler beim Umwandeln zur JSON-Liste.");
             }
-            //log.error("ACHTUNG XML Format ist noch nicht implementiert.");
-            //return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            //log.info("getFilmAll(): Saemtliche Filme werden in XML Format uebertragen.");
         }
         else {
             try {
@@ -81,7 +79,7 @@ public class FilmController {
         return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
 
-
+/*
     @RequestMapping(value = "/initial", method = RequestMethod.GET)
     public ResponseEntity<String> getInitial(
             ){
@@ -107,6 +105,6 @@ public class FilmController {
         String ausgabe = "Anzahl der Filme in DB: ";
         ausgabe += this.filmObjRepository.count();
         return new ResponseEntity<>(ausgabe, HttpStatus.OK);
-    }
+    }*/
 
 }
