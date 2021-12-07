@@ -11,8 +11,8 @@
         <module name="Gateway_Microservice" />
         <module name="Data_Warehouse_Microservice" />
         <module name="Experimental_Modul" />
-        <module name="MwSt_Microservice" />
         <module name="Main_Component_Microservice" />
+        <module name="MwSt_Microservice" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
