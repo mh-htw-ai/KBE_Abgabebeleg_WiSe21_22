@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -20,6 +21,7 @@ public class FilmController {
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     private final FilmRepository filmRepository;
+
 
 
     /**
@@ -42,7 +44,31 @@ public class FilmController {
     }
 
 
-
-
+    @RequestMapping(value = "/initial", method = RequestMethod.GET)
+    public ResponseEntity<String> getInitial(
+            ){
+        log.info("getInitial() wird ausgeführt.");
+        FilmObj f1 = FilmObj.builder()
+                .uuid_Film(UUID.randomUUID())
+                .titel("Dune")
+                .leihPreis(2.0)
+                .build();
+        this.filmRepository.save(f1);
+        FilmObj f2 = FilmObj.builder()
+                .uuid_Film(UUID.randomUUID())
+                .titel("Matrix")
+                .leihPreis(3.0)
+                .build();
+        this.filmRepository.save(f2);
+        FilmObj f3 = FilmObj.builder()
+                .uuid_Film(UUID.randomUUID())
+                .titel("Crank")
+                .leihPreis(4.5)
+                .build();
+        this.filmRepository.save(f3);
+        String ausgabe = "Anzahl der Filme in DB: ";
+        ausgabe += this.filmRepository.count();
+        return new ResponseEntity<>(ausgabe, HttpStatus.OK);
+    }
 
 }

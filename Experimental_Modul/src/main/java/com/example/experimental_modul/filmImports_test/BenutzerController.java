@@ -1,7 +1,6 @@
 package com.example.experimental_modul.filmImports_test;
 
 
-import classes.Film;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class BenutzerController {
     public ResponseEntity<String> getTest() {
         log.info("getAlleBenutzer() wird ausgeführt.");
         UUID uuid = UUID.randomUUID();
-        Film film = new Film(uuid);
+        //Film film = new Film(uuid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

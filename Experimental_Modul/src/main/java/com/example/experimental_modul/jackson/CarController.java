@@ -5,14 +5,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/car")
@@ -20,12 +18,9 @@ public class CarController {
 
     private static final Logger log = LoggerFactory.getLogger(CustomerController.class);
 
-    private Car car1 = Car.builder().color("yellow").type("Porsche").build();
-    private Car car2 = Car.builder().color("blue").type("VW").build();
-    private Car car3 = Car.builder().color("red").type("Lamborgini").build();
-    private Car car4 = Car.builder().color("green").type("Opel").build();
 
-    private ArrayList<Car> liste = new ArrayList<>(Arrays.asList(car1, car2, car3, car4));
+    private ArrayList<Car> liste = new ArrayList<>();
+    //private ArrayList<Car> liste = new ArrayList<>(Arrays.asList(car1, car2, car3, car4));
 
 
     @RequestMapping(
@@ -40,21 +35,32 @@ public class CarController {
      * Funktion soll die gesamte Liste der Autos in JSON-Format im Body zurueckschicken
      */
     @RequestMapping(
-            value="/json",
+            value="/getCarInFormat",
             method= RequestMethod.GET)
-    public ResponseEntity<String> getCarInJSON(
-            //@RequestParam int index
-            //, @PathVariable("{index}") String id
-            //, @RequestHeader(HttpHeaders.ACCEPT)MediaType mediaType
+    public ResponseEntity<String> getCarInFormat(
+            @RequestParam int index
+            //@PathVariable("{id}") String id
+            , @RequestHeader(HttpHeaders.ACCEPT)MediaType mediaType
             ){
-        log.info("getCarInJSON() wird ausgeführt.");
+        log.info("getCarInFormat(" + index + ") wird ausgeführt.");
             String ausgabe = "";
-            int index = 0;
+            //int index = 0;
+            this.initiateCarListe(); // Erstellt Daten welche eine DB simulieren
             Car car = liste.get(index);
             ObjectMapper mapper = new ObjectMapper();
             try {
-                ausgabe = mapper.writeValueAsString(car);
-                log.info("getCarInJSON(): Ergebnis = " + ausgabe);
+                if(mediaType.equals(MediaType.ALL)
+                        || mediaType.equals(MediaType.APPLICATION_JSON)) {
+                    ausgabe = mapper.writeValueAsString(car);
+                    log.info("getCarInFormat(): Ergebnis = " + ausgabe);
+                }
+                else if(mediaType.equals(MediaType.APPLICATION_XML)){
+                    ausgabe = "XML nicht implementiert.";
+                    log.info("getCarInFormat(): XML nicht implementiert.");
+                }
+                else {
+                    return new ResponseEntity<>("Format nicht erkannt.", HttpStatus.BAD_REQUEST);
+                }
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -64,6 +70,24 @@ public class CarController {
             return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value="/listInJSON",
+            method= RequestMethod.GET)
+    public ResponseEntity<String> getCarListInJson (){
+        String ausgabe = "";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            this.initiateCarListe();
+            ausgabe = mapper.writeValueAsString(this.liste);
+            log.info("getCarInJSON(): Ergebnis = " + ausgabe);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
+    }
 
     /**
      * Funktion soll die gesamte Liste der Autos in JSON-Format im Body zurueckschicken
@@ -81,5 +105,14 @@ public class CarController {
     //TODO: Jackson Liste in JSON Format
     //TODO: Jackson Liste in XML Format
     // TODO: CSV-Formatierung erstellen
+
+    private void initiateCarListe(){
+        if(liste.isEmpty()) {
+            this.liste.add(Car.builder().color("yellow").type("Porsche").build());
+            this.liste.add(Car.builder().color("blue").type("VW").build());
+            this.liste.add(Car.builder().color("red").type("Lamborgini").build());
+            this.liste.add(Car.builder().color("green").type("Opel").build());
+        }
+    }
 
 }

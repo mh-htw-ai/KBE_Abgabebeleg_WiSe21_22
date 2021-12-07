@@ -34,6 +34,7 @@ public class CustomerController {
     public ResponseEntity<String> getNewUUID(@PathVariable("uuid") String uuid) {
         log.info("getNewUUID() wird ausgeführt.");
         try {
+            this.initiateCustomerDB();
             log.info("getNewUUID() gesuchte UUID: " + uuid);
             String ausgabe = "";
             UUID uuid1 = UUID.fromString(uuid);
@@ -61,6 +62,7 @@ public class CustomerController {
         log.info("postNewCustomer() wird ausgeführt.");
         try {
             log.info("postNewCustomer(): Body=" + body);
+            this.initiateCustomerDB();
             UUID uuid1 = UUID.randomUUID();
             log.info("postNewCustomer(): new UUID = " + uuid1.toString());
             Customer customer = new Customer(uuid1, body);
@@ -75,4 +77,31 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
+    /**
+     * Funktion erstellt standartEintraege in die Datenbank
+     */
+    private void initiateCustomerDB (){
+        long anzahl = this.customerRepository.count();
+        if(anzahl == 0.0){
+            log.info("Experimental: Datenbank erhält 3 Customer.");
+            Customer cus1 = Customer.builder()
+                    .uuid(UUID.randomUUID())
+                    .name("Ingo_1")
+                    .build();
+            this.customerRepository.save(cus1);
+            Customer cus2 = Customer.builder()
+                    .uuid(UUID.randomUUID())
+                    .name("Peter_2")
+                    .build();
+            this.customerRepository.save(cus2);
+            Customer cus3 = Customer.builder()
+                    .uuid(UUID.randomUUID())
+                    .name("Ralf_3")
+                    .build();
+            this.customerRepository.save(cus3);
+            log.info("Experimental: Datenbank hat 3 Customer erhalten.");
+        }
+
+    }
 }
