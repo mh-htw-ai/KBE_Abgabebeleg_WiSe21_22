@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: Mehrwertsteuer API
+  description: Mehrwertsteuer API
+  version: 1.0.0
+  #server dient dem mocken von api schnittstellen
+servers:
+  - url: 'https'
+#request pfade werden hier definiert
+paths:
+  /mwst/json_request:
+    get:
+      tags:
+        - mwst
+      requestBody:
+        $ref: '#/components/requestBodies/Mehrwertsteuer_Modell'
+      responses:
+        200:
+          $ref: '#/components/responses/Mehrwertsteuer_Modell'
+
+components:
+  requestBodies:
+    Mehrwertsteuer_Modell:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Mehrwertsteuer_Modell'
+  responses:
+    Mehrwertsteuer_Modell:
+        description: Ok
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mehrwertsteuer_Modell'
+
+  #definieren vom json modell inhalt schema (kann leicht wiederverwendet werden)
+  schemas:
+    Mehrwertsteuer_Modell:
+      type: object
+      properties:
+        artikelpreis:
+          type: number
+          nullable: true
+          minimum: 0
+          example: 100.00
+        steueranteil:
+          type: number
+          nullable: true
+          minimum: 0
+          example: 0.0
+        artMitSteuer:
+          type: number
+          nullable: true
+          minimum: 0
+          example: 0.0
+        steuertyp:
+          type: string
+          enum:
+            - standard
+            - reduziert
+          example: standard
