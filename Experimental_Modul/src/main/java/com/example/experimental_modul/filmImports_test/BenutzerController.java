@@ -22,18 +22,14 @@ public class BenutzerController {
     @RequestMapping("/all")
     public ResponseEntity<String> getAlleBenutzer() {
         log.info("getAlleBenutzer() wird ausgeführt.");
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping()
     @RequestMapping("/test")
-    public ResponseEntity<String> getTest() {
+    public ResponseEntity<Film> getTest() {
         log.info("getAlleBenutzer() wird ausgeführt.");
-        UUID uuid = UUID.randomUUID();
-        Film film = new Film(uuid);
-        film.testLogAusgabe();
-        film.testLogAusgabe2();
-        return new ResponseEntity<>(HttpStatus.OK);
+        Film film = new Film(UUID.randomUUID());
+        return new ResponseEntity<>(film, HttpStatus.OK);
     }
 }
