@@ -18,42 +18,10 @@ public class MainUserController {
     private final UserRepository userRepository;
     private final UserModelAssembler userAssembler;
 
-    User user = new User();
-    UUID randomUUID = UUID.randomUUID();
-
     public MainUserController(UserRepository userRepository, UserModelAssembler userAssembler) {
         this.userRepository = userRepository;
         this.userAssembler = userAssembler;
     }
-
-    /**
-     * test saving to database
-     * @return
-     */
-    @GetMapping("/test")
-    public User testUser(){
-        user.setId(randomUUID);
-        user.setUsername("testUserName");
-        user.setFirstname("testFirstName");
-        user.setLastname("testLastName");
-        user.setEmail("testEmail");
-        user.setStreet("testStreet");
-        user.setStreet_number("testStreet_number");
-        user.setPostcode("testPostcode");
-        user.setPlaceOfResidence("testPlace");
-        userRepository.saveAndFlush(user);
-        return user;
-    }
-
-    /**
-     * test aus databse find
-     * @return
-     */
-    @GetMapping("/test/find")
-    public @ResponseBody Iterable<User> testFindUser(){
-        return userRepository.findAll();
-    }
-
 
     /**
      * einen nutzer per uuid finden
@@ -103,7 +71,10 @@ public class MainUserController {
             produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public EntityModel<User> changeUser(@RequestBody User user,@PathVariable UUID userId){
-        User tempUser = userRepository.save(user);
+        User tempUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        user.setId(userId);
+        tempUser = user;
         return userAssembler.toModel(tempUser);
     }
 
@@ -119,7 +90,7 @@ public class MainUserController {
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         userRepository.delete(tempUser);
-        return userAssembler.toModel(user);
+        return userAssembler.toModel(tempUser);
     }
 
 }
