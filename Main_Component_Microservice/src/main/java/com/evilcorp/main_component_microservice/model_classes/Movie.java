@@ -1,26 +1,38 @@
 package com.evilcorp.main_component_microservice.model_classes;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
-//@Entity
+@Entity
+@Table(
+        name = "movies",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "movie_title_unique", columnNames = "movie_title")
+        }
+)
 public class Movie {
 
-    //@Id
-    private UUID uuid_Film;
+    @Id
+    @Column(name = "id", updatable = false)
+    private UUID id;
+    @Column(name = "movie_title", nullable = false, columnDefinition = "TEXT")
     private String title;
 
     public Movie() {
 
     }
 
-    public UUID getUuid_Film() {
-        return uuid_Film;
+    public Movie(String title) {
+        this.id = UUID.randomUUID();
+        this.title = title;
     }
 
-    public void setUuid_Film(UUID uuid_Film) {
-        this.uuid_Film = uuid_Film;
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID uuid_Film) {
+        this.id = uuid_Film;
     }
 
     public String getTitle() {

@@ -7,7 +7,6 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,8 +14,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
 public class UserModelAssembler implements RepresentationModelAssembler<User, EntityModel<User>> {
-
-
 
     @Override
     public EntityModel<User> toModel(User user) {
@@ -32,6 +29,5 @@ public class UserModelAssembler implements RepresentationModelAssembler<User, En
         return CollectionModel.of(
                 users,
                 linkTo(methodOn(MainUserController.class).findAllUsers()).withSelfRel());
-        // return RepresentationModelAssembler.super.toCollectionModel(entities);
     }
 }

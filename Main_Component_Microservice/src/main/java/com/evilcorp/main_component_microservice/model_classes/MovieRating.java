@@ -1,26 +1,41 @@
 package com.evilcorp.main_component_microservice.model_classes;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-//@Entity
+@Entity
+@Table(
+        name = "movie_ratings"/*,
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UniqueMovieAndUserRating", columnNames = {"movie_id","rating_owner"}) //ein user kann einen film nur einmal bewerten
+        }*/
+)
 public class MovieRating {
 
-   // @Id
+    @Id
+    @Column(name = "id", updatable = false)
     private UUID id;
-   // @ManyToOne
-    private Movie ratedMovie;
-  //  @OneToOne
+    @Column(name = "movie_id", nullable = false, columnDefinition = "TEXT")
+    private UUID movieId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rating_owner", nullable = false, columnDefinition = "UUID")
     private User ratingOwner;
+    @Column(name = "rating_value", nullable = false, columnDefinition = "TEXT")
     private int rating;
+    @Column(name = "rating_date", nullable = false, columnDefinition = "TEXT")
     private Date date;
 
     public MovieRating() {
 
+    }
+
+    public MovieRating(UUID movieId, User ratingOwner, int rating) {
+        this.id = UUID.randomUUID();
+        this.movieId = movieId;
+        this.ratingOwner = ratingOwner;
+        this.rating = rating;
+        this.date = new Date();
     }
 
     public UUID getId() {
@@ -31,12 +46,12 @@ public class MovieRating {
         this.id = id;
     }
 
-    public Movie getRatedMovie() {
-        return ratedMovie;
+    public UUID getMovieId() {
+        return movieId;
     }
 
-    public void setRatedMovie(Movie ratedMovie) {
-        this.ratedMovie = ratedMovie;
+    public void setMovieId(UUID movieId) {
+        this.movieId = movieId;
     }
 
     public User getRatingOwner() {
