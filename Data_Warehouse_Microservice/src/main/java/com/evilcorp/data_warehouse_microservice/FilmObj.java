@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "FilmObj") // Legt fest wie die Tabelle in der Datenbank benannt werden soll.
-public class FilmObj{
+public class FilmObj implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(com.evilcorp.data_warehouse_microservice.FilmObj.class);
 

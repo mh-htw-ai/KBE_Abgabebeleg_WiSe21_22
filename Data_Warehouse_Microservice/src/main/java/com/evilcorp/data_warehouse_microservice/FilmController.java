@@ -13,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.ServerRequest;
 
 import javax.xml.bind.SchemaOutputResolver;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,13 +62,18 @@ public class FilmController {
     }
 
 
+    /**
+     * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID
+     * @param uuidStr - gesuchte UUID in String-Format
+     * @param accept - Zielformat der Response
+     * @return Film-Objekt im Zielformat
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getFilm(
             @RequestHeader("UUID") String uuidStr,
             @RequestHeader(HttpHeaders.ACCEPT) String accept
     ) {
         log.info("getFilm() wird ausgeführt.");
-        //TODO: GET-Request für einzelnen Film
         MediaType mt = DataWarehouseLogik.checkAccept(accept); //Ueberpruefung der Akzeptierten Formate
         if (mt == null) {
             log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
@@ -100,7 +107,54 @@ public class FilmController {
         return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
 
-    //TODO: POST-Request für ein neuen Film
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<List<String>> postFilms(
+            @RequestHeader(HttpHeaders.ACCEPT) String accept,
+            @RequestHeader(HttpHeaders.CONTENT_TYPE) String ct,
+            @RequestBody List<FilmObj> films
+    ){
+        log.info("postFilms() wird ausgeführt.");
+        //TODO: POST-Request für ein neuen Film
+        log.info("Es wurden " + films.size() + " Filme uebertragen.");
+        FilmObj film = null;
+        UUID uuid = null;
+        ArrayList<UUID> newUuids = new ArrayList<>();
+        for(int i = 0; i < films.size(); i++){
+            log.info("Film(" + i + "): " + films.get(i).toString() + " wird geprueft.");
+            film = films.get(i);
+            if(film.getUuid_film() == null || this.filmObjRepository.existsById(film.getUuid_film())){ //UUID ist nicht vorhanden, oder ist bereits in der DB enthalten. Dann erhält der Film automatische eine neue UUID
+                int abbruch = 100; //Versuche um eine neue UUID zu erstellen
+                while(true) {
+                    uuid = getNewUUID();
+                    if(!newUuids.contains(uuid)){ //Sicherung damit RandomUUID keine Doppelte UUID fuer ein Film erstellen kann
+                        newUuids.add(uuid);
+                        film.setUuid_film(uuid);
+                        break;
+                    }
+                    abbruch--;
+                    if(abbruch == 0){
+                        log.error("Es konnte keine neue UUID erstellt werden.");
+                        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                }
+                log.info("Film(" + i + "): " + films.get(i).toString() + " erhaelt neue UUID(" + film.getUuid_film().toString() + ")");
+            }
+        }
+        log.info("Saemtliche Filme werden gespeichert.");
+        List<String> responseListe = new ArrayList<>();
+        for(int i = 0; i < films.size(); i++){
+            film = films.get(i);
+            this.filmObjRepository.save(film);
+            responseListe.add(film.getUuid_film().toString());
+            log.info("Film(" + film.toString() + ") wurde in der Datenbank gespeichert.");
+        }
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(responseListe, HttpStatus.OK);
+    }
+
+
 
     //TODO: DELETE-Request für das Löschen eines Filmes
 
@@ -125,4 +179,18 @@ public class FilmController {
         return mapper;
     }
 
+    /**
+     * Funktion erstellt eine neue UUID nach eigenen Muster
+     * @return neue UUID, die noch nicht in der DB für Filme vorhanden ist
+     */
+    private UUID getNewUUID(){
+        UUID uuid = null;
+        while (true) {
+             uuid = UUID.randomUUID();
+             if(!this.filmObjRepository.existsById(uuid)){
+                 break;
+             }
+        }
+        return uuid;
+    }
 }
