@@ -2,7 +2,6 @@ package com.evilcorp.data_warehouse_microservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.AllArgsConstructor;
@@ -13,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.ServerRequest;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +25,7 @@ public class FilmController {
 
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
+    //@Autowired
     private final FilmObjRepository filmObjRepository;
 
     /**
@@ -96,12 +94,11 @@ public class FilmController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.info("UUDI konnte erstellt werden und wird nun in DB ermittelt.");
-        if (!this.filmObjRepository.existsById(uuid)) {
-            log.info("UUID(" + uuid.toString() + ") konnte nicht ermittelt werden.");
+        if (!this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(uuid)) {
+            log.info("UUID(" + uuid.toString() + ") konnte nicht ermittelt werden oder ist bereits geloescht.");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        //FilmObj film = this.filmObjRepository.getById(uuid); // Problematisch, da mit Referenzierung bei Springboot gearbeitet wird.
-        FilmObj film = this.filmObjRepository.findById(uuid).get(); // Muss so verwendet werden, da ansosnten die Referenzierung probleme macht.
+        FilmObj film = this.filmObjRepository.findByIdAndGeloeschtIsFalse(uuid);
         String ausgabe;
         try {
             ObjectMapper mapper = zielformatierung(mt);
@@ -131,13 +128,13 @@ public class FilmController {
         for (int i = 0; i < films.size(); i++) {
             log.info("Film(" + i + "): " + films.get(i).toString() + " wird geprueft.");
             film = films.get(i);
-            if (film.getUuid_film() == null || this.filmObjRepository.existsById(film.getUuid_film())) { //UUID ist nicht vorhanden, oder ist bereits in der DB enthalten. Dann erhält der Film automatische eine neue UUID
+            if (film.getId() == null || this.filmObjRepository.existsById(film.getId())) { //UUID ist nicht vorhanden, oder ist bereits in der DB enthalten. Dann erhält der Film automatische eine neue UUID
                 int abbruch = 100; //Versuche um eine neue UUID zu erstellen
                 while (true) {
                     uuid = getNewUUID();
                     if (!newUuids.contains(uuid)) { //Sicherung damit RandomUUID keine Doppelte UUID fuer ein Film erstellen kann
                         newUuids.add(uuid);
-                        film.setUuid_film(uuid);
+                        film.setId(uuid);
                         break;
                     }
                     abbruch--;
@@ -146,7 +143,7 @@ public class FilmController {
                         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
                     }
                 }
-                log.info("Film(" + i + "): " + films.get(i).toString() + " erhaelt neue UUID(" + film.getUuid_film().toString() + ")");
+                log.info("Film(" + i + "): " + films.get(i).toString() + " erhaelt neue UUID(" + film.getId().toString() + ")");
             }
         }
         log.info("Saemtliche Filme werden gespeichert.");
@@ -154,7 +151,7 @@ public class FilmController {
         for (int i = 0; i < films.size(); i++) {
             film = films.get(i);
             this.filmObjRepository.save(film);
-            responseListe.add(film.getUuid_film().toString());
+            responseListe.add(film.getId().toString());
             log.info("Film(" + film.toString() + ") wurde in der Datenbank gespeichert.");
         }
         HttpHeaders header = new HttpHeaders();
@@ -183,7 +180,9 @@ public class FilmController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    //TODO: PUT-Request für das Aktualisieren eines Filmes
+
+    //TODO: PUT-Request
+
 
 
     /**

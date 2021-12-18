@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -25,16 +28,23 @@ public class FilmObj implements Serializable {
     @Id
     @Getter
     @Setter
-    private UUID uuid_film ;
+    @Column(name = "id", unique = true)
+    private UUID id;
+
     @Getter
     @Setter
+    @Column(name = "titel")
     private String titel;
+
     @Getter
     @Setter
+    @Column(name = "leihPreis")
     private double leihPreis;
+
     @JsonIgnore
     @Getter
     @Setter
+    @Column(name = "geloescht")
     private boolean geloescht = false;
 
     @Override
