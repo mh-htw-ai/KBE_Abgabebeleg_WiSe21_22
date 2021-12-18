@@ -36,7 +36,9 @@ public class FilmController {
     @RequestMapping(value = "/newUuid", method = RequestMethod.GET)
     public ResponseEntity<String> getNewUuid() {
         log.info("getNewUuid() wird ausgefuehrt.");
-        return new ResponseEntity<>(getNewUUID().toString(), HttpStatus.OK);
+        UUID uuid = getNewUUID();
+        log.info("getNewUuid: Die neue UUID(" + uuid.toString() + ") wird zurueck geschickt.");
+        return new ResponseEntity<>(uuid.toString(), HttpStatus.OK);
     }
 
 
@@ -48,13 +50,13 @@ public class FilmController {
      */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<String> getFilmAll(
-            @RequestHeader(HttpHeaders.ACCEPT) String accept
+            @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
     ) {
         log.info("getFilmAll() wird ausgeführt.");
         MediaType mt = DataWarehouseLogik.checkAccept(accept); //Ueberpruefung der Akzeptierten Formate
         if (mt == null) {
             log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
         List<FilmObj> filmListe = filmObjRepository.findAllByGeloeschtFalse();
         String ausgabe;
@@ -68,6 +70,7 @@ public class FilmController {
         }
         HttpHeaders header = new HttpHeaders();
         header.setContentType(mt);
+        log.info("getFilmAll(): Es werden insgesamt " + filmListe.size() + " Filme in einer Liste zurueck geschickt.");
         return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
 
@@ -79,16 +82,19 @@ public class FilmController {
      * @param accept - Zielformat der Response
      * @return Film-Objekt im Zielformat
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(
+            method = RequestMethod.GET
+            , headers = "UUID"
+    )
     public ResponseEntity<String> getFilm(
             @RequestHeader("UUID") UUID uuid,
-            @RequestHeader(HttpHeaders.ACCEPT) String accept
+            @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
     ) {
         log.info("getFilm() wird ausgeführt.");
         MediaType mt = DataWarehouseLogik.checkAccept(accept); //Ueberpruefung der Akzeptierten Formate
         if (mt == null) {
             log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
         log.info("UUDI konnte erstellt werden und wird nun in DB ermittelt.");
         if (!this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(uuid)) {
@@ -107,8 +113,11 @@ public class FilmController {
         }
         HttpHeaders header = new HttpHeaders();
         header.setContentType(mt);
+        log.info("getFilm(): Film(" + film + ") wurde ermittelt und zurueckgeschickt.");
         return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
+
+
 
 
     /**
@@ -163,6 +172,7 @@ public class FilmController {
         }
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_JSON);
+        log.info("postFilms(): Es wurden " + responseListe.size() + " Filme erfolgreich in die Datenbank gespeichert.");
         return new ResponseEntity<>(responseListe, header, HttpStatus.OK);
     }
 
@@ -186,6 +196,7 @@ public class FilmController {
         FilmObj film = this.filmObjRepository.findByIdAndGeloeschtIsFalse(uuid);
         film.setGeloescht(true);
         this.filmObjRepository.save(film);
+        log.info("deleteFilm(): Der Film (" + film + ") wurde erfolgreich als geloescht markiert.");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -204,16 +215,16 @@ public class FilmController {
             @RequestBody FilmObj film
     ) {
         log.info("putFilm() wird ausgefuehrt.");
-        if (this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(film.getId())) {
-            FilmObj filmDB = this.filmObjRepository.findByIdAndGeloeschtIsFalse(film.getId());
-            log.info("Film(" + filmDB.toString() + ") konnte ermittelt werden und wird verändert zum Film(" + film + ")");
-            this.filmObjRepository.save(film);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+        if (!this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(film.getId())) {
             log.info("Film(" + film + ") konnte nicht in der DB ermittelt werden.");
             String response = "Film mit UUID(" + film.getId().toString() + ") ist nicht in der Datenbank vorhanden oder wurde bereits geloescht.";
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+        FilmObj filmDB = this.filmObjRepository.findByIdAndGeloeschtIsFalse(film.getId());
+        log.info("Film(" + filmDB.toString() + ") konnte ermittelt werden und wird verändert zum Film(" + film + ")");
+        this.filmObjRepository.save(film);
+        log.info("putFilm(): Der Film(" + filmDB + ") wurde erfolgreich zum Film(" + film + ") aktualisiert.");
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

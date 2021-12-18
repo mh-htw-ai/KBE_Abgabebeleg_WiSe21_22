@@ -31,4 +31,14 @@ public interface FilmObjRepository extends JpaRepository<FilmObj, UUID> {
      * @return true, wenn der Film vorhanden und noch nicht geloescht wurde
      */
     boolean existsFilmObjByIdAndGeloeschtIsFalse(UUID id);
+
+
+    /**
+     * Ermittelt Filme bei dem der Titel vorhanden ist
+     * @param titel - Titel der gesuchten Filme
+     * @return Liste von Filmen bei den der Titel passt
+     */
+    List<FilmObj> findAllByTitelContaining(String titel);
+
+
 }

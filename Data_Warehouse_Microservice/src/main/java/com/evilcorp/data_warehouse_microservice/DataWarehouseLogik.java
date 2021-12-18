@@ -11,12 +11,16 @@ public class DataWarehouseLogik {
 
     public static MediaType checkAccept(String accept){
            MediaType mt = MediaType.parseMediaType(accept);
-            if(mt.equals(MediaType.ALL) || mt.equals(MediaType.APPLICATION_JSON)){
-                return MediaType.APPLICATION_JSON;
-            }
-            if (mt.equals(MediaType.APPLICATION_XML)){
-                return MediaType.APPLICATION_XML;
-            }
+        return checkAccept(mt);
+    }
+
+    public static MediaType checkAccept(MediaType mt){
+        if(mt.equals(MediaType.ALL) || mt.equals(MediaType.APPLICATION_JSON)){
+            return MediaType.APPLICATION_JSON;
+        }
+        if (mt.equals(MediaType.APPLICATION_XML)){
+            return MediaType.APPLICATION_XML;
+        }
         return null;
     }
 
