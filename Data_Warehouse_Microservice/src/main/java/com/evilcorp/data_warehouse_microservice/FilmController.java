@@ -34,6 +34,7 @@ public class FilmController {
      * @return neue Film-UUID die noch nicht verwendet ist
      */
     @RequestMapping(value = "/newUuid", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<String> getNewUuid() {
         log.info("getNewUuid() wird ausgefuehrt.");
         UUID uuid = getNewUUID();
@@ -49,6 +50,7 @@ public class FilmController {
      * @return Liste mit Filmen im Zielformat
      */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<String> getFilmAll(
             @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
     ) {
@@ -86,6 +88,7 @@ public class FilmController {
             method = RequestMethod.GET
             , headers = "UUID"
     )
+    @ResponseBody
     public ResponseEntity<String> getFilm(
             @RequestHeader("UUID") UUID uuid,
             @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
@@ -117,6 +120,46 @@ public class FilmController {
         return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
 
+    /**
+     * Funktion holt saemtliche Filme anhand des Titels
+     *
+     * @param titel des gesuchten Filmes
+     * @return Liste mit Filmen
+     */
+    @RequestMapping(
+            method = RequestMethod.GET
+            , params = "title"
+    )
+    @ResponseBody
+    public ResponseEntity<String> getFilmByTitle(
+            @RequestParam("title") String titel
+            , @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
+    ){
+        log.info("getFilmByTitle() wird ausgefuehrt.");
+        MediaType mt = DataWarehouseLogik.checkAccept(accept);
+        if (mt == null) {
+            log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+        List<FilmObj> filmListe = this.filmObjRepository.findAllByTitelContaining(titel);
+        if(filmListe.size() == 0){
+            String res = "Es konnte kein Titel mit dem Inhalt(" + titel + ") gefunden werden.";
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+        String ausgabe;
+        try {
+            ObjectMapper mapper = zielformatierung(mt);
+            ausgabe = mapper.writeValueAsString(filmListe);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            log.error("Fehler beim Umwandeln zur " + mt.getType() + "-Liste.");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(mt);
+        log.info("getFilmByTitle(): Es wurden insgesamt " + filmListe.size() + " Filme mit dem Titel(" + titel + ") gefunden und zurueckgeschickt." );
+        return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
+    }
 
 
 
@@ -131,6 +174,7 @@ public class FilmController {
             method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseBody
     public ResponseEntity<List<UUID>> postFilms(
             @RequestBody List<FilmObj> films
     ) {
@@ -185,6 +229,7 @@ public class FilmController {
      * @return No Content wenn der Film erfolgreich geloescht wurde
      */
     @RequestMapping(method = RequestMethod.DELETE)
+    @ResponseBody
     public ResponseEntity<String> deleteFilm(
             @RequestHeader("UUID") UUID uuid
     ) {
@@ -211,6 +256,7 @@ public class FilmController {
             method = RequestMethod.PUT
             , consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseBody
     public ResponseEntity<String> putFilm(
             @RequestBody FilmObj film
     ) {
