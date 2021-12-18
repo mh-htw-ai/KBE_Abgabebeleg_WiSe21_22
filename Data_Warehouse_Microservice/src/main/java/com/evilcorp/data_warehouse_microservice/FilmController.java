@@ -180,9 +180,26 @@ public class FilmController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    //TODO: PUT-Request
-
+    @RequestMapping(
+            method = RequestMethod.PUT
+            , consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<String> putFilm(
+            @RequestBody FilmObj film
+    ){
+        log.info("putFilm() wird ausgefuehrt.");
+        if(this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(film.getId())){
+            FilmObj filmDB = this.filmObjRepository.findByIdAndGeloeschtIsFalse(film.getId());
+            log.info("Film(" + filmDB.toString() + ") konnte ermittelt werden und wird verändert zum Film(" + film.toString() + ")");
+            this.filmObjRepository.save(film);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else{
+            log.info("Film(" + film.toString() + ") konnte nicht in der DB ermittelt werden.");
+            String response = "Film mit UUID(" + film.getId().toString() + ") ist nicht in der Datenbank vorhanden oder wurde bereits geloescht.";
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     /**
