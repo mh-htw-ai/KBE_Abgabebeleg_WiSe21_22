@@ -3,8 +3,22 @@ package com.evilcorp.data_warehouse_microservice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface FilmObjRepository extends JpaRepository<FilmObj, UUID> {
+
+
+    /**
+     * Gibt alle Filme zurueck, welche noch nicht geloscht wurden
+     * @return Liste an ungeloeschten Filme
+     */
+    List<FilmObj> findAllByGeloeschtFalse();
+
+    /**
+     * Gibt nur ein Film zurueck, wenn der Film nicht bereits geloescht wurde
+     * @return Film der noch nicht geloescht wurde
+     */
+    //FilmObj findByUuid_filmAndGeloeschtFalse();
 }

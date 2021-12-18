@@ -31,6 +31,9 @@ public class LoadDatabase {
                 FilmObj f3 = FilmObj.builder().uuid_film(UUID.fromString("1f79ce68-33e2-4c0e-aee5-43b148e2a457")).titel("Crank").leihPreis(4.5).build();
                 filmObjRepository.save(f3);
                 log.info(f3.toString());
+                FilmObj f4 = FilmObj.builder().uuid_film(UUID.fromString("975646a3-2895-40a5-9c0a-39368cef6891")).titel("Crank").leihPreis(4.5).geloescht(true).build();
+                filmObjRepository.save(f4);
+                log.info(f4.toString());
                 log.info("Configuration: Datenbank hat Standart-Datensätze(" + filmObjRepository.count() + "Stück) erhalten.");
             }
             log.info("====================> Preloading ist abgeschlossen. <====================");

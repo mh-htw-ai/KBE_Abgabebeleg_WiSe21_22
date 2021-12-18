@@ -31,6 +31,16 @@ public class FilmController {
     private final FilmObjRepository filmObjRepository;
 
     /**
+     * Funktion erstellt eine neue UUID, welche noch nicht in der Datenbank bei Filmen verwendet wurde
+     * @return neue Film-UUID die noch nicht verwendet ist
+     */
+    @RequestMapping(value = "/newUuid", method = RequestMethod.GET)
+    public ResponseEntity<String> getNewUuid(){
+        log.info("getNewUuid() wird ausgefuehrt.");
+        return new ResponseEntity<>(getNewUUID().toString(), HttpStatus.OK);
+    }
+
+    /**
      * Funktion ist der Endpoint um saemtliche Filminformationen der Datenbank abzurufen
      *
      * @param accept - Header-Parameter welche die Akzeptablen Formate dann zurueck gibt
@@ -46,7 +56,7 @@ public class FilmController {
             log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        List<FilmObj> filmListe = filmObjRepository.findAll();
+        List<FilmObj> filmListe = filmObjRepository.findAllByGeloeschtFalse();
         String ausgabe;
         try {
             ObjectMapper mapper = zielformatierung(mt);
@@ -64,13 +74,14 @@ public class FilmController {
 
     /**
      * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID
-     * @param uuidStr - gesuchte UUID in String-Format
+     *
+     * @param uuid   - gesuchte UUID in UUID-Format
      * @param accept - Zielformat der Response
      * @return Film-Objekt im Zielformat
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getFilm(
-            @RequestHeader("UUID") String uuidStr,
+            @RequestHeader("UUID") UUID uuid,
             @RequestHeader(HttpHeaders.ACCEPT) String accept
     ) {
         log.info("getFilm() wird ausgeführt.");
@@ -79,15 +90,13 @@ public class FilmController {
             log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        UUID uuid;
         try {
-            uuid = UUID.fromString(uuidStr);
         } catch (IllegalArgumentException ex) {
             log.info("Fehlerhafte UUID wurde gesendet.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.info("UUDI konnte erstellt werden und wird nun in DB ermittelt.");
-        if(!this.filmObjRepository.existsById(uuid)){
+        if (!this.filmObjRepository.existsById(uuid)) {
             log.info("UUID(" + uuid.toString() + ") konnte nicht ermittelt werden.");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -113,27 +122,26 @@ public class FilmController {
             @RequestHeader(HttpHeaders.ACCEPT) String accept,
             @RequestHeader(HttpHeaders.CONTENT_TYPE) String ct,
             @RequestBody List<FilmObj> films
-    ){
+    ) {
         log.info("postFilms() wird ausgeführt.");
-        //TODO: POST-Request für ein neuen Film
         log.info("Es wurden " + films.size() + " Filme uebertragen.");
         FilmObj film = null;
         UUID uuid = null;
         ArrayList<UUID> newUuids = new ArrayList<>();
-        for(int i = 0; i < films.size(); i++){
+        for (int i = 0; i < films.size(); i++) {
             log.info("Film(" + i + "): " + films.get(i).toString() + " wird geprueft.");
             film = films.get(i);
-            if(film.getUuid_film() == null || this.filmObjRepository.existsById(film.getUuid_film())){ //UUID ist nicht vorhanden, oder ist bereits in der DB enthalten. Dann erhält der Film automatische eine neue UUID
+            if (film.getUuid_film() == null || this.filmObjRepository.existsById(film.getUuid_film())) { //UUID ist nicht vorhanden, oder ist bereits in der DB enthalten. Dann erhält der Film automatische eine neue UUID
                 int abbruch = 100; //Versuche um eine neue UUID zu erstellen
-                while(true) {
+                while (true) {
                     uuid = getNewUUID();
-                    if(!newUuids.contains(uuid)){ //Sicherung damit RandomUUID keine Doppelte UUID fuer ein Film erstellen kann
+                    if (!newUuids.contains(uuid)) { //Sicherung damit RandomUUID keine Doppelte UUID fuer ein Film erstellen kann
                         newUuids.add(uuid);
                         film.setUuid_film(uuid);
                         break;
                     }
                     abbruch--;
-                    if(abbruch == 0){
+                    if (abbruch == 0) {
                         log.error("Es konnte keine neue UUID erstellt werden.");
                         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
                     }
@@ -143,7 +151,7 @@ public class FilmController {
         }
         log.info("Saemtliche Filme werden gespeichert.");
         List<String> responseListe = new ArrayList<>();
-        for(int i = 0; i < films.size(); i++){
+        for (int i = 0; i < films.size(); i++) {
             film = films.get(i);
             this.filmObjRepository.save(film);
             responseListe.add(film.getUuid_film().toString());
@@ -155,18 +163,36 @@ public class FilmController {
     }
 
 
-
-    //TODO: DELETE-Request für das Löschen eines Filmes
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteFilm(
+            @RequestHeader("UUID") UUID uuid
+    ) {
+        log.info("deleteFilm() wird ausgefuehrt.");
+        if (!this.filmObjRepository.existsById(uuid) || this.filmObjRepository.findById(uuid).get().isGeloescht()) {
+            if (this.filmObjRepository.existsById(uuid) && this.filmObjRepository.findById(uuid).get().isGeloescht()) {
+                log.info("Film mit der UUID(" + uuid.toString() + ") ist bereits geloescht wurden.");
+            } else {
+                log.info("Film mit der UUID(" + uuid.toString() + ") ist nicht vorhanden und konnte nicht geloescht werden.");
+            }
+            return new ResponseEntity<>("Fehler, die Film-UUID(" + uuid.toString() + ") ist entweder nicht in der Datenbank hinterlegt oder wurde bereits gelöscht.", HttpStatus.NOT_FOUND);
+        }
+        FilmObj film = this.filmObjRepository.findById(uuid).get();
+        film.setGeloescht(true);
+        this.filmObjRepository.save(film);
+        String response = film.toString() + " wurde erfolgreich geloescht.";
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     //TODO: PUT-Request für das Aktualisieren eines Filmes
 
 
     /**
      * Funktion wandelt anhand des gewuenschten MediaTypes den gewünschten Mapper um
+     *
      * @param mt - Zielt-MediaType
      * @return Mapper anhand des MediaTypes
      */
-    private ObjectMapper zielformatierung (MediaType mt) {
+    private ObjectMapper zielformatierung(MediaType mt) {
         ObjectMapper mapper;
         System.out.println("Zielformat: " + mt.toString());
         if (mt.equals(MediaType.APPLICATION_XML)) {
@@ -181,15 +207,16 @@ public class FilmController {
 
     /**
      * Funktion erstellt eine neue UUID nach eigenen Muster
+     *
      * @return neue UUID, die noch nicht in der DB für Filme vorhanden ist
      */
-    private UUID getNewUUID(){
+    private UUID getNewUUID() {
         UUID uuid = null;
         while (true) {
-             uuid = UUID.randomUUID();
-             if(!this.filmObjRepository.existsById(uuid)){
-                 break;
-             }
+            uuid = UUID.randomUUID();
+            if (!this.filmObjRepository.existsById(uuid)) {
+                break;
+            }
         }
         return uuid;
     }

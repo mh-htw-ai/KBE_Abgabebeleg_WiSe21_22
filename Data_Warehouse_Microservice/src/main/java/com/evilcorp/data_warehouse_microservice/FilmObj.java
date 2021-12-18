@@ -1,5 +1,6 @@
 package com.evilcorp.data_warehouse_microservice;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
@@ -31,6 +32,10 @@ public class FilmObj implements Serializable {
     @Getter
     @Setter
     private double leihPreis;
+    @JsonIgnore
+    @Getter
+    @Setter
+    private boolean geloescht = false;
 
     @Override
     public String toString(){
