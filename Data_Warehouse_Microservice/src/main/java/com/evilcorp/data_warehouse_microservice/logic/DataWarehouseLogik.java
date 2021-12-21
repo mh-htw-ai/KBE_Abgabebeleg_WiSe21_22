@@ -1,5 +1,6 @@
-package com.evilcorp.data_warehouse_microservice;
+package com.evilcorp.data_warehouse_microservice.logic;
 
+import com.evilcorp.data_warehouse_microservice.model.FilmObj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;

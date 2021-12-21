@@ -1,24 +1,32 @@
-package com.evilcorp.data_warehouse_microservice.csv;
+package com.evilcorp.data_warehouse_microservice.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.bean.CsvBindByName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
+import com.opencsv.bean.CsvIgnore;
+import lombok.*;
+import javax.persistence.*;
 import java.util.UUID;
 
+@Entity
+@Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "FilmObjBewertung")
 public class FilmObjBewertung {
 
-    @Getter @Setter @CsvBindByName(column = "UUID")
-    private UUID uuid;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter @Setter @Column(name="id", unique = true) @CsvIgnore
+    private long id;
 
-    @Getter @Setter @CsvBindByName(column = "Gesamtwertung")
+    @Getter @Setter @Column(name = "filmUuid") @CsvBindByName(column = "UUID")
+    private UUID filmUuid;
+
+    @Getter @Setter @Column(name="Gesamtwertung") @CsvBindByName(column = "Gesamtwertung")
     private int Gesamtwertung;
 
-    @Getter @Setter @CsvBindByName(column = "Zuschauerzahl")
+    @Getter @Setter @Column(name="Zuschauerzahl") @CsvBindByName(column = "Zuschauerzahl")
     private int Zuschauerzahl;
 
     /**
@@ -35,7 +43,7 @@ public class FilmObjBewertung {
      * @return String[] mit uuid, GesamtBewertung, Zuschauerzahl
      */
     public String[] convertForCsv(){
-        String[] ausgabe = {this.getUuid().toString()
+        String[] ausgabe = {this.getFilmUuid().toString()
                 , String.valueOf(this.getGesamtwertung())
                 , String.valueOf(this.getZuschauerzahl())};
         return ausgabe;
@@ -46,8 +54,18 @@ public class FilmObjBewertung {
      * @return String mit uuid, GesamtBewertung, Zuschauerzahl
      */
     public String convertToCsv(){
-        return "\"" + this.getUuid() + "\""
+        return "\"" + this.getFilmUuid() + "\""
                 + "," + this.getGesamtwertung()
                 + "," + this.getZuschauerzahl();
+    }
+
+    @Override
+    public String toString(){
+        try {
+            return "FilmObjBewertung:" + new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

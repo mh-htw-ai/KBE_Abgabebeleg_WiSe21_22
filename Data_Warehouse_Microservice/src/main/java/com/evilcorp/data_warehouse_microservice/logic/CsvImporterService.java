@@ -1,7 +1,7 @@
-package com.evilcorp.data_warehouse_microservice.csv;
+package com.evilcorp.data_warehouse_microservice.logic;
 
+import com.evilcorp.data_warehouse_microservice.model.FilmObjBewertung;
 import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
 import com.opencsv.exceptions.CsvException;
@@ -19,23 +19,26 @@ import java.util.List;
 
 public class CsvImporterService {
 
-    private static final Logger log = LoggerFactory.getLogger(com.evilcorp.data_warehouse_microservice.FilmObj.class);
+    private static final Logger log = LoggerFactory.getLogger(CsvImporterService.class);
+
+
+
 
     /**
      * Funktion exportiert die Filme in einer CSV-Datei
      *
      * @param dateiName falls die Datei ein bestimmten Namen haben soll muss dieser hier hinterlegt werden
      */
-    public static boolean exportFilmObjToCsv(List<FilmObjBewertung> liste, String dateiName) {
+    public static boolean exportFilmObjToCsv(List<FilmObjBewertung> liste, String dateiName, String path) {
         log.info("exportFilmObjToCsv() wird ausgeführt.");
         String datei;
         String dateiEndung = ".csv";
         String trenner = "_";
         String defaultName = "filmeObjExportData";
         if (dateiName == null || dateiName.equals("")) {
-            datei = dateiName;
-        } else {
             datei = defaultName;
+        } else {
+            datei = dateiName;
         }
         datei += trenner;
         LocalDateTime now = LocalDateTime.now();
@@ -47,30 +50,35 @@ public class CsvImporterService {
         log.info("Header: " + FilmObjBewertung.getCsvHeader());
         for (int i = 0; i < liste.size(); i++) {
             filmB = liste.get(i);
-            log.info("FilmB: " + filmB.getUuid() + " wird verarbeitet.");
+            log.info("FilmB: " + filmB.getFilmUuid() + " wird verarbeitet.");
             strListe.add(filmB.convertForCsv());
         }
         log.info("Anzahl der Zeilen: " + strListe.size());
         try (
             ICSVWriter writer = new CSVWriterBuilder(
-                    new FileWriter(datei))
+                    new FileWriter(path + datei))
                     .withSeparator(',')
                     .build()) {
             writer.writeAll(strListe);
             } catch (IOException e) {
             e.printStackTrace();
             log.error("Fehler. Es konnte nicht in eine CSV-Datei geschrieben werden. Exception: " + e.getMessage());
-
         }
         log.info("Writer ist abgeschlossen.");
-        /*} catch (IOException e) {
-            log.error("Fehler. Es konnte nicht in eine CSV-Datei geschrieben werden. Exception: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }*/
         log.info("CSV-Datei wurde erfolgreich erstellt.");
         return true;
     }
+
+    public static boolean exportFilmObjToCsv(List<FilmObjBewertung> liste, String dateiName) {
+        String path ="Data_Warehouse_Microservice\\target\\";
+        //String path ="Data_Warehouse_Microservice\\src/main\\resources\\";
+        return CsvImporterService.exportFilmObjToCsv(liste, dateiName, path);
+    }
+
+    public static boolean exportFilmObjToCsv(List<FilmObjBewertung> liste) {
+        return CsvImporterService.exportFilmObjToCsv(liste, null);
+    }
+
 
     public List<FilmObjBewertung> importFilmObjFromCsv(String pathFile) {
         String dateiEndung = ".csv";

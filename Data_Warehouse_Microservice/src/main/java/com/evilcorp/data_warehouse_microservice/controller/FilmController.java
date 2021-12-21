@@ -1,7 +1,8 @@
-package com.evilcorp.data_warehouse_microservice;
+package com.evilcorp.data_warehouse_microservice.controller;
 
-import com.evilcorp.data_warehouse_microservice.csv.CsvImporterService;
-import com.evilcorp.data_warehouse_microservice.csv.FilmObjBewertung;
+import com.evilcorp.data_warehouse_microservice.logic.DataWarehouseLogik;
+import com.evilcorp.data_warehouse_microservice.model.FilmObj;
+import com.evilcorp.data_warehouse_microservice.repository.FilmObjRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -275,25 +276,7 @@ public class FilmController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //TODO: Exporter-Endpoint hier dient nur zu Textzwecken und muss entfernt werden.
-    /**
-     * Testfunktion für das Erstellen eines vordefinierten CSV-Exporters
-     * @return
-     */
-    @RequestMapping(value = "/export", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<String> getStartExport(){
-        log.info("getStartExport() wird ausgeführt.");
-        List<FilmObjBewertung> liste = new ArrayList<>();
-        liste.add(FilmObjBewertung.builder().uuid(UUID.randomUUID()).Zuschauerzahl(20).Gesamtwertung(40).build());
-        liste.add(FilmObjBewertung.builder().uuid(UUID.randomUUID()).Zuschauerzahl(10).Gesamtwertung(20).build());
-        liste.add(FilmObjBewertung.builder().uuid(UUID.randomUUID()).Zuschauerzahl(30).Gesamtwertung(80).build());
-        if(!CsvImporterService.exportFilmObjToCsv(liste,"test01.csv")){
-            log.info("CSV-Datei konnte nicht erstellt werden.");
-            return new ResponseEntity<>("Fehler: CSV-Datei konnte nicht erstellt werden.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>("CSV-Datei wurde erfolgreich erstellt.", HttpStatus.OK);
-    }
+
 
 
     /**
