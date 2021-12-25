@@ -18,6 +18,7 @@ public interface FilmObjRepository extends JpaRepository<FilmObj, UUID> {
      */
     List<FilmObj> findAllByGeloeschtFalse();
 
+
     /**
      * Gibt nur ein Film zurueck, wenn der Film nicht bereits geloescht wurde
      *
@@ -25,6 +26,7 @@ public interface FilmObjRepository extends JpaRepository<FilmObj, UUID> {
      * @return Film der noch nicht geloescht wurde
      */
     FilmObj findByIdAndGeloeschtIsFalse(UUID id);
+
 
     /**
      * Ermittelt, ob es ein Film gibt mit der uebergebenden UUID der noch nicht geloescht wurde.
