@@ -1,7 +1,11 @@
 package com.evilcorp.main_component_microservice.model_classes;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.UUID;
+
+
 
 @Entity
 @Table(
@@ -10,36 +14,17 @@ import java.util.UUID;
                 @UniqueConstraint(name = "movie_title_unique", columnNames = "movie_title")
         }
 )
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Movie {
 
     @Id
     @Column(name = "id", updatable = false)
-    private UUID id;
+    @Getter @Setter
+    private UUID id = UUID.randomUUID();
+
     @Column(name = "movie_title", nullable = false, columnDefinition = "TEXT")
+    @Getter @Setter @NonNull
     private String title;
 
-    public Movie() {
-
-    }
-
-    public Movie(String title) {
-        this.id = UUID.randomUUID();
-        this.title = title;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID uuid_Film) {
-        this.id = uuid_Film;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }
