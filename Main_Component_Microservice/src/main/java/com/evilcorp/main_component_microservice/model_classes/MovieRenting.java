@@ -1,6 +1,7 @@
 package com.evilcorp.main_component_microservice.model_classes;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,12 +16,18 @@ import java.util.UUID;
 )
 @NoArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class MovieRenting {
 
     @Id
-    @Column(name = "id", updatable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "name",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
     @Getter @Setter
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @Column(name = "movie_id", nullable = false, columnDefinition = "TEXT")
     @Getter @Setter @NonNull
@@ -29,6 +36,7 @@ public class MovieRenting {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_renter", nullable = false, columnDefinition = "UUID")
     @Getter @Setter @NonNull
+    @ToString.Exclude
     private User movieRenter;
 
     @Column(name = "date_of_renting", nullable = false, columnDefinition = "TEXT")

@@ -4,48 +4,46 @@ import com.evilcorp.main_component_microservice.custom_exceptions.UserNotFoundEx
 import com.evilcorp.main_component_microservice.entity_assembler.RatingModelAssembler;
 import com.evilcorp.main_component_microservice.entity_assembler.RentingModelAssembler;
 import com.evilcorp.main_component_microservice.entity_assembler.UserModelAssembler;
+import com.evilcorp.main_component_microservice.model_classes.Movie;
 import com.evilcorp.main_component_microservice.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.model_classes.MovieRenting;
 import com.evilcorp.main_component_microservice.model_classes.User;
+import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.RatingRepository;
 import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
+import com.evilcorp.main_component_microservice.services.csv_exporter.CsvExporterService;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/main/api/v1.0/user")
-public class MainUserController {
+@RequestMapping(MainUserController.userURI)
+public class MainUserController extends MainDefaultController{
 
-    private final UserRepository userRepository;
-    private final UserModelAssembler userAssembler;
-
-    private final RatingRepository ratingRepository;
-    private final RatingModelAssembler ratingAssembler;
-
-    private final RentingRepository rentingRepository;
-    private final RentingModelAssembler rentingAssembler;
+    final static String userURI = baseURI + "/user";
 
     public MainUserController(UserRepository userRepository,
                               UserModelAssembler userAssembler,
                               RatingRepository ratingRepository,
                               RatingModelAssembler ratingAssembler,
                               RentingRepository rentingRepository,
-                              RentingModelAssembler rentingAssembler) {
-
-        this.userRepository = userRepository;
-        this.userAssembler = userAssembler;
-
-        this.ratingRepository = ratingRepository;
-        this.ratingAssembler = ratingAssembler;
-
-        this.rentingRepository = rentingRepository;
-        this.rentingAssembler = rentingAssembler;
+                              RentingModelAssembler rentingAssembler,
+                              MovieRepository movieRepository) {
+        super(userRepository,
+                userAssembler,
+                ratingRepository,
+                ratingAssembler,
+                rentingRepository,
+                rentingAssembler,
+                movieRepository);
     }
 
     /**
@@ -117,39 +115,5 @@ public class MainUserController {
                 .orElseThrow(() -> new UserNotFoundException(userId));
         userRepository.delete(tempUser);
         return userAssembler.toModel(tempUser);
-    }
-
-    //////////////////
-
-    @PutMapping(value = "/rentMovie/movie/{movieId}/user/{userId}",
-            produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String rentMovie(@PathVariable UUID movieId, @PathVariable UUID userId){
-        User tempUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-
-        MovieRenting tempRenting = new MovieRenting(movieId, tempUser);
-        rentingRepository.save(tempRenting);
-
-        tempUser.rentingList.add(tempRenting);
-        userRepository.save(tempUser);
-
-        return "Done";//rentingAssembler.toModel(tempRenting);
-    }
-
-    @PutMapping(value = "/rateMovie/movie/{movieId}/user/{userId}/rating/{ratingValue}",
-            produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String rateMovie(@PathVariable UUID movieId, @PathVariable UUID userId, @PathVariable int ratingValue){
-        User tempUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-
-        MovieRating tempRating = new MovieRating(movieId, tempUser, ratingValue);
-        ratingRepository.save(tempRating);
-
-        tempUser.ratingList.add(tempRating);
-        userRepository.save(tempUser);
-
-        return "Done";//ratingAssembler.toModel(tempRating);
     }
 }
