@@ -12,7 +12,4 @@ public class Car {
     @Getter @Setter
     private String type;
 
-
-    //TODO: Jackson JSON formatierung für serialisierung und deserialisierung
-
 }

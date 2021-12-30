@@ -1,16 +1,16 @@
-package com.evilcorp.data_warehouse_microservice;
+package com.evilcorp.data_warehouse_microservice.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
@@ -19,26 +19,37 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "FilmObj") // Legt fest wie die Tabelle in der Datenbank benannt werden soll.
-public class FilmObj {
+public class FilmObj implements Serializable {
 
-    private static final Logger log = LoggerFactory.getLogger(com.evilcorp.data_warehouse_microservice.FilmObj.class);
+    private static final Logger log = LoggerFactory.getLogger(FilmObj.class);
 
     @Id
     @Getter
     @Setter
-    private UUID uuid_film ;
+    @Column(name = "id", unique = true)
+    private UUID id;
+
     @Getter
     @Setter
+    @Column(name = "titel")
     private String titel;
+
     @Getter
     @Setter
+    @Column(name = "leihPreis")
     private double leihPreis;
+
+    @JsonIgnore
+    @Getter
+    @Setter
+    @Column(name = "geloescht")
+    private boolean geloescht = false;
 
     @Override
     public String toString(){
         //return "FilmObj: " + "uuid_film=" + this.uuid_film +"titel=" + this.titel + "leihpreis=" + this.leihPreis;
         try {
-            return "FilmObj" + new ObjectMapper().writeValueAsString(this);
+            return "FilmObj:" + new ObjectMapper().writeValueAsString(this);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
