@@ -16,15 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 public class CsvImporterService {
 
     private static final Logger log = LoggerFactory.getLogger(CsvImporterService.class);
 
-
     /**
-     * Funktion exportiert die Filme in einer CSV-Datei
+     * Funktion exportiert die Filme-Liste in eine CSV-Datei
      *
      * @param dateiName falls die Datei ein bestimmten Namen haben soll muss dieser hier hinterlegt werden
+     * @param liste Liste von Filmbewertungen
+     * @param dateiName Name der CSV-Datei in dem die Filmbewertungen gespeichert werden
+     * @param path Ort an dem die Datei gespeichert werden soll
+     * @return genauer Ort mit Dateiname, wo die CSV-Datei auf dem System liegt
      */
     public static String exportFilmObjToCsv(List<FilmObjBewertung> liste, String dateiName, String path) {
         log.info("exportFilmObjToCsv() wird ausgeführt.");
@@ -67,18 +71,31 @@ public class CsvImporterService {
         return path + datei;
     }
 
+
+    /**
+     * Wandelt eine Liste von Filmbewertungen in einer CSV-Datei um
+     *
+     * @param liste Liste mit Filmbewertungen
+     * @param dateiName Wunsch Dateiname der CSV-Datei
+     * @return Speicherort und Dateiname
+     */
     public static String exportFilmObjToCsv(List<FilmObjBewertung> liste, String dateiName) {
         String path = "Data_Warehouse_Microservice\\target\\";
         //String path ="Data_Warehouse_Microservice\\src/main\\resources\\";
         return CsvImporterService.exportFilmObjToCsv(liste, dateiName, path);
     }
 
+
+    /**
+     * Wandelt eine Liste von Filmbewertungen in einer CSV-Datei um
+     *
+     * @param liste Liste mit Filmbewertungen
+     * @return Speicherort und Dateiname
+     */
     public static String exportFilmObjToCsv(List<FilmObjBewertung> liste) {
         return CsvImporterService.exportFilmObjToCsv(liste, null);
     }
 
-
-//TODO: Implementierung ist Fehlerhaft
 
     /**
      * Funktion importiert die CSV-Datei und wandelt die Eintraege in neue Einträge für die FilmBewertungs-Datenbank
@@ -102,8 +119,6 @@ public class CsvImporterService {
             while (line != null) {
                 String[] attributes = line.split(",");
                 if (zeile == 0) {
-                    //Headerzeile
-                    //TODO: ordentliche Ausgabe erstellen
                     log.info("Zeile(" + zeile + "):Header wird eingelesen und besitzt folgende Attribute: " + attributes[0] + ", " + attributes[1] + ", " + attributes[2]);
                 } else {
                     log.info("Zeile(" + zeile + "): Film-Bewertung: " + attributes[0] + ", " + attributes[1] + ", " + attributes[2]);
@@ -113,8 +128,8 @@ public class CsvImporterService {
                             .Gesamtwertung(Integer.valueOf(attributes[1].replace("\"","")))
                             .Zuschauerzahl(Integer.valueOf(attributes[2].replace("\"","")))
                             .build();
+                    filmBew.createDate(); // Aktuelles Datum wird nur fuer die DB erstellt.
                     log.info(filmBew.toString());
-                    //TODO: Hinzufügen in der DB scheint Probleme zu machen: Nullpointerexception???
                     bewertungen.add(filmBew);
                 }
                 line = br.readLine();

@@ -13,11 +13,21 @@ public class DataWarehouseLogik {
 
     private static final Logger log = LoggerFactory.getLogger(FilmObj.class);
 
+    /**
+     * Funktion ueberprueft die erlaubten Mediatypen
+     * @param accept angeforderter Mediatype als String
+     * @return true, wenn der MediaType akzeptiert wird
+     */
     public static MediaType checkAccept(String accept){
            MediaType mt = MediaType.parseMediaType(accept);
         return checkAccept(mt);
     }
 
+    /**
+     * Funktion ueberprueft die erlaubten Mediatypen
+     * @param mt angeforderter Mediatype
+     * @return true, wenn der MediaType akzeptiert wird
+     */
     public static MediaType checkAccept(MediaType mt){
         if(mt.equals(MediaType.ALL) || mt.equals(MediaType.APPLICATION_JSON)){
             return MediaType.APPLICATION_JSON;

@@ -14,10 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
-
 
 
 @AllArgsConstructor
@@ -27,9 +25,18 @@ public class BewertungController {
 
     private static final Logger log = LoggerFactory.getLogger(BewertungController.class);
 
+    /**
+     * Interface fuer die Datenbankanbindung
+     */
     private final FilmObjBewertungRepository filmObjBewertungRepository;
 
 
+    /**
+     * REST-Endpoint fuer saemtliche Filmbewertungen
+     * Akzeptierte Ausgabe-Datentypen sind JSON oder XML
+     *
+     * @return uneingeschraenkte komplette Filmbewertungsliste wird zurueck gegeben
+     */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> getAllBewertungen(
@@ -54,6 +61,7 @@ public class BewertungController {
      * Funktion startet das Importieren einer CSV-Datei
      * Beispielformat des Body: "Data_Warehouse_Microservice\target\filmeObjExportData_20211225.csv"
      * Ausgangspunkt ist der Projektordner
+     *
      * @return Importierte Anzahl der Bewertung aus der CSV-Datei oder das Fehlschlagen des importieren.
      */
     @RequestMapping(value = "/import", method = RequestMethod.GET)
@@ -70,6 +78,7 @@ public class BewertungController {
                 for (int i = 0; i < liste.size(); i++) {
                     bewertung = liste.get(i);
                     log.info("Bewertung(" + i + "):" + bewertung.toString());
+                    //bewertung.createDate();
                     filmObjBewertungRepository.save(bewertung);
                     counter++;
                 }
@@ -84,9 +93,9 @@ public class BewertungController {
     }
 
 
-    //TODO: Exporter-Endpoint hier dient nur zu Test-Zwecken und muss entfernt werden.
     /**
-     * Testfunktion für das Erstellen eines vordefinierten CSV-Exporters
+     * Funktion für das Erstellen eines vordefinierten CSV-Exporters
+     *
      * @return Speicherort der CSV-Datei oder Fehlschlag des Exports
      */
     @RequestMapping(value = "/export", method = RequestMethod.GET)
@@ -103,7 +112,6 @@ public class BewertungController {
                 + "Speicherort: " + path;
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
-
 
 
 }

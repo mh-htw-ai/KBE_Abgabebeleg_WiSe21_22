@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Configuration
@@ -43,16 +44,36 @@ public class LoadDatabase {
 
                 log.info("====================> Filmberwertungen Preloading Start <====================");
 
-                FilmObjBewertung fb1_1 = FilmObjBewertung.builder().filmUuid(f1.getId()).Gesamtwertung(44).Zuschauerzahl(22).build();
+                FilmObjBewertung fb1_1 = FilmObjBewertung.builder()
+                        .filmUuid(f1.getId())
+                        .Gesamtwertung(44)
+                        .Zuschauerzahl(22)
+                        .Erstellungsdatum(LocalDateTime.of(2012, 12, 12, 12, 12, 12))
+                        .build();
                 filmObjBewertungRepository.save(fb1_1);
                 log.info(fb1_1.toString());
-                FilmObjBewertung fb1_2 = FilmObjBewertung.builder().filmUuid(f1.getId()).Gesamtwertung(77).Zuschauerzahl(37).build();
+                FilmObjBewertung fb1_2 = FilmObjBewertung.builder()
+                        .filmUuid(f1.getId())
+                        .Gesamtwertung(77)
+                        .Zuschauerzahl(37)
+                        .Erstellungsdatum(LocalDateTime.of(2012, 12, 12, 12, 12, 12))
+                        .build();
                 filmObjBewertungRepository.save(fb1_2);
                 log.info(fb1_2.toString());
-                FilmObjBewertung fb2_1 = FilmObjBewertung.builder().filmUuid(f2.getId()).Gesamtwertung(66).Zuschauerzahl(33).build();
+                FilmObjBewertung fb2_1 = FilmObjBewertung.builder()
+                        .filmUuid(f2.getId())
+                        .Gesamtwertung(66)
+                        .Zuschauerzahl(33)
+                        .Erstellungsdatum(LocalDateTime.of(2012, 12, 12, 12, 12, 12))
+                        .build();
                 filmObjBewertungRepository.save(fb2_1);
                 log.info(fb2_1.toString());
-                FilmObjBewertung fb2_2 = FilmObjBewertung.builder().filmUuid(f2.getId()).Gesamtwertung(32).Zuschauerzahl(16).build();
+                FilmObjBewertung fb2_2 = FilmObjBewertung.builder()
+                        .filmUuid(f2.getId())
+                        .Gesamtwertung(32)
+                        .Zuschauerzahl(16)
+                        .Erstellungsdatum(LocalDateTime.of(2012, 12, 12, 12, 12, 12))
+                        .build();
                 filmObjBewertungRepository.save(fb2_2);
                 log.info(fb2_2.toString());
 

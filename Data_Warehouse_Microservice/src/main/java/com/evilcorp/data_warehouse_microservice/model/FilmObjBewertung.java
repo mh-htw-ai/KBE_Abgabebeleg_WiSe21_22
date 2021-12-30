@@ -1,53 +1,70 @@
 package com.evilcorp.data_warehouse_microservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "FilmObjBewertung")
 public class FilmObjBewertung {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter @Setter @Column(name="id", unique = true) @CsvIgnore
+    @CsvIgnore
+    @Getter @Setter
     private long id;
 
-    @Getter @Setter @Column(name = "filmUuid") @CsvBindByName(column = "UUID")
+    @CsvBindByName(column = "UUID")
+    @Getter @Setter
     private UUID filmUuid;
 
-    @Getter @Setter @Column(name="Gesamtwertung") @CsvBindByName(column = "Gesamtwertung")
+    @CsvBindByName(column = "Gesamtwertung")
+    @Getter @Setter
     private int Gesamtwertung;
 
-    @Getter @Setter @Column(name="Zuschauerzahl") @CsvBindByName(column = "Zuschauerzahl")
+    @CsvBindByName(column = "Zuschauerzahl")
+    @Getter @Setter
     private int Zuschauerzahl;
+
+    @CsvIgnore @JsonIgnore
+    @Getter @Setter
+    private LocalDateTime Erstellungsdatum;
+
 
     /**
      * Holt die zugehoerigen Headerinformationen fuer die Erstellung eines Headers einer CSV-Datei
      * @return Beispiel: "UUID", "Gesamtwertung", "Zuschauerzahl"
      */
     public static String[] getCsvHeader(){
-        String[] ausgabe = {"UUID", "Gesamtwertung", "Zuschauerzahl"};
-        return ausgabe;
+        return new String[]{"UUID", "Gesamtwertung", "Zuschauerzahl"};
     }
+
 
     /**
      * Wandelt das FilmObjBewertung in ein String[] Format um
      * @return String[] mit uuid, GesamtBewertung, Zuschauerzahl
      */
     public String[] convertForCsv(){
-        String[] ausgabe = {this.getFilmUuid().toString()
+        return new String[]{this.getFilmUuid().toString()
                 , String.valueOf(this.getGesamtwertung())
                 , String.valueOf(this.getZuschauerzahl())};
-        return ausgabe;
     }
+
+
+    /**
+     * Erstellt ein Datum für das Datum
+     */
+    public void createDate(){
+        this.setErstellungsdatum(LocalDateTime.now());
+    }
+
 
     /**
      * Wandelt das FilmObjBewertung in ein String Format um
@@ -58,6 +75,7 @@ public class FilmObjBewertung {
                 + "," + this.getGesamtwertung()
                 + "," + this.getZuschauerzahl();
     }
+
 
     @Override
     public String toString(){
