@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,12 +22,12 @@ public class CsvImporterService {
 
     private static final Logger log = LoggerFactory.getLogger(CsvImporterService.class);
 
+    
     /**
      * Funktion exportiert die Filme-Liste in eine CSV-Datei
      *
      * @param dateiName falls die Datei ein bestimmten Namen haben soll muss dieser hier hinterlegt werden
      * @param liste Liste von Filmbewertungen
-     * @param dateiName Name der CSV-Datei in dem die Filmbewertungen gespeichert werden
      * @param path Ort an dem die Datei gespeichert werden soll
      * @return genauer Ort mit Dateiname, wo die CSV-Datei auf dem System liegt
      */
@@ -48,9 +49,9 @@ public class CsvImporterService {
         FilmObjBewertung filmB;
         List<String[]> strListe = new ArrayList<>();
         strListe.add(FilmObjBewertung.getCsvHeader());
-        log.info("Header: " + FilmObjBewertung.getCsvHeader());
-        for (int i = 0; i < liste.size(); i++) {
-            filmB = liste.get(i);
+        log.info("Header: " + Arrays.toString(FilmObjBewertung.getCsvHeader()));
+        for (FilmObjBewertung filmObjBewertung : liste) {
+            filmB = filmObjBewertung;
             log.info("FilmB: " + filmB.getFilmUuid() + " wird verarbeitet.");
             strListe.add(filmB.convertForCsv());
         }
@@ -106,7 +107,7 @@ public class CsvImporterService {
     public static List<FilmObjBewertung> importFilmObjFromCsv(String pathFile) throws IOException {
         log.info("importFilmObjFromCsv(): wird ausgeführt.");
         String dateiEndung = ".csv";
-        if (!pathFile.substring(pathFile.length() - dateiEndung.length(), pathFile.length()).equals(dateiEndung)) {
+        if (!pathFile.startsWith(dateiEndung, pathFile.length() - dateiEndung.length())) {
             log.error("Datei(" + pathFile + ") ist keine CSV-Datei.");
             return null;
         }
@@ -125,8 +126,8 @@ public class CsvImporterService {
                     filmBew = FilmObjBewertung
                             .builder()
                             .filmUuid(UUID.fromString(String.valueOf(attributes[0]).replace("\"","")))
-                            .Gesamtwertung(Integer.valueOf(attributes[1].replace("\"","")))
-                            .Zuschauerzahl(Integer.valueOf(attributes[2].replace("\"","")))
+                            .Gesamtwertung(Integer.parseInt(attributes[1].replace("\"","")))
+                            .Zuschauerzahl(Integer.parseInt(attributes[2].replace("\"","")))
                             .build();
                     filmBew.createDate(); // Aktuelles Datum wird nur fuer die DB erstellt.
                     log.info(filmBew.toString());
