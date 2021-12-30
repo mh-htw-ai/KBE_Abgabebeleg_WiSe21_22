@@ -277,8 +277,6 @@ public class FilmController {
     }
 
 
-
-
     /**
      * Funktion wandelt anhand des gewuenschten MediaTypes den gewünschten Mapper um
      *

@@ -32,32 +32,6 @@ public class BewertungController {
 
 
     /**
-     * REST-Endpoint fuer saemtliche Filmbewertungen
-     * Akzeptierte Ausgabe-Datentypen sind JSON oder XML
-     *
-     * @return uneingeschraenkte komplette Filmbewertungsliste wird zurueck gegeben
-     */
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<String> getAllBewertungen(
-    ){
-        log.info("getAllBewertungen() wird ausgeführt.");
-        List<FilmObjBewertung> list = filmObjBewertungRepository.findAll();
-        ObjectMapper mapper = DataWarehouseLogik.zielformatierung(MediaType.APPLICATION_JSON);
-        String ausgabe = "";
-        try {
-            ausgabe = mapper.writeValueAsString(list);
-        } catch (JsonProcessingException e) {
-            log.error("Fehler beim Umwandeln in JSON");
-            e.printStackTrace();
-        }
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
-    }
-
-
-    /**
      * Funktion startet das Importieren einer CSV-Datei
      * Beispielformat des Body: "Data_Warehouse_Microservice\target\filmeObjExportData_20211225.csv"
      * Ausgangspunkt ist der Projektordner
