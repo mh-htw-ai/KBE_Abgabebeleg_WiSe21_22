@@ -1,8 +1,8 @@
 package com.evilcorp.main_component_microservice.controller;
 
-import com.evilcorp.main_component_microservice.entity_assembler.RatingModelAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.RentingModelAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.UserModelAssembler;
+import com.evilcorp.main_component_microservice.entity_assembler.MovieRatingRepresentationAssembler;
+import com.evilcorp.main_component_microservice.entity_assembler.MovieRentingRepresentationAssembler;
+import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.model_classes.Movie;
 import com.evilcorp.main_component_microservice.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.model_classes.User;
@@ -21,24 +21,33 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(MainCsvController.csvURI)
-public class MainCsvController extends MainDefaultController{
+public class MainCsvController extends AbstractMainController {
 
     final static String csvURI = baseURI + "/csv";
 
+    private final RatingRepository ratingRepository;
+    private final MovieRatingRepresentationAssembler ratingAssembler;
+
+    private final RentingRepository rentingRepository;
+    private final MovieRentingRepresentationAssembler rentingAssembler;
+
     public MainCsvController(UserRepository userRepository,
-                             UserModelAssembler userAssembler,
+                             UserRepresentationAssembler userAssembler,
                              RatingRepository ratingRepository,
-                             RatingModelAssembler ratingAssembler,
+                             MovieRatingRepresentationAssembler ratingAssembler,
                              RentingRepository rentingRepository,
-                             RentingModelAssembler rentingAssembler,
+                             MovieRentingRepresentationAssembler rentingAssembler,
                              MovieRepository movieRepository) {
         super(userRepository,
                 userAssembler,
-                ratingRepository,
-                ratingAssembler,
-                rentingRepository,
-                rentingAssembler,
                 movieRepository);
+
+        this.ratingRepository = ratingRepository;
+        this.ratingAssembler = ratingAssembler;
+
+        this.rentingRepository = rentingRepository;
+        this.rentingAssembler = rentingAssembler;
+
     }
 
     @PutMapping("/export")

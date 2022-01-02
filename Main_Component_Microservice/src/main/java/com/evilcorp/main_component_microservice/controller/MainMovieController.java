@@ -1,57 +1,68 @@
 package com.evilcorp.main_component_microservice.controller;
 
-import com.evilcorp.main_component_microservice.entity_assembler.RatingModelAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.RentingModelAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.UserModelAssembler;
+import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
+import com.evilcorp.main_component_microservice.model_classes.Movie;
 import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.RatingRepository;
 import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(MainMovieController.movieURI)
-public class MainMovieController extends MainDefaultController {
+public class MainMovieController extends AbstractMainController {
 
     final static String movieURI = baseURI + "/movie";
 
     public MainMovieController(UserRepository userRepository,
-                               UserModelAssembler userAssembler,
-                               RatingRepository ratingRepository,
-                               RatingModelAssembler ratingAssembler,
-                               RentingRepository rentingRepository,
-                               RentingModelAssembler rentingAssembler,
+                               UserRepresentationAssembler userAssembler,
                                MovieRepository movieRepository) {
         super(userRepository,
                 userAssembler,
-                ratingRepository,
-                ratingAssembler,
-                rentingRepository,
-                rentingAssembler,
                 movieRepository);
     }
 
 
     //TODO: weiterreichen der anfragen an den Data Warehouse Microservice
 
-    public void getMovie(){
+    public ResponseEntity<Movie> getMovie(){
 
+        return ResponseEntity.ok().build();
     }
 
-    public void getAllMovies(){
 
+
+    public ResponseEntity<CollectionModel<Movie>> getAllMovies(){
+
+
+        return ResponseEntity.ok().build();
     }
 
-    public void creatMovie(){
 
+
+    public ResponseEntity creatMovie(){
+
+
+        return ResponseEntity.ok().build();
     }
 
-    public void updateMovie(){
 
+
+    public ResponseEntity updateMovie(){
+
+
+        return ResponseEntity.ok().build();
     }
 
-    public void deleteMovie(){
 
+
+    public ResponseEntity deleteMovie(){
+
+        return ResponseEntity.ok().build();
     }
+
+
 }

@@ -1,41 +1,74 @@
 package com.evilcorp.main_component_microservice.controller;
 
 import com.evilcorp.main_component_microservice.custom_exceptions.UserNotFoundException;
-import com.evilcorp.main_component_microservice.entity_assembler.RatingModelAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.RentingModelAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.UserModelAssembler;
+import com.evilcorp.main_component_microservice.entity_assembler.MovieRatingRepresentationAssembler;
+import com.evilcorp.main_component_microservice.entity_assembler.MovieRentingRepresentationAssembler;
+import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.model_classes.User;
+import com.evilcorp.main_component_microservice.model_representations.MovieRatingRepresentation;
+import com.evilcorp.main_component_microservice.model_representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.RatingRepository;
 import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(MainRatingController.ratingURI)
-public class MainRatingController extends MainDefaultController {
+public class MainRatingController extends AbstractMainController {
 
     final static String ratingURI = baseURI + "/rate";
 
+    private final RatingRepository ratingRepository;
+    private final MovieRatingRepresentationAssembler ratingAssembler;
+
+
     public MainRatingController(UserRepository userRepository,
-                                UserModelAssembler userAssembler,
+                                UserRepresentationAssembler userAssembler,
                                 RatingRepository ratingRepository,
-                                RatingModelAssembler ratingAssembler,
-                                RentingRepository rentingRepository,
-                                RentingModelAssembler rentingAssembler,
+                                MovieRatingRepresentationAssembler ratingAssembler,
                                 MovieRepository movieRepository) {
         super(userRepository,
                 userAssembler,
-                ratingRepository,
-                ratingAssembler,
-                rentingRepository,
-                rentingAssembler,
                 movieRepository);
+
+        this.ratingRepository = ratingRepository;
+        this.ratingAssembler = ratingAssembler;
     }
+
+
+    @GetMapping(value = "/{ratingId}",
+        produces = "application/json")
+    @ResponseStatus(HttpStatus.FOUND)
+    public ResponseEntity<MovieRatingRepresentation> findMovieRating(@PathVariable UUID ratingId){
+        return ratingRepository.findById(ratingId)
+                .map(rating -> {
+                    MovieRatingRepresentation ratingRepresentation = ratingAssembler.toModel(rating)
+                            .add( linkTo( methodOn(MainRatingController.class).findAllMovieRatings() ).withRel("ratings") );
+                    return ResponseEntity.status(HttpStatus.FOUND).body(ratingRepresentation);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<CollectionModel<MovieRatingRepresentation>> findAllMovieRatings(){
+        List<MovieRating> tempRatings = ratingRepository.findAll();
+        return ResponseEntity.status(HttpStatus.FOUND).body( ratingAssembler.toCollectionModel(tempRatings) );
+    }
+
+
 
     @PutMapping(value = "/rateMovie/movie/{movieId}/user/{userId}/rating/{ratingValue}",
             produces = "application/json")
@@ -47,8 +80,6 @@ public class MainRatingController extends MainDefaultController {
         MovieRating tempRating = new MovieRating(movieId, tempUser);
         tempRating.setRating(ratingValue);
         ratingRepository.save(tempRating);
-
-
 
         tempUser.ratingList.add(tempRating);
         userRepository.save(tempUser);

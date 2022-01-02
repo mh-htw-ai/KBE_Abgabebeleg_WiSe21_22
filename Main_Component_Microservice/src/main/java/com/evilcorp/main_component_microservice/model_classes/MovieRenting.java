@@ -17,6 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @ToString
+@Getter @Setter
 public class MovieRenting {
 
     @Id
@@ -26,21 +27,19 @@ public class MovieRenting {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "id", updatable = false, nullable = false)
-    @Getter @Setter
     private UUID id;
 
     @Column(name = "movie_id", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter @NonNull
+    @NonNull
     private UUID movieID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_renter", nullable = false, columnDefinition = "UUID")
-    @Getter @Setter @NonNull
+    @NonNull
     @ToString.Exclude
     private User movieRenter;
 
     @Column(name = "date_of_renting", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter
     private Date startOfRenting = new Date();
 
 }
