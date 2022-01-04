@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.controller;
 
+import com.evilcorp.main_component_microservice.custom_exceptions.RatingNotFoundException;
 import com.evilcorp.main_component_microservice.custom_exceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.entity_assembler.MovieRatingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.entity_assembler.MovieRentingRepresentationAssembler;
@@ -13,6 +14,7 @@ import com.evilcorp.main_component_microservice.repositories.RatingRepository;
 import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,8 +74,7 @@ public class MainRatingController extends AbstractMainController {
 
     @PutMapping(value = "/rateMovie/movie/{movieId}/user/{userId}/rating/{ratingValue}",
             produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String rateMovie(@PathVariable UUID movieId, @PathVariable UUID userId, @PathVariable int ratingValue){
+    public ResponseEntity<Link> rateMovie(@PathVariable UUID movieId, @PathVariable UUID userId, @PathVariable int ratingValue){
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
@@ -84,6 +85,32 @@ public class MainRatingController extends AbstractMainController {
         tempUser.ratingList.add(tempRating);
         userRepository.save(tempUser);
 
-        return "Done";//ratingAssembler.toModel(tempRating);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body( linkTo( methodOn(MainRatingController.class).findMovieRating(tempRating.getId() ) ).withSelfRel() );
     }
+
+
+    @PutMapping(value = "/change/{ratingId}",
+            consumes = "application/json",
+            produces = "application/json")
+    public ResponseEntity<Link> changeRating(@PathVariable UUID ratingId,@RequestBody MovieRating newRating){
+        MovieRating tempRating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new RatingNotFoundException(ratingId));
+
+        tempRating.setRating(newRating.getRating());
+        ratingRepository.save(tempRating);
+
+        return ResponseEntity.ok( linkTo( methodOn(MainRatingController.class).findMovieRating(tempRating.getId() ) ).withSelfRel() );
+    }
+
+
+    @DeleteMapping(value = "/delete/{ratingId}")
+    public ResponseEntity deleteRating(@PathVariable UUID ratingId){
+        MovieRating tempRating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new RatingNotFoundException(ratingId));
+        ratingRepository.delete(tempRating);
+        return ResponseEntity.noContent().build();
+    }
+
 }

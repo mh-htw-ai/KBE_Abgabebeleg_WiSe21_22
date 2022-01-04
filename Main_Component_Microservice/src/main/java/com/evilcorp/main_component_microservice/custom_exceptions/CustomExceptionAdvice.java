@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class UserNotFoundAdvice {
+public class CustomExceptionAdvice {
 
     @ResponseBody
     @ExceptionHandler(UserNotFoundException.class)
@@ -15,4 +15,9 @@ public class UserNotFoundAdvice {
     String userNotFoundHandler(UserNotFoundException e){
         return e.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(RatingNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String ratingNotFoundHandler(RatingNotFoundException e){return e.getMessage();}
 }

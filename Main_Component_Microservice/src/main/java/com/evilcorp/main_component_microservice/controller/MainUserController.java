@@ -1,17 +1,12 @@
 package com.evilcorp.main_component_microservice.controller;
 
 import com.evilcorp.main_component_microservice.custom_exceptions.UserNotFoundException;
-import com.evilcorp.main_component_microservice.entity_assembler.MovieRatingRepresentationAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.MovieRentingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.repositories.MovieRepository;
-import com.evilcorp.main_component_microservice.repositories.RatingRepository;
-import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +26,12 @@ public class MainUserController extends AbstractMainController {
 
     public MainUserController(UserRepository userRepository,
                               UserRepresentationAssembler userAssembler,
-                              MovieRepository movieRepository) {
+                              MovieRepository movieRepository
+                              ) {
         super(userRepository,
                 userAssembler,
                 movieRepository);
+
     }
 
 
@@ -47,6 +44,7 @@ public class MainUserController extends AbstractMainController {
     @GetMapping(value = "/{userId}",
             produces = "application/json")
     public ResponseEntity<UserRepresentation> findUser(@PathVariable UUID userId){
+
         return userRepository.findById(userId)
                 .map(user -> {
                     UserRepresentation userRepresentation = userAssembler.toModel(user)
@@ -65,7 +63,9 @@ public class MainUserController extends AbstractMainController {
      */
     @GetMapping(produces = "application/json")
     public ResponseEntity<CollectionModel<UserRepresentation>> findAllUsers(){
+
         List<User> tempUsers = userRepository.findAll();
+
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body( userAssembler.toCollectionModel(tempUsers) );
     }
@@ -80,7 +80,9 @@ public class MainUserController extends AbstractMainController {
             consumes = "application/json",
             produces = "application/json")
     public ResponseEntity<Link> addUser(@RequestBody User newUser){
+
         User tempUser = userRepository.save(newUser);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body( linkTo( methodOn(MainUserController.class).findUser(tempUser.getId() ) ).withSelfRel() );
@@ -100,9 +102,11 @@ public class MainUserController extends AbstractMainController {
     public ResponseEntity<Link> changeUser(@RequestBody User user, @PathVariable UUID userId){
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+
         user.setId(userId);
         tempUser = user;
         userRepository.save(tempUser);
+
         return ResponseEntity.ok( linkTo( methodOn(MainUserController.class).findUser(tempUser.getId() ) ).withSelfRel() );
     }
 

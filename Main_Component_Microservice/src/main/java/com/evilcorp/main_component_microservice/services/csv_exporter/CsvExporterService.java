@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +48,7 @@ public class CsvExporterService {
         List<MovieRating> ratingsList = ratingRepository.findAll();
         List<MovieRating> ratingsToBeRemoved = new ArrayList<>();
         for(MovieRating rating : ratingsList){
-            if(rating.getDate().before(startDate) || rating.getDate().after(endDate)){
+            if(rating.getRatingDate().before(startDate) || rating.getRatingDate().after(endDate)){
                 ratingsToBeRemoved.add(rating);
             }
         }
