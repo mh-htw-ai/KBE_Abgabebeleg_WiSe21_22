@@ -70,4 +70,15 @@ public class User {
     @Getter @Setter
     @ToString.Exclude
     public List<MovieRating> ratingList = new ArrayList<>();
+
+    public void update(User user) {
+        this.username = user.getUsername();
+        this.firstname = user.getFirstname();
+        this.lastname = user.getLastname();
+        this.email = user.getEmail();
+        this.street = user.getStreet();
+        this.street_number = user.getStreet_number();
+        this.postcode = user.getPostcode();
+        this.placeOfResidence = user.getPlaceOfResidence();
+    }
 }

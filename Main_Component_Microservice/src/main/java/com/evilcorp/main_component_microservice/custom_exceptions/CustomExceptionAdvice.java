@@ -20,4 +20,9 @@ public class CustomExceptionAdvice {
     @ExceptionHandler(RatingNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String ratingNotFoundHandler(RatingNotFoundException e){return e.getMessage();}
+
+    @ResponseBody
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    String userAlreadyExistsHandler(UserAlreadyExistsException e){return e.getMessage();}
 }

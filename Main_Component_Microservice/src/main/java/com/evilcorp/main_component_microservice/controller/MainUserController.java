@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.controller;
 
+import com.evilcorp.main_component_microservice.custom_exceptions.UserAlreadyExistsException;
 import com.evilcorp.main_component_microservice.custom_exceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.UserRepresentation;
@@ -81,7 +82,13 @@ public class MainUserController extends AbstractMainController {
             produces = "application/json")
     public ResponseEntity<Link> createUser(@RequestBody User newUser){
 
-        User tempUser = userRepository.save(newUser);
+        User tempUser;
+
+        try {
+            tempUser = userRepository.save(newUser);
+        }catch(Exception e){
+            throw new UserAlreadyExistsException(newUser.getId());
+        }
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -93,18 +100,17 @@ public class MainUserController extends AbstractMainController {
     /**
      * veraendert den nutzer mithilfe seiner uuid und eines requestbodys mit den neuen daten
      * @param user
-     * @param userId
      * @return
      */
-    @PutMapping(value = "/update/{userId}",
+    @PutMapping(value = "/update",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> updateUser(@RequestBody User user, @PathVariable UUID userId){
-        User tempUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+    public ResponseEntity<Link> updateUser(@RequestBody User user){
 
-        user.setId(userId);
-        tempUser = user;
+        User tempUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserNotFoundException(user.getId()));
+
+        tempUser.update(user);
         userRepository.save(tempUser);
 
         return ResponseEntity.ok( linkTo( methodOn(MainUserController.class).getUser(tempUser.getId() ) ).withSelfRel() );
