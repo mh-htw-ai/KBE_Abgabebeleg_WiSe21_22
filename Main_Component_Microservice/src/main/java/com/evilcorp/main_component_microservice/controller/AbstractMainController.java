@@ -15,7 +15,7 @@ public abstract class AbstractMainController {
     //TODO: error handling wenn user bereits existiert und erneut erstellt werden soll
     //TODO: error klassen vererbung ueberdenken
     //TODO: service klassen bearebeiten (mwst, datawarehouse)
-    //TODO: controllervererbung ueberdenken gibt es besser möglichkeit gemeinsamen grundpfad zu definieren
+    //TODO: controllervererbung ueberdenken gibt es besser möglichkeit gemeinsamen grundpfad zu definieren => BEANS
     //TODO: logging verschöneren sowohl consolen ausgabe als auch loggen der methoden aufrufe
 
     protected final UserRepository userRepository;

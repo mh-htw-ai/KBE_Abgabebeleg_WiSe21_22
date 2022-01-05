@@ -4,93 +4,93 @@ import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentat
 import com.evilcorp.main_component_microservice.model_classes.Movie;
 import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
+import com.evilcorp.main_component_microservice.services.DataWarehouseService;
+import com.evilcorp.main_component_microservice.services.Film;
+import org.jboss.jandex.Main;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(MainMovieController.movieURI)
 public class MainMovieController extends AbstractMainController {
 
     final static String movieURI = baseURI + "/movies";
-    final static String dataWarehouseURI = "http://localhost:21131/film";
+
+    private DataWarehouseService dataWarehouseService;
 
     public MainMovieController(UserRepository userRepository,
                                UserRepresentationAssembler userAssembler,
-                               MovieRepository movieRepository) {
+                               MovieRepository movieRepository,
+                               DataWarehouseService dataWarehouseService) {
         super(userRepository,
                 userAssembler,
                 movieRepository);
+
+        this.dataWarehouseService = dataWarehouseService;
     }
 
 
     //TODO: weiterreichen der anfragen an den Data Warehouse Microservice
-    @GetMapping(value = "/{movieId}",
+    @GetMapping(value = "/{filmId}",
             produces = "application/json")
-    public ResponseEntity<Movie> getMovie(@PathVariable UUID movieId){
+    public ResponseEntity<Film> getFilm(@PathVariable UUID filmId){
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Movie> responseEntity =
-                restTemplate
-                        .getForEntity(
-                                dataWarehouseURI+"/{movieId}",
-                                Movie.class,
-                                movieId
-                        );
+        ResponseEntity<Film> filmResponseEntity = dataWarehouseService.getFilm(filmId);
 
-        return responseEntity;
+        return filmResponseEntity;
     }
 
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<CollectionModel<Movie>> getAllMovies(){
+    public ResponseEntity getAllMovies(){
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<CollectionModel<Movie>> responseEntity =
-                restTemplate
-                        .exchange(
-                                dataWarehouseURI,
-                                HttpMethod.GET,
-                                null,
-                                new ParameterizedTypeReference<CollectionModel<Movie>>() {}
-                        );
+        ResponseEntity<Film[]> filmsResponseEntity = dataWarehouseService.getAllFilms();
 
-        return responseEntity;
+        return filmsResponseEntity;
     }
 
 
 
     @PostMapping(value = "/create",
             consumes = "application/json")
-    public ResponseEntity creatMovie(@RequestBody Movie newMovie){
+    public ResponseEntity createMovie(@RequestBody Film newFilm){
 
-        RestTemplate restTemplate = new RestTemplate();
-       // ResponseEntity<Link> responseEntity = restTemplate.postForEntity(dataWarehouseURI+"/create", Link.class);
+        dataWarehouseService.createFilm(newFilm);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body( linkTo( methodOn(MainMovieController.class).getFilm( newFilm.getId()) ).withSelfRel() );
     }
 
 
 
     @PutMapping(value = "/update",
             consumes = "application/json")
-    public ResponseEntity updateMovie(@RequestBody Movie changedMovie){
+    public ResponseEntity updateMovie(@RequestBody Film changedFilm){
 
+        dataWarehouseService.changeMovie(changedFilm);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok( linkTo( methodOn(MainMovieController.class).getFilm( changedFilm.getId() ) ).withSelfRel() );
     }
 
 
-    @DeleteMapping(value = "/delete/{movieId}")
-    public ResponseEntity deleteMovie(@PathVariable UUID movieId){
+    @DeleteMapping(value = "/delete/{filmId}")
+    public ResponseEntity deleteMovie(@PathVariable UUID filmId){
 
-        return ResponseEntity.ok().build();
+        dataWarehouseService.deleteMovie(filmId);
+
+        return ResponseEntity.noContent().build();
     }
 
 

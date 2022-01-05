@@ -27,7 +27,7 @@ public class UserRepresentationAssembler implements RepresentationModelAssembler
                 .placeOfResidence(entity.getPlaceOfResidence())
                 .build();
 
-        userRepresentation.add( linkTo( methodOn(MainUserController.class).findUser( userRepresentation.getId() ) ).withSelfRel() );
+        userRepresentation.add( linkTo( methodOn(MainUserController.class).getUser( userRepresentation.getId() ) ).withSelfRel() );
         userRepresentation.add( linkTo( methodOn(MainUserController.class).deleteUser( userRepresentation.getId() ) ).withRel("delete") );//sollte man einen delete link mit zurueckgeben?
 
         return userRepresentation;
@@ -37,7 +37,7 @@ public class UserRepresentationAssembler implements RepresentationModelAssembler
     public CollectionModel<UserRepresentation> toCollectionModel(Iterable<? extends User> entities) {
         CollectionModel<UserRepresentation> userRepresentations = RepresentationModelAssembler.super.toCollectionModel(entities);
 
-        userRepresentations.add( linkTo( methodOn(MainUserController.class).findAllUsers() ).withSelfRel() );
+        userRepresentations.add( linkTo( methodOn(MainUserController.class).getAllUsers() ).withSelfRel() );
 
         return userRepresentations;
     }

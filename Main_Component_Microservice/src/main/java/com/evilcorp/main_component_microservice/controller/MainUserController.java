@@ -43,12 +43,12 @@ public class MainUserController extends AbstractMainController {
      */
     @GetMapping(value = "/{userId}",
             produces = "application/json")
-    public ResponseEntity<UserRepresentation> findUser(@PathVariable UUID userId){
+    public ResponseEntity<UserRepresentation> getUser(@PathVariable UUID userId){
 
         return userRepository.findById(userId)
                 .map(user -> {
                     UserRepresentation userRepresentation = userAssembler.toModel(user)
-                            .add( linkTo( methodOn(MainUserController.class).findAllUsers() ).withRel("users") );
+                            .add( linkTo( methodOn(MainUserController.class).getAllUsers() ).withRel("users") );
                     return ResponseEntity.status( HttpStatus.FOUND )
                             .body( userRepresentation );
                 })
@@ -62,7 +62,7 @@ public class MainUserController extends AbstractMainController {
      * @return
      */
     @GetMapping(produces = "application/json")
-    public ResponseEntity<CollectionModel<UserRepresentation>> findAllUsers(){
+    public ResponseEntity<CollectionModel<UserRepresentation>> getAllUsers(){
 
         List<User> tempUsers = userRepository.findAll();
 
@@ -79,13 +79,13 @@ public class MainUserController extends AbstractMainController {
     @PostMapping(value = "/create",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> addUser(@RequestBody User newUser){
+    public ResponseEntity<Link> createUser(@RequestBody User newUser){
 
         User tempUser = userRepository.save(newUser);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body( linkTo( methodOn(MainUserController.class).findUser(tempUser.getId() ) ).withSelfRel() );
+                .body( linkTo( methodOn(MainUserController.class).getUser( tempUser.getId() ) ).withSelfRel() );
     }
 
 
@@ -99,7 +99,7 @@ public class MainUserController extends AbstractMainController {
     @PutMapping(value = "/update/{userId}",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> changeUser(@RequestBody User user, @PathVariable UUID userId){
+    public ResponseEntity<Link> updateUser(@RequestBody User user, @PathVariable UUID userId){
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
@@ -107,7 +107,7 @@ public class MainUserController extends AbstractMainController {
         tempUser = user;
         userRepository.save(tempUser);
 
-        return ResponseEntity.ok( linkTo( methodOn(MainUserController.class).findUser(tempUser.getId() ) ).withSelfRel() );
+        return ResponseEntity.ok( linkTo( methodOn(MainUserController.class).getUser(tempUser.getId() ) ).withSelfRel() );
     }
 
 
@@ -117,12 +117,14 @@ public class MainUserController extends AbstractMainController {
      * @param userId
      * @return
      */
-    @DeleteMapping(value = "/remove/{userId}",
+    @DeleteMapping(value = "/delete/{userId}",
             produces = "application/json")
     public ResponseEntity deleteUser(@PathVariable UUID userId){
+
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         userRepository.delete(tempUser);
-        return ResponseEntity.noContent().build();//"Deleted User:" + tempUser.getId().toString();
+
+        return ResponseEntity.noContent().build();
     }
 }
