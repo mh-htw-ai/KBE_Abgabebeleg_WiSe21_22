@@ -17,7 +17,7 @@ import java.util.UUID;
 public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
-    //Dies solle eine Standarddatebank implementieren
+    //Dies solle eine Standarddatenbank implementieren
     @Bean
     CommandLineRunner initDatabase(FilmObjRepository filmObjRepository, FilmObjBewertungRepository filmObjBewertungRepository) {
 
@@ -25,7 +25,6 @@ public class LoadDatabase {
             log.info("====================> Preloading von Warehouse-Datenabnk-Content. <====================");
             if(filmObjRepository.count() == 0){
                 log.info("====================> Filme Preloading Start <====================");
-
                 FilmObj f1 = FilmObj.builder().id(UUID.fromString("478d70fd-c572-4ca6-bd08-61f165380117")).titel("Dune").leihPreis(2.0).build();
                 filmObjRepository.save(f1);
                 log.info(f1.toString());
