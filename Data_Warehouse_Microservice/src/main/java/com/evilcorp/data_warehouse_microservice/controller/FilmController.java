@@ -81,7 +81,7 @@ public class FilmController {
 
 
     /**
-     * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID
+     * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID ueber den Header
      *
      * @param uuid   - gesuchte UUID in UUID-Format
      * @param accept - Zielformat der Response
@@ -92,35 +92,30 @@ public class FilmController {
             , headers = "UUID"
     )
     @ResponseBody
-    public ResponseEntity<String> getFilm(
+    public ResponseEntity<String> getFilmByHeader(
             @RequestHeader("UUID") UUID uuid,
             @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
     ) {
-        log.info("getFilm() wird ausgeführt.");
-        MediaType mt = DataWarehouseLogik.checkAccept(accept); //Ueberpruefung der Akzeptierten Formate
-        if (mt == null) {
-            log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
-            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        }
-        log.info("UUDI konnte erstellt werden und wird nun in DB ermittelt.");
-        if (!this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(uuid)) {
-            log.info("UUID(" + uuid.toString() + ") konnte nicht ermittelt werden oder ist bereits geloescht.");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        FilmObj film = this.filmObjRepository.findByIdAndGeloeschtIsFalse(uuid);
-        String ausgabe;
-        try {
-            ObjectMapper mapper = zielformatierung(mt);
-            ausgabe = mapper.writeValueAsString(film);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            log.error("Fehler beim Umwandeln zur " + mt + "-Objekt.");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(mt);
-        log.info("getFilm(): Film(" + film + ") wurde ermittelt und zurueckgeschickt.");
-        return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
+        return getFilmByUuid(uuid, accept);
+    }
+
+    /**
+     * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID ueber den Path
+     *
+     * @param uuid   - gesuchte UUID in UUID-Format
+     * @param accept - Zielformat der Response
+     * @return Film-Objekt im Zielformat
+     */
+    @RequestMapping(
+            method = RequestMethod.GET
+            , value = "/uuid={uuid}"
+    )
+    @ResponseBody
+    public ResponseEntity<String> getFilmByPath(
+            @PathVariable UUID uuid,
+            @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
+    ) {
+        return getFilmByUuid(uuid, accept);
     }
 
 
@@ -274,6 +269,41 @@ public class FilmController {
         this.filmObjRepository.save(film);
         log.info("putFilm(): Der Film(" + filmDB + ") wurde erfolgreich zum Film(" + film + ") aktualisiert.");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Funktion ermittelt den Film anhand der UUID
+     *
+     * @param uuid   - gesuchte UUID in UUID-Format
+     * @param accept - Zielformat der Response
+     * @return Film-Objekt im Zielformat
+     */
+    private ResponseEntity<String> getFilmByUuid(UUID uuid, MediaType accept){
+        log.info("getFilm() wird ausgeführt.");
+        MediaType mt = DataWarehouseLogik.checkAccept(accept); //Ueberpruefung der Akzeptierten Formate
+        if (mt == null) {
+            log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+        log.info("UUDI konnte erstellt werden und wird nun in DB ermittelt.");
+        if (!this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(uuid)) {
+            log.info("UUID(" + uuid.toString() + ") konnte nicht ermittelt werden oder ist bereits geloescht.");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        FilmObj film = this.filmObjRepository.findByIdAndGeloeschtIsFalse(uuid);
+        String ausgabe;
+        try {
+            ObjectMapper mapper = zielformatierung(mt);
+            ausgabe = mapper.writeValueAsString(film);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            log.error("Fehler beim Umwandeln zur " + mt + "-Objekt.");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(mt);
+        log.info("getFilm(): Film(" + film + ") wurde ermittelt und zurueckgeschickt.");
+        return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
 
 
