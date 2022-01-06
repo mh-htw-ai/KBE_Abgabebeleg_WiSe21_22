@@ -1,18 +1,17 @@
 package com.evilcorp.main_component_microservice.controller;
 
 import com.evilcorp.main_component_microservice.entity_assembler.MovieRatingRepresentationAssembler;
-import com.evilcorp.main_component_microservice.entity_assembler.MovieRentingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.model_classes.Movie;
 import com.evilcorp.main_component_microservice.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.RatingRepository;
-import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.services.csv_exporter.CsvExporterService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,16 +27,14 @@ public class MainCsvController extends AbstractMainController {
     private final RatingRepository ratingRepository;
     private final MovieRatingRepresentationAssembler ratingAssembler;
 
-    private final RentingRepository rentingRepository;
-    private final MovieRentingRepresentationAssembler rentingAssembler;
+    private final CsvExporterService csvExporterService;
 
     public MainCsvController(UserRepository userRepository,
                              UserRepresentationAssembler userAssembler,
                              RatingRepository ratingRepository,
                              MovieRatingRepresentationAssembler ratingAssembler,
-                             RentingRepository rentingRepository,
-                             MovieRentingRepresentationAssembler rentingAssembler,
                              MovieRepository movieRepository) {
+
         super(userRepository,
                 userAssembler,
                 movieRepository);
@@ -45,14 +42,20 @@ public class MainCsvController extends AbstractMainController {
         this.ratingRepository = ratingRepository;
         this.ratingAssembler = ratingAssembler;
 
-        this.rentingRepository = rentingRepository;
-        this.rentingAssembler = rentingAssembler;
-
+        this.csvExporterService = new CsvExporterService(ratingRepository);
     }
 
-    @PutMapping("/export")
-    public void exportCsvFile() throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+    @GetMapping("/export")
+    public void exportCsvFile(){
+        try{
+            csvExporterService.exportRecentRatingsToCsv();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
+    @PutMapping("/setup")
+    public void setupSampleData() throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
         Movie movie1 = new Movie("The Dark Knight");
         Movie movie2 = new Movie("Titanic");
         Movie movie3 = new Movie("Forest Gump");
@@ -81,8 +84,5 @@ public class MainCsvController extends AbstractMainController {
         ratingRepository.save(rating2);
         ratingRepository.save(rating3);
         ratingRepository.save(rating4);
-
-        CsvExporterService testExporter = new CsvExporterService(this.ratingRepository);
-        testExporter.exportCsvFile();
     }
 }

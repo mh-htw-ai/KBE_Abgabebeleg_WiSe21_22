@@ -3,118 +3,105 @@ package com.evilcorp.main_component_microservice.services.csv_exporter;
 
 import com.evilcorp.main_component_microservice.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.repositories.RatingRepository;
+import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.io.Writer;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Configuration
+@Service
+@NoArgsConstructor
 @EnableScheduling
 public class CsvExporterService {
 
-    private Date lastDate = new Date();
-    private final RatingRepository ratingRepository;
-    private final String CSV_LOCATION = ".\\Main_Component_Microservice\\target\\test.csv";
+    private static Date lastDate = new Date();
+    private static final String CSV_LOCATION = ".\\Main_Component_Microservice\\csv\\test.csv";
+    private static RatingRepository ratingRepository;
 
     public CsvExporterService(RatingRepository ratingRepository){
         this.ratingRepository = ratingRepository;
     }
 
     @Scheduled(cron = "0 0 12 * * ?")//0 seconds 0 minutes 12 hours
-    public void exportCsvFile() throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
-        Date currentDate = new Date();
-        if(this.lastDate != currentDate){
-            List<MovieRating> last24hRatings = this.getRatingsBetween(lastDate, currentDate);
-            List<CsvBean> csvBeans = this.getCsvBeanList(last24hRatings);
-            Path csvFilePath =  Path.of(CSV_LOCATION);
-            CsvExporterService.writeRowsToCsv(csvFilePath,csvBeans);
-            this.lastDate = currentDate;
-        }
-    }
+    public void exportRecentRatingsToCsv() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException{
+        Writer writer = new FileWriter(CSV_LOCATION);
 
-    private List<MovieRating> getRatingsBetween(Date startDate, Date endDate){
-        List<MovieRating> ratingsList = ratingRepository.findAll();
-        List<MovieRating> ratingsToBeRemoved = new ArrayList<>();
-        for(MovieRating rating : ratingsList){
-            if(rating.getRatingDate().before(startDate) || rating.getRatingDate().after(endDate)){
-                ratingsToBeRemoved.add(rating);
-            }
-        }
-        ratingsList.removeAll(ratingsToBeRemoved);
-        return ratingsList;
-    }
-
-    private List<CsvBean> getCsvBeanList(List<MovieRating> movieRatings){
-        List<UUID> movieIdList = this.getReducedMovieIdList(movieRatings);
-        List<CsvBean> csvBeans = new ArrayList<>();
-        for(UUID movieId : movieIdList){
-            List<MovieRating> ratingsOfMovie = this.getRatingsWithSameMovieId(movieId, movieRatings);
-            CsvBean currentCsvBean = this.calculateBean(movieId, ratingsOfMovie);
-            csvBeans.add(currentCsvBean);
-        }
-        return csvBeans;
-    }
-
-    private List<UUID> getReducedMovieIdList(List<MovieRating> movieRatings){
-        List<UUID> movieIdList = new ArrayList<>();
-        for(MovieRating rating : movieRatings){
-            UUID ratingId = rating.getMovieId();
-            if(!movieIdList.contains(ratingId)) movieIdList.add(ratingId);
-        }
-        return movieIdList;
-    }
-
-    private List<MovieRating> getRatingsWithSameMovieId(UUID movieId, List<MovieRating> movieRatings){
-        List<MovieRating> ratingsOfMovie = new ArrayList<>();
-        for(MovieRating rating : movieRatings){
-            if(rating.getMovieId() == movieId) ratingsOfMovie.add(rating);
-        }
-        return ratingsOfMovie;
-    }
-
-    private CsvBean calculateBean(UUID movieId, List<MovieRating> ratingsOfMovie){
-        int ratingUserCount = ratingsOfMovie.size();
-        int averageRating = 0;
-        int RatingSum = 0;
-        for(MovieRating rating : ratingsOfMovie){
-            RatingSum += rating.getRating();
-        }
-        averageRating = RatingSum/ratingUserCount;
-
-        return new CsvBean(movieId, ratingUserCount, averageRating);
-    }
-
-    private static void writeRowsToCsv(Path filePath, List<CsvBean> rows)
-            throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
-
-        FileWriter writer = new FileWriter(String.valueOf(filePath));
-        ColumnPositionMappingStrategy mappingStrategy =
-                new ColumnPositionMappingStrategy();
-        mappingStrategy.setType(CsvBean.class);
-
-        StatefulBeanToCsvBuilder<CsvBean> builder = new StatefulBeanToCsvBuilder(writer);
-        StatefulBeanToCsv beanWriter = builder
-                .withMappingStrategy(mappingStrategy)
-                .withSeparator('#')
-                .withQuotechar('\'')
+        StatefulBeanToCsv<CsvBean> beanToCsv = new StatefulBeanToCsvBuilder<CsvBean>(writer)
+                .withSeparator(',')
+                .withLineEnd(CSVWriter.DEFAULT_LINE_END)
                 .build();
 
-        beanWriter.write(rows);
+        List<MovieRating> ratingsSinceTheLastExport = ratingRepository.findAllByRatingDateAfter(lastDate);
+
+        List<CsvBean> list = CsvExporterService.getCsvBeanList(ratingsSinceTheLastExport);
+
+        beanToCsv.write(list);
+        beanToCsv.getCapturedExceptions();
         writer.close();
+
+        Date today = new Date();
+        lastDate = today;
     }
 
+    private static List<CsvBean> getCsvBeanList(List<MovieRating> ratingsOfTheLastDay){
+        List<CsvBean> csvBeanList = new ArrayList<>();
 
+        List<UUID> uniqueMovieIds = CsvExporterService.getMovieIdList(ratingsOfTheLastDay);
+        for(UUID movieId : uniqueMovieIds){
+            List<MovieRating> movieRatingsOfMovieId = getRatingsOfMovie(movieId, ratingsOfTheLastDay);
+            CsvBean newCsvBean = CsvExporterService.calculateCsvBean(movieRatingsOfMovieId);
+            csvBeanList.add(newCsvBean);
+        }
+
+        return csvBeanList;
+    }
+
+    private static List<UUID> getMovieIdList(List<MovieRating> movieRatingList){
+        List<UUID> listOfUniqueMovieIds = new ArrayList<>();
+        for(MovieRating rating : movieRatingList){
+            UUID ratingMovieId = rating.getMovieId();
+            if ( !listOfUniqueMovieIds.contains(ratingMovieId) ) listOfUniqueMovieIds.add(ratingMovieId);
+        }
+        return listOfUniqueMovieIds;
+    }
+
+    private static List<MovieRating> getRatingsOfMovie(UUID IdOfRequiredRatings, List<MovieRating> movieRatings){
+        List<MovieRating> ratingsOfMovieX = new ArrayList<>();
+        for(MovieRating rating : movieRatings){
+            if(rating.getMovieId().equals(IdOfRequiredRatings)) ratingsOfMovieX.add(rating);
+        }
+        return ratingsOfMovieX;
+    }
+
+    private static CsvBean calculateCsvBean(List<MovieRating> ratingsOfOneMovie){
+        UUID movieId = ratingsOfOneMovie.get(0).getMovieId();
+        int tempAverageRating = 0;
+        int tempRatingUserCount = ratingsOfOneMovie.size();
+        for(MovieRating rating : ratingsOfOneMovie){
+            tempAverageRating += rating.getRating();
+        }
+        tempAverageRating = tempAverageRating / tempRatingUserCount;
+
+        return new CsvBean(movieId, tempAverageRating, tempRatingUserCount);
+    }
 
 }
