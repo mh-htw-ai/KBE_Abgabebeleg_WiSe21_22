@@ -27,7 +27,7 @@ public class MainMovieController extends AbstractMainController {
 
     final static String movieURI = baseURI + "/movies";
 
-    private DataWarehouseService dataWarehouseService;
+    private final DataWarehouseService dataWarehouseService;
 
     public MainMovieController(UserRepository userRepository,
                                UserRepresentationAssembler userAssembler,
@@ -41,23 +41,18 @@ public class MainMovieController extends AbstractMainController {
     }
 
 
-    //TODO: weiterreichen der anfragen an den Data Warehouse Microservice
     @GetMapping(value = "/{filmId}",
             produces = "application/json")
     public ResponseEntity<Film> getFilm(@PathVariable UUID filmId){
 
-        ResponseEntity<Film> filmResponseEntity = dataWarehouseService.getFilm(filmId);
-
-        return filmResponseEntity;
+        return dataWarehouseService.getFilm(filmId);
     }
 
 
     @GetMapping(produces = "application/json")
     public ResponseEntity getAllMovies(){
 
-        ResponseEntity<Film[]> filmsResponseEntity = dataWarehouseService.getAllFilms();
-
-        return filmsResponseEntity;
+        return dataWarehouseService.getAllFilms();
     }
 
 

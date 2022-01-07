@@ -1,7 +1,7 @@
 package com.evilcorp.main_component_microservice.controller;
 
 import com.evilcorp.main_component_microservice.custom_exceptions.UserAlreadyExistsException;
-import com.evilcorp.main_component_microservice.custom_exceptions.UserNotFoundException;
+import com.evilcorp.main_component_microservice.custom_exceptions.EntityFoundExceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
@@ -37,11 +37,7 @@ public class MainUserController extends AbstractMainController {
 
 
 
-    /**
-     * einen nutzer per uuid finden
-     * @param userId
-     * @return
-     */
+
     @GetMapping(value = "/{userId}",
             produces = "application/json")
     public ResponseEntity<UserRepresentation> getUser(@PathVariable UUID userId){
@@ -58,10 +54,7 @@ public class MainUserController extends AbstractMainController {
 
 
 
-    /**
-     * alle nutzer finden
-     * @return
-     */
+
     @GetMapping(produces = "application/json")
     public ResponseEntity<CollectionModel<UserRepresentation>> getAllUsers(){
 
@@ -73,10 +66,6 @@ public class MainUserController extends AbstractMainController {
 
 
 
-    /**
-     * Benutzer hinzufügen
-     * @return
-     */
     @PostMapping(value = "/create",
             consumes = "application/json",
             produces = "application/json")
@@ -97,16 +86,11 @@ public class MainUserController extends AbstractMainController {
 
 
 
-    /**
-     * veraendert den nutzer mithilfe seiner uuid und eines requestbodys mit den neuen daten
-     * @param user
-     * @return
-     */
+
     @PutMapping(value = "/update",
             consumes = "application/json",
             produces = "application/json")
     public ResponseEntity<Link> updateUser(@RequestBody User user){
-
         User tempUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
 
@@ -118,17 +102,13 @@ public class MainUserController extends AbstractMainController {
 
 
 
-    /**
-     * loescht einen nutzer ueber die UUID
-     * @param userId
-     * @return
-     */
+
     @DeleteMapping(value = "/delete/{userId}",
             produces = "application/json")
     public ResponseEntity deleteUser(@PathVariable UUID userId){
-
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+
         userRepository.delete(tempUser);
 
         return ResponseEntity.noContent().build();

@@ -1,15 +1,12 @@
 package com.evilcorp.main_component_microservice.controller;
 
-import com.evilcorp.main_component_microservice.custom_exceptions.UserNotFoundException;
-import com.evilcorp.main_component_microservice.entity_assembler.MovieRatingRepresentationAssembler;
+import com.evilcorp.main_component_microservice.custom_exceptions.EntityFoundExceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.entity_assembler.MovieRentingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.model_classes.MovieRenting;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.MovieRentingRepresentation;
-import com.evilcorp.main_component_microservice.model_representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.repositories.MovieRepository;
-import com.evilcorp.main_component_microservice.repositories.RatingRepository;
 import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
 import org.springframework.hateoas.CollectionModel;

@@ -19,14 +19,12 @@ public class DataWarehouseService {
     }
 
     public ResponseEntity<Film> getFilm(UUID movieId){
-        ResponseEntity<Film> tempFilmResponse = restTemplate.getForEntity(dataWarehouseURI+ movieId.toString(), Film.class);
-        return tempFilmResponse;
+        return restTemplate.getForEntity(dataWarehouseURI + movieId.toString(), Film.class);
     }
 
     public ResponseEntity<Film[]> getAllFilms(){
-        ResponseEntity<Film[]> tempMovie = restTemplate.getForEntity(dataWarehouseURI, Film[].class);
 
-        return tempMovie;
+        return restTemplate.getForEntity(dataWarehouseURI, Film[].class);
     }
 
     public void createFilm(Film newFilm){
@@ -36,7 +34,6 @@ public class DataWarehouseService {
 
     public void changeMovie(Film changedFilm){
         URI locationURI = restTemplate.postForLocation(dataWarehouseURI , changedFilm);
-
     }
 
     public void deleteMovie(UUID filmId){
