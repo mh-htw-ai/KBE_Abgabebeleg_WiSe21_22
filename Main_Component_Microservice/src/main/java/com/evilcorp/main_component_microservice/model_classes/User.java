@@ -81,4 +81,21 @@ public class User {
         this.postcode = user.getPostcode();
         this.placeOfResidence = user.getPlaceOfResidence();
     }
+
+    public boolean addToRentings(MovieRenting newRenting) {
+        return this.rentingList.add(newRenting);
+    }
+
+    public boolean removeFromRentings(MovieRenting renting){
+        return this.rentingList.remove(renting);
+    }
+
+    public boolean addToRatings(MovieRating newRating) {
+        return this.ratingList.add(newRating);
+    }
+
+    public boolean removeFromRatings(MovieRating rating){
+        return this.ratingList.remove(rating);
+    }
+
 }

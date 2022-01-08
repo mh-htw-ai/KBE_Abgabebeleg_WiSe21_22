@@ -1,11 +1,10 @@
 package com.evilcorp.main_component_microservice.controller;
 
-import com.evilcorp.main_component_microservice.custom_exceptions.UserAlreadyExistsException;
+import com.evilcorp.main_component_microservice.custom_exceptions.EntityAlreadyExistsExceptions.UserAlreadyExistsException;
 import com.evilcorp.main_component_microservice.custom_exceptions.EntityFoundExceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
-import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -20,19 +19,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(MainUserController.userURI)
-public class MainUserController extends AbstractMainController {
+@RequestMapping("/users")
+public class  MainUserController{
 
-    final static String userURI = baseURI + "/users";
+    final UserRepository userRepository;
+    final UserRepresentationAssembler userAssembler;
 
     public MainUserController(UserRepository userRepository,
-                              UserRepresentationAssembler userAssembler,
-                              MovieRepository movieRepository
-                              ) {
-        super(userRepository,
-                userAssembler,
-                movieRepository);
+                              UserRepresentationAssembler userAssembler) {
 
+        this.userRepository = userRepository;
+        this.userAssembler = userAssembler;
     }
 
 

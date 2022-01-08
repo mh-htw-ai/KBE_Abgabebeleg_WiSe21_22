@@ -1,4 +1,4 @@
-package com.evilcorp.main_component_microservice.services;
+package com.evilcorp.main_component_microservice.services.data_warehouse_service;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
-public class Film {
+public class  Film {
 
     private UUID id;
     private String title;

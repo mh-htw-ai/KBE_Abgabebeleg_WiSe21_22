@@ -2,7 +2,7 @@ package com.evilcorp.main_component_microservice.custom_exceptions.EntityFoundEx
 
 import java.util.UUID;
 
-public class MovieNotFoundException extends RuntimeException{
+public class MovieNotFoundException extends EntityNotFoundException{
 
     public MovieNotFoundException(UUID movieId) {
         super("Movie with id:" + movieId.toString() + " could not be found!");

@@ -2,13 +2,13 @@ package com.evilcorp.main_component_microservice.controller;
 
 import com.evilcorp.main_component_microservice.entity_assembler.MovieRatingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
-import com.evilcorp.main_component_microservice.model_classes.Movie;
 import com.evilcorp.main_component_microservice.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.model_classes.User;
-import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.RatingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.services.csv_exporter.CsvExporterService;
+import com.evilcorp.main_component_microservice.services.data_warehouse_service.DataWarehouseService;
+import com.evilcorp.main_component_microservice.services.data_warehouse_service.Film;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,32 +17,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
-@RequestMapping(MainCsvController.csvURI)
-public class MainCsvController extends AbstractMainController {
+@RequestMapping("/csv")
+public class MainCsvController{
 
-    final static String csvURI = baseURI + "/csv";
+    private final UserRepository userRepository;
 
     private final RatingRepository ratingRepository;
-    private final MovieRatingRepresentationAssembler ratingAssembler;
 
     private final CsvExporterService csvExporterService;
+    private final DataWarehouseService dataWarehouseService;
 
     public MainCsvController(UserRepository userRepository,
-                             UserRepresentationAssembler userAssembler,
                              RatingRepository ratingRepository,
-                             MovieRatingRepresentationAssembler ratingAssembler,
-                             MovieRepository movieRepository) {
+                             DataWarehouseService dataWarehouseService) {
 
-        super(userRepository,
-                userAssembler,
-                movieRepository);
+        this.userRepository = userRepository;
 
         this.ratingRepository = ratingRepository;
-        this.ratingAssembler = ratingAssembler;
 
         this.csvExporterService = new CsvExporterService(ratingRepository);
+        this.dataWarehouseService = dataWarehouseService;
     }
 
     @GetMapping("/export")
@@ -55,17 +52,17 @@ public class MainCsvController extends AbstractMainController {
     }
 
     @PutMapping("/setup")
-    public void setupSampleData() throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
-        Movie movie1 = new Movie("The Dark Knight");
-        Movie movie2 = new Movie("Titanic");
-        Movie movie3 = new Movie("Forest Gump");
-        Movie movie4 = new Movie("Avatar");
-        Movie movie5 = new Movie("No Country For Old Men");
-        movieRepository.save(movie1);
-        movieRepository.save(movie2);
-        movieRepository.save(movie3);
-        movieRepository.save(movie4);
-        movieRepository.save(movie5);
+    public void setupSampleData() {
+        Film movie1 = new Film(UUID.randomUUID(), "The Dark Knight", 100.00);
+        Film movie2 = new Film(UUID.randomUUID(), "Titanic", 1000.00);
+        Film movie3 = new Film(UUID.randomUUID(), "Forest Gump", 50.00);
+        Film movie4 = new Film(UUID.randomUUID(), "Avatar", 80.00);
+        Film movie5 = new Film(UUID.randomUUID(), "No Country For Old Men", 39.90);
+        dataWarehouseService.createFilm(movie1);
+        dataWarehouseService.createFilm(movie2);
+        dataWarehouseService.createFilm(movie3);
+        dataWarehouseService.createFilm(movie4);
+        dataWarehouseService.createFilm(movie5);
 
         User user1 = new User("Fensterputzer11", "Bill", "Gates", "windows@bill.com", "microsoftstreet", "1", "00001", "New York");
         User user2 = new User("LustigerLurch", "Herr", "Mann", "He@His.com", "TheSirStreet", "213", "21101", "Hamburg");

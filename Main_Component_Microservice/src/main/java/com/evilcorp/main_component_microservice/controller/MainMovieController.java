@@ -1,20 +1,13 @@
 package com.evilcorp.main_component_microservice.controller;
 
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
-import com.evilcorp.main_component_microservice.model_classes.Movie;
-import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
-import com.evilcorp.main_component_microservice.services.DataWarehouseService;
-import com.evilcorp.main_component_microservice.services.Film;
-import org.jboss.jandex.Main;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
-import org.springframework.http.HttpMethod;
+import com.evilcorp.main_component_microservice.services.data_warehouse_service.DataWarehouseService;
+import com.evilcorp.main_component_microservice.services.data_warehouse_service.Film;
+import com.evilcorp.main_component_microservice.services.mwst_calculator_service.MwStService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
@@ -22,21 +15,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(MainMovieController.movieURI)
-public class MainMovieController extends AbstractMainController {
-
-    final static String movieURI = baseURI + "/movies";
+@RequestMapping("/movies")
+public class MainMovieController{
 
     private final DataWarehouseService dataWarehouseService;
 
-    public MainMovieController(UserRepository userRepository,
-                               UserRepresentationAssembler userAssembler,
-                               MovieRepository movieRepository,
-                               DataWarehouseService dataWarehouseService) {
-        super(userRepository,
-                userAssembler,
-                movieRepository);
-
+    public MainMovieController( DataWarehouseService dataWarehouseService ) {
         this.dataWarehouseService = dataWarehouseService;
     }
 
@@ -45,7 +29,7 @@ public class MainMovieController extends AbstractMainController {
             produces = "application/json")
     public ResponseEntity<Film> getFilm(@PathVariable UUID filmId){
 
-        return dataWarehouseService.getFilm(filmId);
+        return dataWarehouseService.getFilmById(filmId);
     }
 
 
@@ -89,4 +73,9 @@ public class MainMovieController extends AbstractMainController {
     }
 
 
+    @GetMapping(value = "/mwsttest")
+    public ResponseEntity<Film> testMwstCalc(@RequestBody Film film){
+        Film responseFilm = MwStService.calculateCostWithMwstFor(film);
+        return ResponseEntity.ok(responseFilm);
+    }
 }

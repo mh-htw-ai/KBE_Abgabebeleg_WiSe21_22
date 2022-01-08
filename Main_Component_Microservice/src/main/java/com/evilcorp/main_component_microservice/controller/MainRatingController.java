@@ -8,10 +8,9 @@ import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentat
 import com.evilcorp.main_component_microservice.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.MovieRatingRepresentation;
-import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.RatingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
-import com.evilcorp.main_component_microservice.services.DataWarehouseService;
+import com.evilcorp.main_component_microservice.services.data_warehouse_service.DataWarehouseService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -25,26 +24,26 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(MainRatingController.ratingURI)
-public class MainRatingController extends AbstractMainController {
+@RequestMapping("/ratings")
+public class MainRatingController{
 
-    final static String ratingURI = baseURI + "/ratings";
+    private final UserRepository userRepository;
 
     private final RatingRepository ratingRepository;
     private final MovieRatingRepresentationAssembler ratingAssembler;
+
     private final DataWarehouseService dataWarehouseService;
 
     public MainRatingController(UserRepository userRepository,
-                                UserRepresentationAssembler userAssembler,
                                 RatingRepository ratingRepository,
                                 MovieRatingRepresentationAssembler ratingAssembler,
-                                MovieRepository movieRepository, DataWarehouseService dataWarehouseService) {
-        super(userRepository,
-                userAssembler,
-                movieRepository);
+                                DataWarehouseService dataWarehouseService) {
+
+        this.userRepository = userRepository;
 
         this.ratingRepository = ratingRepository;
         this.ratingAssembler = ratingAssembler;
+
         this.dataWarehouseService = dataWarehouseService;
     }
 
@@ -78,16 +77,13 @@ public class MainRatingController extends AbstractMainController {
         User correspondingUser = userRepository.findById(newRating.getRatingOwner().getId())
                 .orElseThrow(() -> new UserNotFoundException(newRating.getRatingOwner().getId()));
 
-        movieRepository.findById(newRating.getMovieId())
-                .orElseThrow(() -> new MovieNotFoundException(newRating.getMovieId()));
-
-        if(dataWarehouseService.getFilm(newRating.getMovieId()).getStatusCode().isError()){
+        if(dataWarehouseService.getFilmById( newRating.getMovieId() ).getStatusCode().isError()){
             throw new MovieNotFoundException(newRating.getMovieId());
         }
 
         ratingRepository.save(newRating);
 
-        correspondingUser.ratingList.add(newRating);
+        correspondingUser.addToRatings(newRating);
         userRepository.save(correspondingUser);
 
         return ResponseEntity
@@ -121,6 +117,13 @@ public class MainRatingController extends AbstractMainController {
                 .orElseThrow(() -> new RatingNotFoundException(ratingId));
 
         ratingRepository.delete(tempRating);
+
+        userRepository.findById(tempRating.getRatingOwner().getId())
+                .orElseThrow(() -> new UserNotFoundException(tempRating.getRatingOwner().getId()));
+
+        User correspondingUser = tempRating.getRatingOwner();
+        correspondingUser.removeFromRatings(tempRating);
+        userRepository.save(correspondingUser);
 
         return ResponseEntity.noContent().build();
     }

@@ -4,7 +4,6 @@ import org.springframework.web.filter.AbstractRequestLoggingFilter;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 public class CommonsRequestLoggingFilter extends AbstractRequestLoggingFilter {
 
     @Override
@@ -21,4 +20,5 @@ public class CommonsRequestLoggingFilter extends AbstractRequestLoggingFilter {
     protected void afterRequest(HttpServletRequest request, String message) {
         logger.debug(message);
     }
+
 }

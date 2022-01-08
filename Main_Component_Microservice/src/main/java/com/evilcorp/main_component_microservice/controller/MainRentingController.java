@@ -1,15 +1,17 @@
 package com.evilcorp.main_component_microservice.controller;
 
+import com.evilcorp.main_component_microservice.custom_exceptions.EntityFoundExceptions.MovieNotFoundException;
 import com.evilcorp.main_component_microservice.custom_exceptions.EntityFoundExceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.entity_assembler.MovieRentingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.model_classes.MovieRenting;
 import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.MovieRentingRepresentation;
-import com.evilcorp.main_component_microservice.repositories.MovieRepository;
 import com.evilcorp.main_component_microservice.repositories.RentingRepository;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
+import com.evilcorp.main_component_microservice.services.data_warehouse_service.DataWarehouseService;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,26 +23,26 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(MainRentingController.rentingURI)
-public class MainRentingController extends AbstractMainController {
+@RequestMapping("/rentings")
+public class MainRentingController{
 
-    final static String rentingURI = baseURI + "/rent";
+    private final UserRepository userRepository;
 
     private final RentingRepository rentingRepository;
     private final MovieRentingRepresentationAssembler rentingAssembler;
 
+    private final DataWarehouseService dataWarehouseService;
+
 
     public MainRentingController(UserRepository userRepository,
-                                 UserRepresentationAssembler userAssembler,
                                  RentingRepository rentingRepository,
                                  MovieRentingRepresentationAssembler rentingAssembler,
-                                 MovieRepository movieRepository) {
-        super(userRepository,
-                userAssembler,
-                movieRepository);
+                                 DataWarehouseService dataWarehouseService) {
 
+        this.userRepository = userRepository;
         this.rentingRepository = rentingRepository;
         this.rentingAssembler = rentingAssembler;
+        this.dataWarehouseService = dataWarehouseService;
     }
 
 
@@ -49,11 +51,11 @@ public class MainRentingController extends AbstractMainController {
     @GetMapping(value = "/{rentingId}",
             produces = "application/json")
     @ResponseStatus(HttpStatus.FOUND)
-    public ResponseEntity<MovieRentingRepresentation> findMovieRenting(@PathVariable UUID rentingId){
+    public ResponseEntity<MovieRentingRepresentation> getMovieRenting(@PathVariable UUID rentingId){
         return rentingRepository.findById(rentingId)
                 .map(renting -> {
                     MovieRentingRepresentation rentingRepresentation = rentingAssembler.toModel(renting)
-                            .add( linkTo( methodOn(MainRentingController.class).findAllMovieRentings() ).withRel("rentings") );
+                            .add( linkTo( methodOn(MainRentingController.class).getAllMovieRentings() ).withRel("rentings") );
                     return ResponseEntity.ok(rentingRepresentation);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -64,7 +66,7 @@ public class MainRentingController extends AbstractMainController {
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.FOUND)
-    public ResponseEntity<CollectionModel<MovieRentingRepresentation>> findAllMovieRentings(){
+    public ResponseEntity<CollectionModel<MovieRentingRepresentation>> getAllMovieRentings(){
         List<MovieRenting> tempRentings = rentingRepository.findAll();
         return ResponseEntity.ok( rentingAssembler.toCollectionModel(tempRentings) );
     }
@@ -72,20 +74,29 @@ public class MainRentingController extends AbstractMainController {
 
 
 
-    @PutMapping(value = "/rentMovie/movie/{movieId}/user/{userId}",
+    @PostMapping(value = "/rentMovie",
             produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String rentMovie(@PathVariable UUID movieId, @PathVariable UUID userId){
+    public ResponseEntity<Link> rentMovie(@RequestBody MovieRenting newRenting){
+        UUID userId = newRenting.getMovieRenter().getId();
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        MovieRenting tempRenting = new MovieRenting(movieId, tempUser);
-        rentingRepository.save(tempRenting);
+        if(dataWarehouseService.getFilmById( newRenting.getMovieID() ).getStatusCode().isError()){
+            throw new MovieNotFoundException(newRenting.getMovieID());
+        }
 
-        tempUser.rentingList.add(tempRenting);
+        rentingRepository.save(newRenting);
+
+        tempUser.addToRentings(newRenting);
         userRepository.save(tempUser);
 
-        return "Done";//rentingAssembler.toModel(tempRenting);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body( linkTo( methodOn(MainRentingController.class).getMovieRenting( newRenting.getId() ) ).withSelfRel() );
     }
+
+
+
 
 }
