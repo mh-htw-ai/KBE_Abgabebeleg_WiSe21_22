@@ -15,7 +15,7 @@ public class MehrwertsteuerController {
 
     Logger logger = LogManager.getLogger();
 
-    @GetMapping(value = "/json_request",
+    @PutMapping(value = "/json_request",
                 consumes = "application/json",
                 produces = "application/json")
     @ResponseBody
