@@ -13,20 +13,20 @@ import javax.validation.Valid;
 @RequestMapping("/mwst")
 public class MehrwertsteuerController {
 
-    Logger logger = LogManager.getLogger();
+    Logger log = LogManager.getLogger();
 
     @PutMapping(value = "/json_request",
                 consumes = "application/json",
                 produces = "application/json")
     @ResponseBody
     public MehrwertsteuerModell calculateFromJSON(@Valid @RequestBody MehrwertsteuerModell mwstModell, BindingResult errors){
-        logger.info("JSON received");
-        logger.info("Calculating missing Values...");
+        log.info("JSON received");
+        log.info("Calculating missing Values...");
 
         mwstModell.calculateMissingValues();
 
-        logger.info("Values successfully calculated");
-        logger.info("Sending response JSON...");
+        log.info("Values successfully calculated");
+        log.info("Sending response JSON...");
 
         return mwstModell;
     }
