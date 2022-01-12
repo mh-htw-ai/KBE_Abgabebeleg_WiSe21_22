@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -27,14 +28,14 @@ public class MainMovieController{
 
     @GetMapping(value = "/{filmId}",
             produces = "application/json")
-    public ResponseEntity<Film> getFilm(@PathVariable UUID filmId){
+    public ResponseEntity getFilm(@PathVariable UUID filmId){
 
         return dataWarehouseService.getFilmById(filmId);
     }
 
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity getAllMovies(){
+    public ResponseEntity<Film[]> getAllMovies(){
 
         return dataWarehouseService.getAllFilms();
     }
@@ -43,13 +44,9 @@ public class MainMovieController{
 
     @PostMapping(value = "/create",
             consumes = "application/json")
-    public ResponseEntity createMovie(@RequestBody Film newFilm){
+    public ResponseEntity createMovie(@RequestBody List<Film> newFilm){
 
-        dataWarehouseService.createFilm(newFilm);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body( linkTo( methodOn(MainMovieController.class).getFilm( newFilm.getId()) ).withSelfRel() );
+        return dataWarehouseService.createFilm(newFilm);
     }
 
 
@@ -58,7 +55,8 @@ public class MainMovieController{
             consumes = "application/json")
     public ResponseEntity updateMovie(@RequestBody Film changedFilm){
 
-        dataWarehouseService.changeMovie(changedFilm);
+        ResponseEntity dataWarehouseResponse = dataWarehouseService.changeMovie(changedFilm);
+        if(dataWarehouseResponse.getStatusCode().equals(HttpStatus.NOT_FOUND)) return dataWarehouseResponse;
 
         return ResponseEntity.ok( linkTo( methodOn(MainMovieController.class).getFilm( changedFilm.getId() ) ).withSelfRel() );
     }
@@ -67,9 +65,7 @@ public class MainMovieController{
     @DeleteMapping(value = "/delete/{filmId}")
     public ResponseEntity deleteMovie(@PathVariable UUID filmId){
 
-        dataWarehouseService.deleteMovie(filmId);
-
-        return ResponseEntity.noContent().build();
+        return dataWarehouseService.deleteMovie(filmId);
     }
 
 

@@ -58,11 +58,6 @@ public class MainCsvController{
         Film movie3 = new Film(UUID.randomUUID(), "Forest Gump", 50.00);
         Film movie4 = new Film(UUID.randomUUID(), "Avatar", 80.00);
         Film movie5 = new Film(UUID.randomUUID(), "No Country For Old Men", 39.90);
-        dataWarehouseService.createFilm(movie1);
-        dataWarehouseService.createFilm(movie2);
-        dataWarehouseService.createFilm(movie3);
-        dataWarehouseService.createFilm(movie4);
-        dataWarehouseService.createFilm(movie5);
 
         User user1 = new User("Fensterputzer11", "Bill", "Gates", "windows@bill.com", "microsoftstreet", "1", "00001", "New York");
         User user2 = new User("LustigerLurch", "Herr", "Mann", "He@His.com", "TheSirStreet", "213", "21101", "Hamburg");
