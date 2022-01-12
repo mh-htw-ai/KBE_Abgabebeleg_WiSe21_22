@@ -23,7 +23,7 @@ public class CustomerController {
     @RequestMapping("/erreichbar")
     public ResponseEntity<String> getTest() {
         log.info("getTest() wird ausgeführt.");
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Service wurde erreicht", HttpStatus.OK);
     }
 
     @GetMapping(
@@ -36,7 +36,7 @@ public class CustomerController {
         try {
             this.initiateCustomerDB();
             log.info("getNewUUID() gesuchte UUID: " + uuid);
-            String ausgabe = "";
+            String ausgabe;
             UUID uuid1 = UUID.fromString(uuid);
             log.info("getNewUUID() uuid1 wurde erstellt.");
             Customer customer = customerRepository.getById(uuid1);
@@ -64,7 +64,7 @@ public class CustomerController {
             log.info("postNewCustomer(): Body=" + body);
             this.initiateCustomerDB();
             UUID uuid1 = UUID.randomUUID();
-            log.info("postNewCustomer(): new UUID = " + uuid1.toString());
+            log.info("postNewCustomer(): new UUID = " + uuid1);
             Customer customer = new Customer(uuid1, body);
             log.info("postNewCustomer(): Customer wurde erstellt.");
             customerRepository.save(customer);
