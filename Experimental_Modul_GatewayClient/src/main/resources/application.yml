@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: TestService1
+server:
+  port: 21012

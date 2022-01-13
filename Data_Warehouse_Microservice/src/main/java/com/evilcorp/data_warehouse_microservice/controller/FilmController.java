@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -24,9 +25,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/film")
+@Slf4j
 public class FilmController {
 
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
+    //private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     private final FilmObjRepository filmObjRepository;
 

@@ -1,6 +1,11 @@
 server:
   port: 21101
-eureka:
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: TestService1
+          uri: http://localhost:21012/
+          predicates:
+            - Path=/employee/**
