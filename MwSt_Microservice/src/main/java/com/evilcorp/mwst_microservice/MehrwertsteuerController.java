@@ -2,11 +2,14 @@ package com.evilcorp.mwst_microservice;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @RestController
 @Validated
@@ -14,6 +17,15 @@ import javax.validation.Valid;
 public class MehrwertsteuerController {
 
     Logger logger = LogManager.getLogger();
+
+
+    @GetMapping(value = "/test")
+    @ResponseBody
+    public ResponseEntity<String> pingTest (){
+        LocalDateTime now = LocalDateTime.now();
+        return new ResponseEntity<>(now.toString(), HttpStatus.OK);
+    }
+
 
     @GetMapping(value = "/json_request",
                 consumes = "application/json",

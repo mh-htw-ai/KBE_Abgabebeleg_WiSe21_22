@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: MwSt_Microservice
+server:
+  port: 21111
