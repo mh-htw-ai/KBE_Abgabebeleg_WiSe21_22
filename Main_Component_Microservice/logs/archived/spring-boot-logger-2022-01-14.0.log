@@ -1,0 +1,259 @@
+2022-01-14 17:16:22,519 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MainComponentMicroserviceApplication using Java 16.0.1 on DESKTOP-R7S5H8N with PID 12620 (C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22\Main_Component_Microservice\target\classes started by Marco in C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22)
+2022-01-14 17:16:22,521 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
+2022-01-14 17:16:22,521 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-01-14 17:16:22,597 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-01-14 17:16:22,597 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-01-14 17:16:23,712 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-14 17:16:23,810 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 83 ms. Found 3 JPA repository interfaces.
+2022-01-14 17:16:24,766 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21121 (http)
+2022-01-14 17:16:24,777 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:16:24,778 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-01-14 17:16:24,779 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
+2022-01-14 17:16:24,880 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-01-14 17:16:24,880 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2281 ms
+2022-01-14 17:16:24,940 DEBUG org.springframework.web.filter.GenericFilterBean [restartedMain] Filter 'filter' configured for use
+2022-01-14 17:16:25,154 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-14 17:16:25,225 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.6.1.Final
+2022-01-14 17:16:25,428 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-01-14 17:16:25,566 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2022-01-14 17:16:26,720 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2022-01-14 17:16:26,753 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-14 17:16:28,278 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-14 17:16:28,308 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:16:28,924 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-01-14 17:16:29,662 WARN org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] Unable to start LiveReload server
+2022-01-14 17:16:29,691 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:16:29,710 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21121 (http) with context path '/main/api/v1.0'
+2022-01-14 17:16:29,726 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MainComponentMicroserviceApplication in 7.898 seconds (JVM running for 9.912)
+2022-01-14 17:20:26,337 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:20:26,338 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [SpringApplicationShutdownHook] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2022-01-14 17:20:26,625 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-01-14 17:20:27,019 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-01-14 17:20:34,551 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MainComponentMicroserviceApplication using Java 16.0.1 on DESKTOP-R7S5H8N with PID 11864 (C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22\Main_Component_Microservice\target\classes started by Marco in C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22)
+2022-01-14 17:20:34,553 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
+2022-01-14 17:20:34,554 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-01-14 17:20:34,624 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-01-14 17:20:34,625 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-01-14 17:20:35,423 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-14 17:20:35,504 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 69 ms. Found 3 JPA repository interfaces.
+2022-01-14 17:20:36,333 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21121 (http)
+2022-01-14 17:20:36,343 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:20:36,343 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-01-14 17:20:36,344 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
+2022-01-14 17:20:36,447 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-01-14 17:20:36,448 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1822 ms
+2022-01-14 17:20:36,506 DEBUG org.springframework.web.filter.GenericFilterBean [restartedMain] Filter 'filter' configured for use
+2022-01-14 17:20:36,703 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-14 17:20:36,749 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.6.1.Final
+2022-01-14 17:20:36,878 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-01-14 17:20:36,985 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2022-01-14 17:20:37,716 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2022-01-14 17:20:37,751 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-14 17:20:38,541 WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl [restartedMain] GenerationTarget encountered exception accepting command : Error executing DDL "alter table movie_ratings drop constraint FKjldfexmgut3rqvdby6u7tfncn" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table movie_ratings drop constraint FKjldfexmgut3rqvdby6u7tfncn" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlString(SchemaDropperImpl.java:375)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlStrings(SchemaDropperImpl.java:359)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:331)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:230)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:154)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:126)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:112)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:153)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:81)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:471)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1498)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:412)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1290)
+	at com.evilcorp.main_component_microservice.MainComponentMicroserviceApplication.main(MainComponentMicroserviceApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: relation "movie_ratings" does not exist
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2674)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2364)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:354)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:484)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:404)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:325)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:311)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:287)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:282)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 40 common frames omitted
+2022-01-14 17:20:38,583 WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl [restartedMain] GenerationTarget encountered exception accepting command : Error executing DDL "alter table movie_rentings drop constraint FKeh0hs5jbcihhqjpr6o7de8cop" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table movie_rentings drop constraint FKeh0hs5jbcihhqjpr6o7de8cop" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlString(SchemaDropperImpl.java:375)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlStrings(SchemaDropperImpl.java:359)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:331)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:230)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:154)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:126)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:112)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:153)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:81)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:471)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1498)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:412)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1290)
+	at com.evilcorp.main_component_microservice.MainComponentMicroserviceApplication.main(MainComponentMicroserviceApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: relation "movie_rentings" does not exist
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2674)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2364)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:354)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:484)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:404)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:325)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:311)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:287)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:282)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 40 common frames omitted
+2022-01-14 17:20:38,629 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] SQL Warning Code: 0, SQLState: 00000
+2022-01-14 17:20:38,630 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] table "movie_ratings" does not exist, skipping
+2022-01-14 17:20:38,670 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] SQL Warning Code: 0, SQLState: 00000
+2022-01-14 17:20:38,671 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] table "movie_rentings" does not exist, skipping
+2022-01-14 17:20:38,712 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] SQL Warning Code: 0, SQLState: 00000
+2022-01-14 17:20:38,713 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] table "users" does not exist, skipping
+2022-01-14 17:20:39,094 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-14 17:20:39,103 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:20:39,655 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-01-14 17:20:40,279 WARN org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] Unable to start LiveReload server
+2022-01-14 17:20:40,302 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:20:40,321 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21121 (http) with context path ''
+2022-01-14 17:20:40,340 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MainComponentMicroserviceApplication in 6.786 seconds (JVM running for 8.518)
+2022-01-14 17:21:31,826 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:21:31,827 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [SpringApplicationShutdownHook] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2022-01-14 17:21:32,095 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-01-14 17:21:32,461 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-01-14 17:21:39,149 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MainComponentMicroserviceApplication using Java 16.0.1 on DESKTOP-R7S5H8N with PID 1376 (C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22\Main_Component_Microservice\target\classes started by Marco in C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22)
+2022-01-14 17:21:39,153 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
+2022-01-14 17:21:39,155 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-01-14 17:21:39,265 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-01-14 17:21:39,266 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-01-14 17:21:40,328 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-14 17:21:40,435 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 92 ms. Found 3 JPA repository interfaces.
+2022-01-14 17:21:41,389 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21121 (http)
+2022-01-14 17:21:41,401 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:21:41,402 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-01-14 17:21:41,403 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
+2022-01-14 17:21:41,507 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-01-14 17:21:41,508 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2241 ms
+2022-01-14 17:21:41,569 DEBUG org.springframework.web.filter.GenericFilterBean [restartedMain] Filter 'filter' configured for use
+2022-01-14 17:21:41,876 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-14 17:21:41,945 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.6.1.Final
+2022-01-14 17:21:42,181 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-01-14 17:21:42,548 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2022-01-14 17:21:43,613 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2022-01-14 17:21:43,629 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-14 17:21:44,756 WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl [restartedMain] GenerationTarget encountered exception accepting command : Error executing DDL "alter table movie_ratings drop constraint FKjldfexmgut3rqvdby6u7tfncn" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table movie_ratings drop constraint FKjldfexmgut3rqvdby6u7tfncn" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlString(SchemaDropperImpl.java:375)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlStrings(SchemaDropperImpl.java:359)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:331)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:230)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:154)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:126)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:112)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:153)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:81)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:471)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1498)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:412)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1290)
+	at com.evilcorp.main_component_microservice.MainComponentMicroserviceApplication.main(MainComponentMicroserviceApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: relation "movie_ratings" does not exist
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2674)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2364)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:354)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:484)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:404)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:325)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:311)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:287)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:282)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 40 common frames omitted

@@ -3,7 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Data_Warehouse_Microservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Experimental_Modul/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Experimental_Modul_GatewayClient/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Experimental_Modul/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Gateway_Microservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Main_Component_Microservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MwSt_Microservice/src/main/java" charset="UTF-8" />

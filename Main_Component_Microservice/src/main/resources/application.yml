@@ -2,4 +2,4 @@ spring:
   application:
     name: Main_Component_Microservice
 server:
-  port: 21120
+  port: 21121

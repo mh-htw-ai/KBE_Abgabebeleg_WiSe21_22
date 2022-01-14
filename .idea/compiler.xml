@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Experimental_Modul_GatewayClient" />
         <module name="Gateway_Microservice" />
         <module name="Experimental_Modul" />
         <module name="MyFilmClasses_Modul" />

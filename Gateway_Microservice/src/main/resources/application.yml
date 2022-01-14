@@ -5,12 +5,17 @@ spring:
   cloud:
     gateway:
       routes:
-        # MainComponent-Modul muss noch implementiert werden
-        #- id: Main_Component_Microservice
-        #  uri: http://localhost:21120/
-        #  predicates:
-        #    - Path=/**
+        - id: Main_Component_Microservice
+          uri: http://localhost:21121/
+          predicates:
+            - Path=/main/api/v1.0/**
+
         - id: MwSt_Microservice
           uri: http://localhost:21111/
           predicates:
-            - Path=/mwst/**
+            - Path=/mwst/test
+
+        - id: MwSt_Microservice
+          uri: http://localhost:21111/
+          predicates:
+            - Path=/https/**

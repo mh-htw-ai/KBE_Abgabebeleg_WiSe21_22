@@ -1,0 +1,51 @@
+2022-01-14 17:35:45,710 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] table "movie_ratings" does not exist, skipping
+2022-01-14 17:35:45,751 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] SQL Warning Code: 0, SQLState: 00000
+2022-01-14 17:35:45,752 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] table "movie_rentings" does not exist, skipping
+2022-01-14 17:35:45,787 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] SQL Warning Code: 0, SQLState: 00000
+2022-01-14 17:35:45,788 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [restartedMain] table "users" does not exist, skipping
+2022-01-14 17:35:46,098 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-14 17:35:46,109 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:35:46,691 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-01-14 17:35:47,339 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-01-14 17:35:47,361 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:35:47,380 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21121 (http) with context path '/main/api/v1.0'
+2022-01-14 17:35:47,396 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MainComponentMicroserviceApplication in 6.794 seconds (JVM running for 8.439)
+2022-01-14 17:39:50,530 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:39:50,531 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [SpringApplicationShutdownHook] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2022-01-14 17:39:50,757 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-01-14 17:39:51,107 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-01-14 17:39:56,619 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MainComponentMicroserviceApplication using Java 16.0.1 on DESKTOP-R7S5H8N with PID 13616 (C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22\Main_Component_Microservice\target\classes started by Marco in C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22)
+2022-01-14 17:39:56,621 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
+2022-01-14 17:39:56,622 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-01-14 17:39:56,677 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-01-14 17:39:56,677 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-01-14 17:39:57,482 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-14 17:39:57,577 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 80 ms. Found 3 JPA repository interfaces.
+2022-01-14 17:39:58,438 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21121 (http)
+2022-01-14 17:39:58,447 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:39:58,448 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-01-14 17:39:58,448 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
+2022-01-14 17:39:58,565 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-01-14 17:39:58,566 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1888 ms
+2022-01-14 17:39:58,622 DEBUG org.springframework.web.filter.GenericFilterBean [restartedMain] Filter 'filter' configured for use
+2022-01-14 17:39:58,821 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-14 17:39:58,871 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.6.1.Final
+2022-01-14 17:39:59,005 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-01-14 17:39:59,106 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2022-01-14 17:39:59,897 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2022-01-14 17:39:59,925 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-14 17:40:01,284 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-14 17:40:01,313 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:40:01,891 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-01-14 17:40:02,554 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-01-14 17:40:02,576 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21121"]
+2022-01-14 17:40:02,595 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21121 (http) with context path '/main/api/v1.0'
+2022-01-14 17:40:02,613 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MainComponentMicroserviceApplication in 6.92 seconds (JVM running for 8.613)
+2022-01-14 17:40:31,037 INFO org.apache.juli.logging.DirectJDKLog [http-nio-21121-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-14 17:40:31,038 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-21121-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-01-14 17:40:31,040 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-21121-exec-1] Completed initialization in 2 ms
+2022-01-14 17:40:31,059 DEBUG com.evilcorp.main_component_microservice.Logging.CommonsRequestLoggingFilter [http-nio-21121-exec-1] Received Request: GET /main/api/v1.0/mwst/test, client=127.0.0.1, headers=[user-agent:"PostmanRuntime/7.28.4", accept:"*/*", cache-control:"no-cache", postman-token:"145ecde2-323f-4f5d-9398-9b3ec778af6a", accept-encoding:"gzip, deflate, br", forwarded:"proto=http;host="localhost:21101";for="[0:0:0:0:0:0:0:1]:50961"", x-forwarded-for:"0:0:0:0:0:0:0:1", x-forwarded-proto:"http", x-forwarded-port:"21101", x-forwarded-host:"localhost:21101", host:"localhost:21121", content-length:"0"]]
+2022-01-14 17:40:31,076 DEBUG com.evilcorp.main_component_microservice.Logging.CommonsRequestLoggingFilter [http-nio-21121-exec-1] Request Data: GET /main/api/v1.0/mwst/test, client=127.0.0.1, headers=[user-agent:"PostmanRuntime/7.28.4", accept:"*/*", cache-control:"no-cache", postman-token:"145ecde2-323f-4f5d-9398-9b3ec778af6a", accept-encoding:"gzip, deflate, br", forwarded:"proto=http;host="localhost:21101";for="[0:0:0:0:0:0:0:1]:50961"", x-forwarded-for:"0:0:0:0:0:0:0:1", x-forwarded-proto:"http", x-forwarded-port:"21101", x-forwarded-host:"localhost:21101", host:"localhost:21121", content-length:"0"]]
+2022-01-14 17:52:56,776 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-14 17:52:56,779 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-01-14 17:52:57,130 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

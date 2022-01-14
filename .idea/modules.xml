@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Data_Warehouse_Microservice/Data_Warehouse_Microservice.iml" filepath="$PROJECT_DIR$/Data_Warehouse_Microservice/Data_Warehouse_Microservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/Experimental_Modul/Experimental_Modul.iml" filepath="$PROJECT_DIR$/Experimental_Modul/Experimental_Modul.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Experimental_Modul_GatewayClient/Experimental_Modul_GatewayClient.iml" filepath="$PROJECT_DIR$/Experimental_Modul_GatewayClient/Experimental_Modul_GatewayClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/Gateway_Microservice/Gateway_Microservice.iml" filepath="$PROJECT_DIR$/Gateway_Microservice/Gateway_Microservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/KBE_Abgabebeleg_WiSe21_22.iml" filepath="$PROJECT_DIR$/KBE_Abgabebeleg_WiSe21_22.iml" />
       <module fileurl="file://$PROJECT_DIR$/Main_Component_Microservice/Main_Component_Microservice.iml" filepath="$PROJECT_DIR$/Main_Component_Microservice/Main_Component_Microservice.iml" />
