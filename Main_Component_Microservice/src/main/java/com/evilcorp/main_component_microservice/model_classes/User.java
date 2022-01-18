@@ -4,6 +4,9 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +17,7 @@ import java.util.UUID;
 )
 @NoArgsConstructor
 @RequiredArgsConstructor
+@Getter @Setter
 @ToString
 public class User {
 
@@ -23,53 +27,63 @@ public class User {
             name = "name",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "id", updatable = false, nullable = false)
-    @Getter @Setter
     private UUID id;
 
-    @Column(name = "username", nullable = false, columnDefinition = "TEXT", unique = true)
-    @Getter @Setter @NonNull
+    @Column(unique = true)
+    @NonNull
+    @NotBlank
+    @Size(min = 3, max = 15, message = "Username must be between 3 and 15 characters")
     private String username;
 
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter @NonNull
+    @NonNull
+    @NotBlank
+    @Size(min = 3, max = 15, message = "Firstname must be between 3 and 15 characters!")
     private String firstname;
 
-    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter @NonNull
+    @NonNull
+    @NotBlank
+    @Size(min = 3, max = 15, message = "Lastname must be between 3 and 15 characters!")
     private String lastname;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT", unique = true)
-    @Getter @Setter @NonNull
+    @Column(unique = true)
+    @NonNull
+    @NotBlank
+    @Email(message = "Email must be valid!")
     private String email;
 
-    @Column(name = "street", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter @NonNull
+    @NonNull
+    @NotBlank
+    @Size(min = 5, max = 40, message = "Streetname must be between 5 and 40 characters!")
     private String street;
 
-    @Column(name = "street_number", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter @NonNull
+    @NonNull
+    @NotBlank
+    @Size(max = 5, message = "Streetnumber must be between 0 and 5 characters!")
     private String street_number;
 
-    @Column(name = "postcode", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter @NonNull
+    @NonNull
+    @NotBlank
+    @Size(min = 5, max = 5, message = "Postcode must be exactly 5 characters long!")
     private String postcode;
 
-    @Column(name = "place_of_residence", nullable = false, columnDefinition = "TEXT")
-    @Getter @Setter @NonNull
+    @NonNull
+    @NotBlank
+    @Size(min = 5, max = 40, message = "Place of residence must be between 5 and 40 characters!")
     private String placeOfResidence;
 
     @OneToMany(mappedBy = "movieRenter", fetch = FetchType.LAZY)
     @Column(name = "rentings")
-    @Getter @Setter
+    @Getter
     @ToString.Exclude
     public List<MovieRenting> rentingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "ratingOwner", fetch = FetchType.LAZY)
     @Column(name = "ratings")
-    @Getter @Setter
+    @Getter
     @ToString.Exclude
     public List<MovieRating> ratingList = new ArrayList<>();
+
+
 
     public void update(User user) {
         this.username = user.getUsername();

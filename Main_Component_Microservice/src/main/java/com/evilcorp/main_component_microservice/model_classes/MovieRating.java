@@ -26,10 +26,8 @@ public class MovieRating {
             name = "name",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "movie_id", nullable = false, columnDefinition = "TEXT")
     @NonNull
     private UUID movieId;
 
@@ -39,10 +37,8 @@ public class MovieRating {
     @ToString.Exclude
     private User ratingOwner;
 
-    @Column(name = "rating_value", nullable = false, columnDefinition = "TEXT")
     private int rating;
 
-    @Column(name = "rating_date", nullable = false, columnDefinition = "TEXT")
     private Date ratingDate = new Date();
 
 }

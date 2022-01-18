@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,7 +67,7 @@ public class  MainUserController{
     @PostMapping(value = "/create",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> createUser(@RequestBody User newUser){
+    public ResponseEntity<Link> createUser( @Valid @RequestBody User newUser){
 
         User tempUser;
 
@@ -87,7 +88,7 @@ public class  MainUserController{
     @PutMapping(value = "/update",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> updateUser(@RequestBody User user){
+    public ResponseEntity<Link> updateUser(@Valid @RequestBody User user){
         User tempUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
 
