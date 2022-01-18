@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 public class CustomExceptionAdvice {
 
@@ -30,4 +32,13 @@ public class CustomExceptionAdvice {
         if(e.getFieldError() != null) return e.getFieldError().getDefaultMessage();
         return e.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String handleConstraintViolationException(ConstraintViolationException e){
+        e.getConstraintViolations();
+        return e.getMessage();
+    }
+
 }

@@ -6,6 +6,7 @@ import com.evilcorp.main_component_microservice.model_classes.User;
 import com.evilcorp.main_component_microservice.model_representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -68,7 +69,6 @@ public class  MainUserController{
             consumes = "application/json",
             produces = "application/json")
     public ResponseEntity<Link> createUser( @Valid @RequestBody User newUser){
-
         User tempUser;
 
         try {
@@ -89,6 +89,7 @@ public class  MainUserController{
             consumes = "application/json",
             produces = "application/json")
     public ResponseEntity<Link> updateUser(@Valid @RequestBody User user){
+
         User tempUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
 

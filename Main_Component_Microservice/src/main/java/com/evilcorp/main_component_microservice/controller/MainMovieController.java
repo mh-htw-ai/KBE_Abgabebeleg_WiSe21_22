@@ -1,14 +1,15 @@
 package com.evilcorp.main_component_microservice.controller;
 
-import com.evilcorp.main_component_microservice.entity_assembler.UserRepresentationAssembler;
-import com.evilcorp.main_component_microservice.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.services.data_warehouse_service.DataWarehouseService;
 import com.evilcorp.main_component_microservice.services.data_warehouse_service.Film;
 import com.evilcorp.main_component_microservice.services.mwst_calculator_service.MwStService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@Validated
 @RequestMapping("/movies")
 public class MainMovieController{
 
@@ -44,8 +46,7 @@ public class MainMovieController{
 
     @PostMapping(value = "/create",
             consumes = "application/json")
-    public ResponseEntity createMovie(@RequestBody List<Film> newFilm){
-
+    public ResponseEntity createMovie(@RequestBody List<@Valid Film> newFilm){
         return dataWarehouseService.createFilm(newFilm);
     }
 
@@ -53,7 +54,7 @@ public class MainMovieController{
 
     @PutMapping(value = "/update",
             consumes = "application/json")
-    public ResponseEntity updateMovie(@RequestBody Film changedFilm){
+    public ResponseEntity updateMovie(@Valid @RequestBody Film changedFilm){
 
         ResponseEntity dataWarehouseResponse = dataWarehouseService.changeMovie(changedFilm);
         if(dataWarehouseResponse.getStatusCode().equals(HttpStatus.NOT_FOUND)) return dataWarehouseResponse;

@@ -31,43 +31,43 @@ public class User {
 
     @Column(unique = true)
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Username cannot be empty/null")
     @Size(min = 3, max = 15, message = "Username must be between 3 and 15 characters")
     private String username;
 
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Firstname cannot be empty/null")
     @Size(min = 3, max = 15, message = "Firstname must be between 3 and 15 characters!")
     private String firstname;
 
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Lastname cannot be empty/null")
     @Size(min = 3, max = 15, message = "Lastname must be between 3 and 15 characters!")
     private String lastname;
 
     @Column(unique = true)
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Email cannot be empty/null")
     @Email(message = "Email must be valid!")
     private String email;
 
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Street cannot be empty/null")
     @Size(min = 5, max = 40, message = "Streetname must be between 5 and 40 characters!")
     private String street;
 
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Street number cannot be empty/null")
     @Size(max = 5, message = "Streetnumber must be between 0 and 5 characters!")
     private String street_number;
 
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Postcode cannot be empty/null")
     @Size(min = 5, max = 5, message = "Postcode must be exactly 5 characters long!")
     private String postcode;
 
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Place of residence cannot be empty/null")
     @Size(min = 5, max = 40, message = "Place of residence must be between 5 and 40 characters!")
     private String placeOfResidence;
 
