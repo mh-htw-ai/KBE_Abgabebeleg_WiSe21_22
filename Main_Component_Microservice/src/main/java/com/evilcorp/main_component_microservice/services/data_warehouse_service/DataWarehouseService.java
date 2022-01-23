@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.services.data_warehouse_service;
 
+import com.evilcorp.main_component_microservice.custom_exceptions.ServiceNotAvailableException;
 import com.evilcorp.main_component_microservice.services.mwst_calculator_service.MwStService;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,104 +21,117 @@ public class DataWarehouseService {
 
     private final static String dataWarehouseURI = "http://localhost:21131/film";
     private final static RestTemplate restTemplate = new RestTemplate();
+    private final MwStService mwStService = new MwStService();
 
+    public Film getMovieById(UUID movieId){
 
-    public ResponseEntity getFilmById(UUID movieId){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+        HttpEntity<String> requestEntity = this.setupHttpEntityDefaultStringBody();
 
         ResponseEntity<Film> responseEntity;
-
-
         try {
-            responseEntity = restTemplate.exchange(dataWarehouseURI + "/uuid=" + movieId.toString(), HttpMethod.GET, entity, Film.class);
-        }catch (HttpClientErrorException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie could not be found!");
-        }catch (ResourceAccessException e){
+            responseEntity = restTemplate.exchange(dataWarehouseURI + "/uuid=" + movieId.toString(), HttpMethod.GET, requestEntity, Film.class);
+        }catch (HttpClientErrorException | ResourceAccessException e){
             log.error("Datawarehouse-Microservice could not be reached!");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Entity could not be created!");
+            return null;
+        }
+        Film datawarehouseResponseMovie = responseEntity.getBody();
+        assert datawarehouseResponseMovie != null;
+
+        return datawarehouseResponseMovie;
+    }
+
+    public List<Film> getAllMovies(){
+
+        HttpEntity<String> requestEntity = this.setupHttpEntityDefaultStringBody();
+
+        ResponseEntity<Film[]> allMovie;
+        try {
+            allMovie = restTemplate.exchange(dataWarehouseURI + "/all", HttpMethod.GET, requestEntity, Film[].class);
+        }catch(HttpClientErrorException | ResourceAccessException e){
+            throw new ServiceNotAvailableException();
         }
 
+        Film[] datawarehouseResponseMovies = allMovie.getBody();
+        assert datawarehouseResponseMovies != null;
 
-        Film datawarehouseResponseFilm = responseEntity.getBody();
-        assert datawarehouseResponseFilm != null;
-        Film mwstResponseFilm = MwStService.calculateCostWithMwstFor(datawarehouseResponseFilm);
+        return List.of(datawarehouseResponseMovies); //ResponseEntity.status(HttpStatus.FOUND).body(mwstResponseFilms);
+    }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(mwstResponseFilm);
+    public boolean createMovie(Film newMovie){
+
+        List<Film> newMovies = List.of(newMovie);
+
+        HttpEntity<List<Film>> requestEntity = this.setupHttpEntityWithMovieListBody(newMovies);
+
+        ResponseEntity<UUID[]> responseEntity;
+        try {
+            responseEntity = restTemplate.exchange(dataWarehouseURI, HttpMethod.POST, requestEntity, UUID[].class);
+        }catch(HttpClientErrorException | ResourceAccessException e){
+            throw new ServiceNotAvailableException();
+        }
+        return !responseEntity.getStatusCode().isError();
+    }
+
+    public boolean changeMovie(Film changedFilm){
+
+        HttpEntity<Film> requestEntity = this.setupHttpEntityWithMovieBody(changedFilm);
+
+        ResponseEntity responseEntity;
+        try{
+            responseEntity = restTemplate.exchange(dataWarehouseURI,HttpMethod.PUT, requestEntity, ResponseEntity.class);
+        }catch(HttpClientErrorException | ResourceAccessException e) {
+            throw new ServiceNotAvailableException();
+        }
+        return !responseEntity.getStatusCode().isError();
+    }
+
+    public boolean deleteMovie(UUID filmId){
+
+        HttpEntity<String> requestEntity = this.setupHttpEntityWithDefaultBodyAndCustomUUIDHeaderField(filmId);
+
+        ResponseEntity responseEntity;
+        try{
+            responseEntity = restTemplate.exchange(dataWarehouseURI, HttpMethod.DELETE, requestEntity, ResponseEntity.class);
+        }catch(HttpClientErrorException | ResourceAccessException e){
+            throw new ServiceNotAvailableException();
+        }
+        return !responseEntity.getStatusCode().isError();
     }
 
 
-
-    public ResponseEntity getAllFilms(){
+    private HttpHeaders setupBasicRequestHeadersWithApplicationTypeJson(){
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-
-
-        ResponseEntity<Film[]> allFilms;
-        try {
-            allFilms = restTemplate.exchange(dataWarehouseURI + "/all", HttpMethod.GET, entity, Film[].class);
-        }catch(HttpClientErrorException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movies could not be found!");
-        }catch(ResourceAccessException e){
-            log.error("Datawarehouse-Microservice could not be reached");
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-
-        Film[] datawarehouseResponseFilms = allFilms.getBody();
-        assert datawarehouseResponseFilms != null;
-        Film[] mwstResponseFilms = MwStService.calculateCostWithMwstForMultipleFilms(datawarehouseResponseFilms);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(mwstResponseFilms);
+        return headers;
     }
 
-
-    public ResponseEntity createFilm(List<Film> newFilm){
+    private HttpHeaders setupBasicRequestHeadersWithUuidField(UUID uuid){
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<List<Film>> requestEntity = new HttpEntity<>(newFilm, headers);
-
-        try {
-            return restTemplate.exchange(dataWarehouseURI, HttpMethod.POST, requestEntity, UUID[].class);
-        }catch(HttpClientErrorException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Entity could not be created!");
-        }catch (ResourceAccessException e){
-            log.error("Datawarehouse-Microservice could not be reached!");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Entity could not be created!");
-        }
+        headers.set("UUID", uuid.toString());
+        return headers;
     }
 
-
-    public ResponseEntity changeMovie(Film changedFilm){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Film> requestEntity = new HttpEntity<>(changedFilm, headers);
-
-        try{
-            return restTemplate.exchange(dataWarehouseURI,HttpMethod.PUT, requestEntity, ResponseEntity.class);
-        }catch(HttpClientErrorException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requested movie couldn't be changed!");
-        } catch (ResourceAccessException e){
-            log.error("Datawarehouse-Microservice could not be reached!");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Entity could not be created!");
-        }
+    private HttpEntity<String> setupHttpEntityDefaultStringBody(){
+        return this.setupHttpEntityWithCustomStringBody("");
     }
 
+    private HttpEntity<String> setupHttpEntityWithDefaultBodyAndCustomUUIDHeaderField(UUID uuid){
+        HttpHeaders headers = this.setupBasicRequestHeadersWithUuidField(uuid);
+        return new HttpEntity<>("", headers);
+    }
 
-    public ResponseEntity deleteMovie(UUID filmId){
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("UUID", filmId.toString());
-        HttpEntity<String> requestEntity = new HttpEntity<>("body", headers);
+    private HttpEntity<String> setupHttpEntityWithCustomStringBody(String body){
+        HttpHeaders headers = this.setupBasicRequestHeadersWithApplicationTypeJson();
+        return new HttpEntity<>(body, headers);
+    }
 
-        try{
-            return restTemplate.exchange(dataWarehouseURI, HttpMethod.DELETE, requestEntity, ResponseEntity.class);
-        }catch(HttpClientErrorException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requested movie couldn't be deleted!");
-        }catch (ResourceAccessException e){
-            log.error("Datawarehouse-Microservice could not be reached!");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Entity could not be created!");
-        }
+    private HttpEntity<List<Film>> setupHttpEntityWithMovieListBody(List<Film> bodyMovieList){
+        HttpHeaders headers = this.setupBasicRequestHeadersWithApplicationTypeJson();
+        return new HttpEntity<>(bodyMovieList, headers);
+    }
+
+    private HttpEntity<Film> setupHttpEntityWithMovieBody(Film bodyMovie){
+        HttpHeaders headers = this.setupBasicRequestHeadersWithApplicationTypeJson();
+        return new HttpEntity<>(bodyMovie, headers);
     }
 }

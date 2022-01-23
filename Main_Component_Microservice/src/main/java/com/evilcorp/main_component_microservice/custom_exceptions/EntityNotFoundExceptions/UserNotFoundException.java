@@ -1,4 +1,4 @@
-package com.evilcorp.main_component_microservice.custom_exceptions.EntityFoundExceptions;
+package com.evilcorp.main_component_microservice.custom_exceptions.EntityNotFoundExceptions;
 
 import java.util.UUID;
 

@@ -29,7 +29,7 @@ public class MovieRenting {
     private UUID id;
 
     @NonNull
-    private UUID movieID;
+    private UUID movieId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_renter", nullable = false, columnDefinition = "UUID")

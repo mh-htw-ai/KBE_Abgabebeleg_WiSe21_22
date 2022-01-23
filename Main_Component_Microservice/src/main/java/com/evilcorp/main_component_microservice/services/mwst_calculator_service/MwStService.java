@@ -1,7 +1,6 @@
 package com.evilcorp.main_component_microservice.services.mwst_calculator_service;
 
 import com.evilcorp.main_component_microservice.services.data_warehouse_service.Film;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -12,14 +11,13 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@NoArgsConstructor
 @Slf4j
 public class MwStService {
 
-    private static final String mwstCalculatorURI = "http://localhost:21111/mwst/json_request";
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private final String mwstCalculatorURI = "http://localhost:21111/mwst/json_request";
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    public static Film calculateCostWithMwstFor(Film filmObj){
+    public Film calculateCostWithMwstFor(Film filmObj){
 
         float costWithoutMwst = (float) filmObj.getLeihPreis();
         MwStBean requestContent = new MwStBean(costWithoutMwst);
@@ -46,14 +44,5 @@ public class MwStService {
 
         return filmObj;
     }
-
-    public static Film[] calculateCostWithMwstForMultipleFilms(Film[] filmObjs){
-        for(Film film : filmObjs){
-            film = MwStService.calculateCostWithMwstFor(film);
-        }
-        return filmObjs;
-    }
-
-
 
 }

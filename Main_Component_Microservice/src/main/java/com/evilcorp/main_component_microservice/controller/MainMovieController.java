@@ -1,11 +1,10 @@
 package com.evilcorp.main_component_microservice.controller;
 
-import com.evilcorp.main_component_microservice.services.data_warehouse_service.DataWarehouseService;
+import com.evilcorp.main_component_microservice.services.MainMovieLogicService;
 import com.evilcorp.main_component_microservice.services.data_warehouse_service.Film;
-import com.evilcorp.main_component_microservice.services.mwst_calculator_service.MwStService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,63 +15,58 @@ import java.util.UUID;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@RestController
 @Validated
+@AllArgsConstructor
+@RestController
 @RequestMapping("/movies")
 public class MainMovieController{
 
-    private final DataWarehouseService dataWarehouseService;
+    private final MainMovieLogicService mainMovieLogicService;
 
-    public MainMovieController( DataWarehouseService dataWarehouseService ) {
-        this.dataWarehouseService = dataWarehouseService;
-    }
-
-
-    @GetMapping(value = "/{filmId}",
+    @GetMapping(value = "/{movieId}",
             produces = "application/json")
-    public ResponseEntity getFilm(@PathVariable UUID filmId){
-
-        return dataWarehouseService.getFilmById(filmId);
+    public ResponseEntity getMovie(@PathVariable UUID movieId){
+        Film responseMovie = mainMovieLogicService.getMovie(movieId);
+        return ResponseEntity.status(HttpStatus.FOUND).body(responseMovie);
     }
-
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<Film[]> getAllMovies(){
-
-        return dataWarehouseService.getAllFilms();
+    public ResponseEntity<List<Film>> getAllMovies(){
+        List<Film> responseMovies = mainMovieLogicService.getAllMovies();
+        return ResponseEntity.status(HttpStatus.FOUND).body(responseMovies);
     }
-
-
 
     @PostMapping(value = "/create",
             consumes = "application/json")
-    public ResponseEntity createMovie(@RequestBody List<@Valid Film> newFilm){
-        return dataWarehouseService.createFilm(newFilm);
+    public ResponseEntity createMovie(@RequestBody @Valid Film newMovie){
+        if(mainMovieLogicService.createMovie(newMovie)){
+            return ResponseEntity.ok(
+                    linkTo(
+                            methodOn(MainMovieController.class)
+                                    .getMovie(newMovie.getId()))
+                            .withSelfRel());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie could not be created!");
     }
-
-
 
     @PutMapping(value = "/update",
             consumes = "application/json")
-    public ResponseEntity updateMovie(@Valid @RequestBody Film changedFilm){
-
-        ResponseEntity dataWarehouseResponse = dataWarehouseService.changeMovie(changedFilm);
-        if(dataWarehouseResponse.getStatusCode().equals(HttpStatus.NOT_FOUND)) return dataWarehouseResponse;
-
-        return ResponseEntity.ok( linkTo( methodOn(MainMovieController.class).getFilm( changedFilm.getId() ) ).withSelfRel() );
+    public ResponseEntity updateMovie(@Valid @RequestBody Film changedMovie){
+        if(mainMovieLogicService.updateMovie(changedMovie)){
+            return ResponseEntity.ok(
+                    linkTo(
+                            methodOn(MainMovieController.class)
+                                    .getMovie(changedMovie.getId()))
+                            .withSelfRel());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie could not be updated!");
     }
 
-
-    @DeleteMapping(value = "/delete/{filmId}")
-    public ResponseEntity deleteMovie(@PathVariable UUID filmId){
-
-        return dataWarehouseService.deleteMovie(filmId);
-    }
-
-
-    @GetMapping(value = "/mwsttest")
-    public ResponseEntity<Film> testMwstCalc(@RequestBody Film film){
-        Film responseFilm = MwStService.calculateCostWithMwstFor(film);
-        return ResponseEntity.ok(responseFilm);
+    @DeleteMapping(value = "/delete/{movieId}")
+    public ResponseEntity deleteMovie(@PathVariable UUID movieId){
+        if(mainMovieLogicService.deleteMovie(movieId)){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie could not be deleted!");
     }
 }
