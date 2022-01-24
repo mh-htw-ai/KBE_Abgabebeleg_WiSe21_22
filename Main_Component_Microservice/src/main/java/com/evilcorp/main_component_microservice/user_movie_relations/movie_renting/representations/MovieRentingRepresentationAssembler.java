@@ -18,8 +18,8 @@ public class MovieRentingRepresentationAssembler implements RepresentationModelA
     public @NonNull MovieRentingRepresentation toModel(MovieRenting entity) {
         MovieRentingRepresentation rentingRepresentation = MovieRentingRepresentation.builder()
                 .id(entity.getId())
-                .movieID(entity.getMovieId())
-                .movieRenter(entity.getMovieRenter())
+                .movieId(entity.getMovieId())
+                .movieRenterId(entity.getMovieRenter().getId())
                 .startOfRenting(entity.getStartOfRenting())
                 .build();
 
@@ -29,7 +29,7 @@ public class MovieRentingRepresentationAssembler implements RepresentationModelA
     }
 
     @Override
-    public @NonNull CollectionModel<MovieRentingRepresentation> toCollectionModel(Iterable<? extends MovieRenting> entities) {
+    public @NonNull CollectionModel<MovieRentingRepresentation> toCollectionModel(@NonNull Iterable<? extends MovieRenting> entities) {
         CollectionModel<MovieRentingRepresentation> rentingRepresentations = RepresentationModelAssembler.super.toCollectionModel(entities);
 
         rentingRepresentations.add( linkTo( methodOn(MainRentingController.class).getAllMovieRentings() ).withSelfRel() );

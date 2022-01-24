@@ -3,6 +3,7 @@ package com.evilcorp.main_component_microservice.user_movie_relations.movie_rati
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers.MainRatingController;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
+import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -15,11 +16,11 @@ public class MovieRatingRepresentationAssembler implements RepresentationModelAs
 
 
     @Override
-    public MovieRatingRepresentation toModel(MovieRating entity) {
+    public @NonNull MovieRatingRepresentation toModel(MovieRating entity) {
         MovieRatingRepresentation ratingRepresentation = MovieRatingRepresentation.builder()
                 .id(entity.getId())
                 .movieId(entity.getMovieId())
-                .ratingOwner(entity.getRatingOwner())
+                .ratingOwnerId(entity.getRatingOwner().getId())
                 .rating(entity.getRating())
                 .ratingDate(entity.getRatingDate())
                 .build();
@@ -30,7 +31,7 @@ public class MovieRatingRepresentationAssembler implements RepresentationModelAs
     }
 
     @Override
-    public CollectionModel<MovieRatingRepresentation> toCollectionModel(Iterable<? extends MovieRating> entities) {
+    public @NonNull CollectionModel<MovieRatingRepresentation> toCollectionModel(@NonNull Iterable<? extends MovieRating> entities) {
         CollectionModel<MovieRatingRepresentation> ratingRepresentations = RepresentationModelAssembler.super.toCollectionModel(entities);
 
         ratingRepresentations.add( linkTo( methodOn(MainRatingController.class).getAllMovieRatings() ).withSelfRel() );

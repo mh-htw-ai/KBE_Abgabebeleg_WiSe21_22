@@ -40,9 +40,9 @@ public class RatingService {
     public MovieRatingRepresentation getMovieRating(UUID ratingId){
         Optional<MovieRating> ratingContainer = ratingRepository.findById(ratingId);
         MovieRating rating;
-        try{
+        if(ratingContainer.isPresent()) {
             rating = ratingContainer.get();
-        }catch (NoSuchElementException e){
+        }else{
             throw new RatingNotFoundException(ratingId);
         }
         return ratingRepresentationAssembler.toModel(rating)

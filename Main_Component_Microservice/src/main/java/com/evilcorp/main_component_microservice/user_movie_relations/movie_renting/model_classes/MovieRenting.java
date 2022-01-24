@@ -1,6 +1,7 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes;
 
 import com.evilcorp.main_component_microservice.user.model_classes.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -36,6 +37,7 @@ public class MovieRenting {
     @JoinColumn(name = "movie_renter", nullable = false, columnDefinition = "UUID")
     @NonNull
     @ToString.Exclude
+    @JsonBackReference
     private User movieRenter;
 
     private Date startOfRenting = new Date();

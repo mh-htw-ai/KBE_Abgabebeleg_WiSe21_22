@@ -2,6 +2,7 @@ package com.evilcorp.main_component_microservice.user.model_classes;
 
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -77,12 +78,14 @@ public class User {
     @Column(name = "rentings")
     @Getter
     @ToString.Exclude
+    @JsonManagedReference
     public List<MovieRenting> rentingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "ratingOwner", fetch = FetchType.LAZY)
     @Column(name = "ratings")
     @Getter
     @ToString.Exclude
+    @JsonManagedReference
     public List<MovieRating> ratingList = new ArrayList<>();
 
 
@@ -98,17 +101,11 @@ public class User {
         this.placeOfResidence = user.getPlaceOfResidence();
     }
 
-    public boolean addToRentings(MovieRenting newRenting) {
-        return this.rentingList.add(newRenting);
-    }
+    public void addToRentings(MovieRenting newRenting) { this.rentingList.add(newRenting); }
 
-    public boolean removeFromRentings(MovieRenting renting){
-        return this.rentingList.remove(renting);
-    }
+    public boolean removeFromRentings(MovieRenting renting){ return this.rentingList.remove(renting); }
 
-    public boolean addToRatings(MovieRating newRating) {
-        return this.ratingList.add(newRating);
-    }
+    public void addToRatings(MovieRating newRating) { this.ratingList.add(newRating); }
 
     public boolean removeFromRatings(MovieRating rating){
         return this.ratingList.remove(rating);

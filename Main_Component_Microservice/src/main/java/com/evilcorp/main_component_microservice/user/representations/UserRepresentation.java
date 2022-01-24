@@ -2,6 +2,7 @@ package com.evilcorp.main_component_microservice.user.representations;
 
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

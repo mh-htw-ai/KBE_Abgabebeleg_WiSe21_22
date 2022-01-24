@@ -1,6 +1,7 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations;
 
 import com.evilcorp.main_component_microservice.user.model_classes.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public class MovieRentingRepresentation extends RepresentationModel<MovieRentingRepresentation> {
 
     private final UUID id;
-    private final UUID movieID;
-    private final User movieRenter;
+    private final UUID movieId;
+    private final UUID movieRenterId;
     private final Date startOfRenting;
 }
