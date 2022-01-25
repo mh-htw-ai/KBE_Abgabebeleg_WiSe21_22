@@ -38,34 +38,33 @@ public class CsvExporterService {
     public void exportRecentRatingsToCsv() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException{
         Writer writer = new FileWriter(CSV_LOCATION);
 
-        StatefulBeanToCsv<CsvBean> beanToCsv = new StatefulBeanToCsvBuilder<CsvBean>(writer)
+        StatefulBeanToCsv<CsvObj> beanToCsv = new StatefulBeanToCsvBuilder<CsvObj>(writer)
                 .withSeparator(',')
                 .withLineEnd(CSVWriter.DEFAULT_LINE_END)
                 .build();
 
         List<MovieRating> ratingsSinceTheLastExport = ratingRepository.findAllByRatingDateAfter(lastDate);
 
-        List<CsvBean> list = CsvExporterService.getCsvBeanList(ratingsSinceTheLastExport);
+        List<CsvObj> list = CsvExporterService.getCsvBeanList(ratingsSinceTheLastExport);
 
         beanToCsv.write(list);
         beanToCsv.getCapturedExceptions();
         writer.close();
 
-        Date today = new Date();
-        lastDate = today;
+        lastDate = new Date();
     }
 
-    private static List<CsvBean> getCsvBeanList(List<MovieRating> ratingsOfTheLastDay){
-        List<CsvBean> csvBeanList = new ArrayList<>();
+    private static List<CsvObj> getCsvBeanList(List<MovieRating> ratingsOfTheLastDay){
+        List<CsvObj> csvObjList = new ArrayList<>();
 
         List<UUID> uniqueMovieIds = CsvExporterService.getMovieIdList(ratingsOfTheLastDay);
         for(UUID movieId : uniqueMovieIds){
             List<MovieRating> movieRatingsOfMovieId = getRatingsOfMovie(movieId, ratingsOfTheLastDay);
-            CsvBean newCsvBean = CsvExporterService.calculateCsvBean(movieRatingsOfMovieId);
-            csvBeanList.add(newCsvBean);
+            CsvObj newCsvObj = CsvExporterService.calculateCsvBean(movieRatingsOfMovieId);
+            csvObjList.add(newCsvObj);
         }
 
-        return csvBeanList;
+        return csvObjList;
     }
 
     private static List<UUID> getMovieIdList(List<MovieRating> movieRatingList){
@@ -85,7 +84,7 @@ public class CsvExporterService {
         return ratingsOfMovieX;
     }
 
-    private static CsvBean calculateCsvBean(List<MovieRating> ratingsOfOneMovie){
+    private static CsvObj calculateCsvBean(List<MovieRating> ratingsOfOneMovie){
         UUID movieId = ratingsOfOneMovie.get(0).getMovieId();
         int tempAverageRating = 0;
         int tempRatingUserCount = ratingsOfOneMovie.size();
@@ -94,7 +93,7 @@ public class CsvExporterService {
         }
         tempAverageRating = tempAverageRating / tempRatingUserCount;
 
-        return new CsvBean(movieId, tempAverageRating, tempRatingUserCount);
+        return new CsvObj(movieId, tempAverageRating, tempRatingUserCount);
     }
 
 }

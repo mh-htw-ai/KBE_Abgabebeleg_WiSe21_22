@@ -47,7 +47,7 @@ public class MovieMainService {
     }
 
     private Movie translateMovieDescription(Movie movie){
-        return externalApiService.translateMovieDescription(movie);
+        return movie;//externalApiService.translateMovieDescription(movie);
     }
 
     private Movie calculateMoviePriceWithMwSt(Movie movie){

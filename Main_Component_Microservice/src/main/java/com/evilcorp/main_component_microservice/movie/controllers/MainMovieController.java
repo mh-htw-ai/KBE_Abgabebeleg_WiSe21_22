@@ -2,6 +2,7 @@ package com.evilcorp.main_component_microservice.movie.controllers;
 
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import com.evilcorp.main_component_microservice.movie.services.MovieMainService;
+import com.evilcorp.main_component_microservice.movie.services.external_api_service.ExternalApiService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MainMovieController{
 
     private final MovieMainService movieMainService;
+    private final ExternalApiService externalApiService;
+
+    @GetMapping(value = "/translate/{text}")
+    public ResponseEntity getTranslation(@PathVariable String text){
+        String translation = externalApiService.translateMovieDescription(text);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(translation);
+    }
 
     @GetMapping(value = "/{movieId}",
             produces = "application/json")

@@ -9,7 +9,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
-public class CsvBean {
+public class CsvObj {
 
     @CsvBindByName(column = "UUID")
     private UUID movieId;

@@ -20,13 +20,13 @@ public class MwStService {
     public Movie calculateCostWithMwstFor(Movie movieObj){
 
         float costWithoutMwst = (float) movieObj.getLeihPreis();
-        MwStBean requestContent = new MwStBean(costWithoutMwst);
-        HttpEntity<MwStBean> request = new HttpEntity<>(requestContent);
+        MwStObj requestContent = new MwStObj(costWithoutMwst);
+        HttpEntity<MwStObj> request = new HttpEntity<>(requestContent);
 
-        ResponseEntity<MwStBean> response;
+        ResponseEntity<MwStObj> response;
 
         try {
-            response = restTemplate.exchange(mwstCalculatorURI, HttpMethod.PUT, request, MwStBean.class);
+            response = restTemplate.exchange(mwstCalculatorURI, HttpMethod.PUT, request, MwStObj.class);
         }catch( HttpClientErrorException e){
             e.printStackTrace();
             return movieObj;
@@ -36,7 +36,7 @@ public class MwStService {
             return movieObj;
         }
 
-        MwStBean responseBean = response.getBody();
+        MwStObj responseBean = response.getBody();
         assert responseBean != null;
 
         double priceWithMwst = responseBean.getArtMitSteuer();

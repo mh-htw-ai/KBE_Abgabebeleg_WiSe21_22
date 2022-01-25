@@ -21,8 +21,7 @@ import java.util.UUID;
 public class DataWarehouseService {
 
     private final static String dataWarehouseURI = "http://localhost:21131/film";
-    private final static RestTemplate restTemplate = new RestTemplate();
-    private final MwStService mwStService = new MwStService();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public Movie getMovieById(UUID movieId){
 
