@@ -1,6 +1,7 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers;
 
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
+import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.SimpleMovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services.RatingService;
 import lombok.AllArgsConstructor;
@@ -39,20 +40,29 @@ public class MainRatingController{
                 .body( ratingsRepresentation );
     }
 
+    @GetMapping(value = "/of_user/{userId}",
+            produces = "application/json")
+    public ResponseEntity<CollectionModel<MovieRatingRepresentation>> getAllMovieRatingsOfUser(@PathVariable UUID userId){
+        CollectionModel<MovieRatingRepresentation> ratingRepresentations = ratingService.getAllMovieRatingsOfUser(userId);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(ratingRepresentations);
+    }
+
     @PostMapping(value = "/create",
             produces = "application/json")
-    public ResponseEntity<Link> rateMovie(@RequestBody MovieRating newRating){
+    public ResponseEntity<Link> rateMovie(@RequestBody SimpleMovieRating newRating){
         Link linkToNewMovieRating = ratingService.rateMovie(newRating);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body( linkToNewMovieRating );
     }
 
-    @PutMapping(value = "/update",
+    @PutMapping(value = "/update/{ratingId}",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> updateRating(@RequestBody MovieRating newRating){
-        Link linkToUpdatedMovieRating = ratingService.updateRating(newRating);
+    public ResponseEntity<Link> updateRating(@PathVariable UUID ratingId, @RequestBody SimpleMovieRating newRating){
+        Link linkToUpdatedMovieRating = ratingService.updateRating(ratingId, newRating);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(linkToUpdatedMovieRating);

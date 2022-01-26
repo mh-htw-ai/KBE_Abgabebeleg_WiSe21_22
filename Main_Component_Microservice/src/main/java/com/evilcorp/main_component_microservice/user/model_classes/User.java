@@ -2,7 +2,10 @@ package com.evilcorp.main_component_microservice.user.model_classes;
 
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -87,8 +90,6 @@ public class User {
     @ToString.Exclude
     @JsonManagedReference
     public List<MovieRating> ratingList = new ArrayList<>();
-
-
 
     public void update(User user) {
         this.username = user.getUsername();

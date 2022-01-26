@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.controllers;
 
+import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
@@ -51,10 +52,19 @@ public class MainRentingController{
                 .body(rentingsRepresentation);
     }
 
+    @GetMapping(value = "/of_user/{userId}",
+            produces = "application/json")
+    public ResponseEntity<CollectionModel<MovieRentingRepresentation>> getAllMovieRentingsOfUser(@PathVariable UUID userId){
+        CollectionModel<MovieRentingRepresentation> rentingsRepresentation = rentingService.getAllRentingsOfUser(userId);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(rentingsRepresentation);
+    }
+
     @PostMapping(value = "/create",
             produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Link> rentMovie(@RequestBody MovieRenting newRenting){
+    public ResponseEntity<Link> rentMovie(@RequestBody SimpleMovieRenting newRenting){
         Link linkToNewMovieRenting = rentingService.rentMovie(newRenting);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -65,7 +75,7 @@ public class MainRentingController{
             produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Link> updateRenting(@RequestBody MovieRenting newRenting){
-        Link linkToNewMovieRenting = rentingService.rentMovie(newRenting);
+        Link linkToNewMovieRenting = rentingService.updateRenting(newRenting);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(linkToNewMovieRenting);

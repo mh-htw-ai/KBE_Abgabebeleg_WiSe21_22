@@ -8,6 +8,7 @@ import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExcepti
 import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
+import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.controllers.MainRentingController;
@@ -53,9 +54,21 @@ public class RentingService {
         return rentingAssembler.toCollectionModel(rentings);
     }
 
-    public Link rentMovie(MovieRenting newRenting){
+    public CollectionModel<MovieRentingRepresentation> getAllRentingsOfUser(UUID userId){
+        Optional<User> userContainer = userRepository.findById(userId);
+        User supposedMovieRenter;
+        if(userContainer.isPresent()){
+            supposedMovieRenter = userContainer.get();
+        }else{
+            throw new UserNotFoundException(userId);
+        }
+        List<MovieRenting> rentingsOfUser = rentingRepository.findAllByMovieRenterIs(supposedMovieRenter);
+        return rentingAssembler.toCollectionModel(rentingsOfUser);
+    }
+
+    public Link rentMovie(SimpleMovieRenting newRenting){
         UUID movieId = newRenting.getMovieId();
-        UUID userId = newRenting.getMovieRenter().getId();
+        UUID userId = newRenting.getRenterId();
 
         User tempUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -63,12 +76,14 @@ public class RentingService {
         Movie correspondingMovie = dataWarehouseService.getMovieById( movieId );
         if(correspondingMovie == null) throw new MovieNotFoundException( movieId );
 
-        rentingRepository.save(newRenting);
+        MovieRenting movieRenting = new MovieRenting(movieId, tempUser);
 
-        tempUser.addToRentings(newRenting);
+        rentingRepository.save(movieRenting);
+
+        tempUser.addToRentings(movieRenting);
         userRepository.save(tempUser);
 
-        return linkTo( methodOn(MainRentingController.class).getMovieRenting( newRenting.getId() ) ).withSelfRel();
+        return linkTo( methodOn(MainRentingController.class).getMovieRenting( newRenting.getMovieId() ) ).withSelfRel();
     }
 
     public Link updateRenting(MovieRenting updateRenting){

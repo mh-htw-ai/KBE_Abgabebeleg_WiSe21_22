@@ -42,9 +42,12 @@ public class MovieRating {
     @JsonBackReference
     private User ratingOwner;
 
+    @NonNull
     private int rating;
 
     private Date ratingDate = new Date();
 
-
+    public void updateRatingDate(){
+        this.ratingDate = new Date();
+    }
 }

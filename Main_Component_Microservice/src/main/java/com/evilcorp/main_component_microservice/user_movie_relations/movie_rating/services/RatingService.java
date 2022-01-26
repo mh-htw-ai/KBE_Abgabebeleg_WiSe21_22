@@ -8,17 +8,18 @@ import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
+import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.SimpleMovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentationAssembler;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers.MainRatingController;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.repositories.RatingRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class RatingService {
 
     private final UserRepository userRepository;
@@ -54,9 +56,24 @@ public class RatingService {
         return ratingRepresentationAssembler.toCollectionModel(tempRatings);
     }
 
-    public Link rateMovie(MovieRating newMovieRating){
+    public CollectionModel<MovieRatingRepresentation> getAllMovieRatingsOfUser(UUID userId){
+        Optional<User> userContainer = userRepository.findById(userId);
+        User supposedRatingOwner;
+        if(userContainer.isPresent()){
+            supposedRatingOwner = userContainer.get();
+        }else{
+            throw new UserNotFoundException(userId);
+        }
+        List<MovieRating> tempRatings = ratingRepository.findAllByRatingOwnerIs(supposedRatingOwner);
+        return ratingRepresentationAssembler.toCollectionModel(tempRatings);
+    }
+
+    public Link rateMovie(SimpleMovieRating newMovieRating){
         UUID movieId = newMovieRating.getMovieId();
-        UUID userId = newMovieRating.getRatingOwner().getId();
+        UUID userId = newMovieRating.getOwnerId();
+        int rating = newMovieRating.getRating();
+
+        log.info("userid:"+userId.toString());
 
         User correspondingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -64,27 +81,41 @@ public class RatingService {
         Movie correspondingMovie = dataWarehouseService.getMovieById( movieId );
         if(correspondingMovie == null)throw new MovieNotFoundException( movieId );
 
-        ratingRepository.save(newMovieRating);
+        MovieRating movieRating = new MovieRating(movieId, correspondingUser, rating);
 
-        correspondingUser.addToRatings(newMovieRating);
+        ratingRepository.save(movieRating);
+
+        correspondingUser.addToRatings(movieRating);
         userRepository.save(correspondingUser);
 
-        return linkTo( methodOn(MainRatingController.class).getMovieRating( newMovieRating.getId() ) ).withSelfRel();
+        return linkTo( methodOn(MainRatingController.class).getMovieRating( newMovieRating.getMovieId() ) ).withSelfRel();
     }
 
-    public Link updateRating(MovieRating updateRating){
-        MovieRating currentRating = ratingRepository.findById(updateRating.getId())
-                .orElseThrow(() -> new RatingNotFoundException(updateRating.getId()));
+    public Link updateRating(UUID ratingId, SimpleMovieRating updateRating){
+        UUID updateMovieId = updateRating.getMovieId();
+        UUID updateOwnerId = updateRating.getOwnerId();
+        int rating = updateRating.getRating();
+
+        MovieRating currentRating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new RatingNotFoundException(ratingId));
 
         User currentRatingOwner = currentRating.getRatingOwner();
-        User updateRatingOwner = updateRating.getRatingOwner();
+
+        Optional<User> updateRatingOwnerContainer = userRepository.findById(updateOwnerId);
+        User updateRatingOwner;
+        if(updateRatingOwnerContainer.isPresent()){
+            updateRatingOwner = updateRatingOwnerContainer.get();
+        }else{
+            throw new UserNotFoundException(updateOwnerId);
+        }
+
         UUID currentRatingMovieId = currentRating.getMovieId();
         UUID updateRatingMovieId = updateRating.getMovieId();
 
         if(currentRatingOwner.equals(updateRatingOwner)
                 && currentRatingMovieId.equals(updateRatingMovieId) ){
             currentRating.setRating(updateRating.getRating());
-            currentRating.setRatingDate(updateRating.getRatingDate());
+            currentRating.updateRatingDate();
         }
 
         ratingRepository.save(currentRating);

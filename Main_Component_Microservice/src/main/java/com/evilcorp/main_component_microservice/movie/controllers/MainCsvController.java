@@ -59,14 +59,10 @@ public class MainCsvController{
         userRepository.save(user1);
         userRepository.save(user2);
 
-        MovieRating rating1 = new MovieRating(movie1.getId(),user1);
-        MovieRating rating2 = new MovieRating(movie2.getId(),user1);
-        MovieRating rating3 = new MovieRating(movie2.getId(),user2);
-        MovieRating rating4 = new MovieRating(movie3.getId(),user2);
-        rating1.setRating(5);
-        rating2.setRating(3);
-        rating3.setRating(5);
-        rating4.setRating(1);
+        MovieRating rating1 = new MovieRating(movie1.getId(),user1, 4);
+        MovieRating rating2 = new MovieRating(movie2.getId(),user1, 1);
+        MovieRating rating3 = new MovieRating(movie2.getId(),user2, 2);
+        MovieRating rating4 = new MovieRating(movie3.getId(),user2, 1);
         ratingRepository.save(rating1);
         ratingRepository.save(rating2);
         ratingRepository.save(rating3);
