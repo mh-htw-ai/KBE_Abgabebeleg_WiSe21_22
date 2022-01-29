@@ -78,7 +78,7 @@ public class DataWarehouseService {
 
         ResponseEntity responseEntity;
         try{
-            responseEntity = restTemplate.exchange(dataWarehouseURI,HttpMethod.PUT, requestEntity, ResponseEntity.class);
+            responseEntity = restTemplate.exchange(dataWarehouseURI, HttpMethod.PUT, requestEntity, ResponseEntity.class);
         }catch(HttpClientErrorException | ResourceAccessException e) {
             throw new ServiceNotAvailableException();
         }

@@ -27,7 +27,7 @@ public class MainMovieController{
 
     @GetMapping(value = "/translate/{text}")
     public ResponseEntity getTranslation(@PathVariable String text){
-        String translation = externalApiService.translateMovieDescription(text);
+        String translation = externalApiService.translateTextTest(text);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(translation);

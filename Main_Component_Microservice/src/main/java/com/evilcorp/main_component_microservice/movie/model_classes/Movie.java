@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
 
@@ -20,4 +21,10 @@ public class Movie {
     @NotNull(message = "Price cannot be null")
     @DecimalMin(value="0.0", inclusive = false, message = "Price must be bigger than 0.0!")
     private double leihPreis;
+    @NotBlank
+    @Size(min = 10, max = 100, message = "Short description must be between 10 and 100 characters!")
+    private String kurzbeschreibung;
+    @Size(min = 30, max = 300, message = "Description must be between 10 and 100 characters!")
+    private String beschreibung;
+
 }

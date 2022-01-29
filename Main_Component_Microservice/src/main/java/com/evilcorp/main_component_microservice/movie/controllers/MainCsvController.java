@@ -48,6 +48,7 @@ public class MainCsvController{
 
     @PutMapping("/setup")
     public void setupSampleData() {
+        /*
         Movie movie1 = new Movie(UUID.randomUUID(), "The Dark Knight", 100.00);
         Movie movie2 = new Movie(UUID.randomUUID(), "Titanic", 1000.00);
         Movie movie3 = new Movie(UUID.randomUUID(), "Forest Gump", 50.00);
@@ -66,6 +67,6 @@ public class MainCsvController{
         ratingRepository.save(rating1);
         ratingRepository.save(rating2);
         ratingRepository.save(rating3);
-        ratingRepository.save(rating4);
+        ratingRepository.save(rating4);*/
     }
 }

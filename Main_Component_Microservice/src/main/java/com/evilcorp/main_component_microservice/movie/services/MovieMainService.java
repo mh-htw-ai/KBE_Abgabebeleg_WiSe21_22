@@ -40,14 +40,13 @@ public class MovieMainService {
         return dataWarehouseService.deleteMovie(movieId);
     }
 
-
     private Movie getMovieWithTranslatedDescriptionAndMwStIncludedPrice(Movie movie){
         Movie movieWithMwStPrice = this.calculateMoviePriceWithMwSt(movie);
         return this.translateMovieDescription(movieWithMwStPrice);
     }
 
     private Movie translateMovieDescription(Movie movie){
-        return movie;//externalApiService.translateMovieDescription(movie);
+        return externalApiService.translateMovieDescriptions(movie);
     }
 
     private Movie calculateMoviePriceWithMwSt(Movie movie){
