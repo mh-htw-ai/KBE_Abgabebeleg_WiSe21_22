@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -38,17 +40,17 @@ public class User {
     @Column(unique = true)
     @NonNull
     @NotBlank(message = "Username cannot be empty/null")
-    @Size(min = 3, max = 15, message = "Username must be between 3 and 15 characters")
+    @Size(min = 3, max = 30, message = "Username must be between 3 and 15 characters")
     private String username;
 
     @NonNull
     @NotBlank(message = "Firstname cannot be empty/null")
-    @Size(min = 3, max = 15, message = "Firstname must be between 3 and 15 characters!")
+    @Size(min = 3, max = 30, message = "Firstname must be between 3 and 15 characters!")
     private String firstname;
 
     @NonNull
     @NotBlank(message = "Lastname cannot be empty/null")
-    @Size(min = 3, max = 15, message = "Lastname must be between 3 and 15 characters!")
+    @Size(min = 3, max = 30, message = "Lastname must be between 3 and 15 characters!")
     private String lastname;
 
     @Column(unique = true)
