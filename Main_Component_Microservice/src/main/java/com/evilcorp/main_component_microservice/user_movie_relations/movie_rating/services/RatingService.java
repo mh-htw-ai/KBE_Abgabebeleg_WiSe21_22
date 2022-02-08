@@ -4,6 +4,7 @@ import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExcepti
 import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.RatingNotFoundException;
 import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
+import com.evilcorp.main_component_microservice.user.UserService;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
@@ -31,23 +32,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Slf4j
 public class RatingService {
 
-    private final UserRepository userRepository;
-
     private final RatingRepository ratingRepository;
     private final MovieRatingRepresentationAssembler ratingRepresentationAssembler;
-
+    private final UserService userService;
     private final DataWarehouseService dataWarehouseService;
 
-
     public MovieRatingRepresentation getMovieRating(UUID ratingId){
-        Optional<MovieRating> ratingContainer = ratingRepository.findById(ratingId);
-        MovieRating rating;
-        if(ratingContainer.isPresent()) {
-            rating = ratingContainer.get();
-        }else{
-            throw new RatingNotFoundException(ratingId);
-        }
-        return ratingRepresentationAssembler.toModel(rating)
+        MovieRating rating = this.getMovieRatingByRepo(ratingId);
+        return ratingRepresentationAssembler
+                .toModel(rating)
                 .add( linkTo( methodOn(MainRatingController.class).getAllMovieRatings() ).withRel("ratings") );
     }
 
@@ -56,83 +49,62 @@ public class RatingService {
         return ratingRepresentationAssembler.toCollectionModel(tempRatings);
     }
 
-    public CollectionModel<MovieRatingRepresentation> getAllMovieRatingsOfUser(UUID userId){
-        Optional<User> userContainer = userRepository.findById(userId);
-        User supposedRatingOwner;
-        if(userContainer.isPresent()){
-            supposedRatingOwner = userContainer.get();
-        }else{
-            throw new UserNotFoundException(userId);
-        }
+    public CollectionModel<MovieRatingRepresentation> getAllMovieRatingsOfUserByRepo(UUID userId){
+        User supposedRatingOwner = userService.getUserByRepo(userId);
         List<MovieRating> tempRatings = ratingRepository.findAllByRatingOwnerIs(supposedRatingOwner);
         return ratingRepresentationAssembler.toCollectionModel(tempRatings);
     }
 
-    public Link rateMovie(SimpleMovieRating newMovieRating){
-        UUID movieId = newMovieRating.getMovieId();
-        UUID userId = newMovieRating.getOwnerId();
-        int rating = newMovieRating.getRating();
-
-        log.info("userid:"+userId.toString());
-
-        User correspondingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-
-        Movie correspondingMovie = dataWarehouseService.getMovieById( movieId );
-        if(correspondingMovie == null)throw new MovieNotFoundException( movieId );
-
-        MovieRating movieRating = new MovieRating(movieId, correspondingUser, rating);
-
-        ratingRepository.save(movieRating);
-
-        correspondingUser.addToRatings(movieRating);
-        userRepository.save(correspondingUser);
-
-        return linkTo( methodOn(MainRatingController.class).getMovieRating( newMovieRating.getMovieId() ) ).withSelfRel();
+    public Link rateMovie(SimpleMovieRating newSimpleMovieRating){
+        UUID movieId = newSimpleMovieRating.getMovieId();
+        UUID userId = newSimpleMovieRating.getOwnerId();
+        int rating = newSimpleMovieRating.getRating();
+        MovieRating newRating = this.createMovieRating(userId, movieId, rating);
+        return linkTo( methodOn(MainRatingController.class).getMovieRating( newRating.getId() ) ).withSelfRel();
     }
 
-    public Link updateRating(UUID ratingId, SimpleMovieRating updateRating){
-        UUID updateMovieId = updateRating.getMovieId();
-        UUID updateOwnerId = updateRating.getOwnerId();
-        int rating = updateRating.getRating();
-
-        MovieRating currentRating = ratingRepository.findById(ratingId)
-                .orElseThrow(() -> new RatingNotFoundException(ratingId));
-
-        User currentRatingOwner = currentRating.getRatingOwner();
-
-        Optional<User> updateRatingOwnerContainer = userRepository.findById(updateOwnerId);
-        User updateRatingOwner;
-        if(updateRatingOwnerContainer.isPresent()){
-            updateRatingOwner = updateRatingOwnerContainer.get();
-        }else{
-            throw new UserNotFoundException(updateOwnerId);
-        }
-
-        UUID currentRatingMovieId = currentRating.getMovieId();
-        UUID updateRatingMovieId = updateRating.getMovieId();
-
-        if(currentRatingOwner.equals(updateRatingOwner)
-                && currentRatingMovieId.equals(updateRatingMovieId) ){
-            currentRating.setRating(updateRating.getRating());
-            currentRating.updateRatingDate();
-        }
-
+    public Link updateRating(UUID ratingId, int newRatingValue){
+        MovieRating currentRating = this.getMovieRatingByRepo(ratingId);
+        currentRating.setRating(newRatingValue);
         ratingRepository.save(currentRating);
         return linkTo( methodOn(MainRatingController.class).getMovieRating( currentRating.getId() ) ).withSelfRel();
     }
 
     public void deleteRating(UUID ratingId){
-        MovieRating tempRating = ratingRepository.findById(ratingId)
-                .orElseThrow(() -> new RatingNotFoundException(ratingId));
+        MovieRating ratingToBeDeleted = this.getMovieRatingByRepo(ratingId);
+        User correspondingUser = ratingToBeDeleted.getRatingOwner();
+        userService.deleteRatingFromUser(correspondingUser, ratingToBeDeleted);
+        ratingRepository.delete(ratingToBeDeleted);
+    }
 
-        ratingRepository.delete(tempRating);
+    private MovieRating getMovieRatingByRepo(UUID ratingId){
+        Optional<MovieRating> ratingContainer = ratingRepository.findById(ratingId);
+        return this.unwrapRatingContainer(ratingContainer, ratingId);
+    }
 
-        userRepository.findById(tempRating.getRatingOwner().getId())
-                .orElseThrow(() -> new UserNotFoundException(tempRating.getRatingOwner().getId()));
+    private MovieRating unwrapRatingContainer(Optional<MovieRating> ratingContainer, UUID ratingId){
+        MovieRating rating;
+        if(ratingContainer.isPresent()) {
+            rating = ratingContainer.get();
+        }else{
+            throw new RatingNotFoundException(ratingId);
+        }
+        return rating;
+    }
 
-        User correspondingUser = tempRating.getRatingOwner();
-        correspondingUser.removeFromRatings(tempRating);
-        userRepository.save(correspondingUser);
+    private MovieRating createMovieRating(UUID userId, UUID movieId, int rating){
+        if(this.checkIfCorrespondingMovieExists(movieId)) {
+            User correspondingUser = userService.getUserByRepo(userId);
+            MovieRating movieRating = new MovieRating(movieId, correspondingUser, rating);
+            userService.addNewRatingToUser(userId, movieRating);
+            ratingRepository.save(movieRating);
+            return movieRating;
+        }
+        throw new MovieNotFoundException(movieId);
+    }
+
+    private boolean checkIfCorrespondingMovieExists(UUID movieId){
+        Movie correspondingMovie = dataWarehouseService.getMovieById( movieId );
+        return correspondingMovie != null;
     }
 }

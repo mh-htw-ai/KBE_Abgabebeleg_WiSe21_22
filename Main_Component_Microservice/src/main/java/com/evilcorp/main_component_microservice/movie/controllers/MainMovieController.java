@@ -26,7 +26,7 @@ public class MainMovieController{
     private final ExternalApiService externalApiService;
 
     @GetMapping(value = "/translate/{text}")
-    public ResponseEntity getTranslation(@PathVariable String text){
+    public ResponseEntity<?> getTranslation(@PathVariable String text){
         String translation = externalApiService.translateTextTest(text);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -35,48 +35,54 @@ public class MainMovieController{
 
     @GetMapping(value = "/{movieId}",
             produces = "application/json")
-    public ResponseEntity getMovie(@PathVariable UUID movieId){
+    public ResponseEntity<?> getMovie(@PathVariable UUID movieId){
         Movie responseMovie = movieMainService.getMovie(movieId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(responseMovie);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(responseMovie);
     }
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<Movie>> getAllMovies(){
         List<Movie> responseMovies = movieMainService.getAllMovies();
-        return ResponseEntity.status(HttpStatus.FOUND).body(responseMovies);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(responseMovies);
     }
 
     @PostMapping(value = "/create",
             consumes = "application/json")
-    public ResponseEntity createMovie(@RequestBody @Valid Movie newMovie){
+    public ResponseEntity<?> createMovie(@RequestBody @Valid Movie newMovie){
         if(movieMainService.createMovie(newMovie)){
-            return ResponseEntity.ok(
-                    linkTo(
-                            methodOn(MainMovieController.class)
-                                    .getMovie(newMovie.getId()))
-                            .withSelfRel());
+            return ResponseEntity
+                    .ok( linkTo(methodOn(MainMovieController.class).getMovie(newMovie.getId())).withSelfRel() );
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie could not be created!");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Movie could not be created!");
     }
 
     @PutMapping(value = "/update",
             consumes = "application/json")
-    public ResponseEntity updateMovie(@Valid @RequestBody Movie changedMovie){
+    public ResponseEntity<?> updateMovie(@Valid @RequestBody Movie changedMovie){
         if(movieMainService.updateMovie(changedMovie)){
-            return ResponseEntity.ok(
-                    linkTo(
-                            methodOn(MainMovieController.class)
-                                    .getMovie(changedMovie.getId()))
-                            .withSelfRel());
+            return ResponseEntity
+                    .ok( linkTo(methodOn(MainMovieController.class).getMovie(changedMovie.getId())).withSelfRel() );
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie could not be updated!");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Movie could not be updated!");
     }
 
     @DeleteMapping(value = "/delete/{movieId}")
-    public ResponseEntity deleteMovie(@PathVariable UUID movieId){
+    public ResponseEntity<?> deleteMovie(@PathVariable UUID movieId){
         if(movieMainService.deleteMovie(movieId)){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .build();
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie could not be deleted!");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Movie could not be deleted!");
     }
 }

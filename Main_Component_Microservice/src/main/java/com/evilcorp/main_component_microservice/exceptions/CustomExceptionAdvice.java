@@ -46,4 +46,9 @@ public class CustomExceptionAdvice {
         e.getConstraintViolations();
         return e.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(CsvCouldNotBeWrittenException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    String handleCsvCouldNotBeWrittenException(CsvCouldNotBeWrittenException e){return e.getMessage();}
 }

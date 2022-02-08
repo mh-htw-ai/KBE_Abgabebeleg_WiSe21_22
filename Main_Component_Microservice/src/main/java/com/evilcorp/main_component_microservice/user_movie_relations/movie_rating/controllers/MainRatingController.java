@@ -1,6 +1,5 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers;
 
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.SimpleMovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services.RatingService;
@@ -37,13 +36,13 @@ public class MainRatingController{
         CollectionModel<MovieRatingRepresentation> ratingsRepresentation = ratingService.getAllMovieRatings();
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body( ratingsRepresentation );
+                .body(ratingsRepresentation);
     }
 
     @GetMapping(value = "/of_user/{userId}",
             produces = "application/json")
     public ResponseEntity<CollectionModel<MovieRatingRepresentation>> getAllMovieRatingsOfUser(@PathVariable UUID userId){
-        CollectionModel<MovieRatingRepresentation> ratingRepresentations = ratingService.getAllMovieRatingsOfUser(userId);
+        CollectionModel<MovieRatingRepresentation> ratingRepresentations = ratingService.getAllMovieRatingsOfUserByRepo(userId);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(ratingRepresentations);
@@ -61,8 +60,8 @@ public class MainRatingController{
     @PutMapping(value = "/update/{ratingId}",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> updateRating(@PathVariable UUID ratingId, @RequestBody SimpleMovieRating newRating){
-        Link linkToUpdatedMovieRating = ratingService.updateRating(ratingId, newRating);
+    public ResponseEntity<Link> updateRating(@PathVariable UUID ratingId, @RequestBody int newRatingValue){
+        Link linkToUpdatedMovieRating = ratingService.updateRating(ratingId, newRatingValue);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(linkToUpdatedMovieRating);

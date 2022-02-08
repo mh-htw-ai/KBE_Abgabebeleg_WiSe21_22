@@ -1,114 +1,70 @@
 package com.evilcorp.main_component_microservice.user.controllers;
 
-import com.evilcorp.main_component_microservice.exceptions.EntityAlreadyExistsExceptions.UserAlreadyExistsException;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.UserNotFoundException;
+import com.evilcorp.main_component_microservice.user.UserService;
 import com.evilcorp.main_component_microservice.user.representations.UserRepresentation;
-import com.evilcorp.main_component_microservice.user.representations.UserRepresentationAssembler;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
-import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @RestController
+@Validated
+@AllArgsConstructor
 @RequestMapping("/users")
 public class  MainUserController{
 
-    final UserRepository userRepository;
-    final UserRepresentationAssembler userAssembler;
-
-    public MainUserController(UserRepository userRepository,
-                              UserRepresentationAssembler userAssembler) {
-
-        this.userRepository = userRepository;
-        this.userAssembler = userAssembler;
-    }
-
-
-
+    private final UserService userService;
 
     @GetMapping(value = "/{userId}",
             produces = "application/json")
     public ResponseEntity<UserRepresentation> getUser(@PathVariable UUID userId){
-
-        return userRepository.findById(userId)
-                .map(user -> {
-                    UserRepresentation userRepresentation = userAssembler.toModel(user)
-                            .add( linkTo( methodOn(MainUserController.class).getAllUsers() ).withRel("users") );
-                    return ResponseEntity.status( HttpStatus.FOUND )
-                            .body( userRepresentation );
-                })
-                .orElse( ResponseEntity.notFound().build() );
+        UserRepresentation userRepresentation = userService.getUser(userId);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(userRepresentation);
     }
-
-
-
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<CollectionModel<UserRepresentation>> getAllUsers(){
-
-        List<User> tempUsers = userRepository.findAll();
-
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .body( userAssembler.toCollectionModel(tempUsers) );
+        CollectionModel<UserRepresentation> usersRepresentation = userService.getAllUsers();
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body( usersRepresentation );
     }
-
-
 
     @PostMapping(value = "/create",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> createUser( @Valid @RequestBody User newUser){
-        User tempUser;
-
-        try {
-            tempUser = userRepository.save(newUser);
-        }catch(Exception e){
-            throw new UserAlreadyExistsException(newUser.getId());
-        }
-
+    public ResponseEntity<Link> createUser(@Valid @RequestBody User newUser){
+        Link linkToNewUser = userService.createUser(newUser);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body( linkTo( methodOn(MainUserController.class).getUser( tempUser.getId() ) ).withSelfRel() );
+                .body(linkToNewUser);
     }
-
-
-
 
     @PutMapping(value = "/update",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> updateUser(@Valid @RequestBody User user){
-
-        User tempUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new UserNotFoundException(user.getId()));
-
-        tempUser.update(user);
-        userRepository.save(tempUser);
-
-        return ResponseEntity.ok( linkTo( methodOn(MainUserController.class).getUser(tempUser.getId() ) ).withSelfRel() );
+    public ResponseEntity<Link> updateUser(@Valid @RequestBody User updatedUser){
+        Link linkToUpdatedUser = userService.updateUser(updatedUser);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(linkToUpdatedUser);
     }
-
-
-
 
     @DeleteMapping(value = "/delete/{userId}",
             produces = "application/json")
-    public ResponseEntity deleteUser(@PathVariable UUID userId){
-        User tempUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-
-        userRepository.delete(tempUser);
-
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteUser(@PathVariable UUID userId){
+        userService.deleteUser(userId);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

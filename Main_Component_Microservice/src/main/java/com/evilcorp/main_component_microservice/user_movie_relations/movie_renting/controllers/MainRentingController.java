@@ -1,13 +1,8 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.controllers;
 
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentationAssembler;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.repositories.RentingRepository;
-import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.services.RentingService;
-import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -15,21 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.UUID;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/rentings")
 public class MainRentingController{
-
-    private final UserRepository userRepository;
-
-    private final RentingRepository rentingRepository;
-    private final MovieRentingRepresentationAssembler rentingAssembler;
-
-    private final DataWarehouseService dataWarehouseService;
 
     private final RentingService rentingService;
 
@@ -71,11 +58,11 @@ public class MainRentingController{
                 .body(linkToNewMovieRenting);
     }
 
-    @PutMapping(value = "/update",
+    @PutMapping(value = "/update/{rentingId}",
             produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Link> updateRenting(@RequestBody MovieRenting newRenting){
-        Link linkToNewMovieRenting = rentingService.updateRenting(newRenting);
+    public ResponseEntity<Link> updateRenting(@PathVariable UUID rentingId, @RequestBody Date newRentingDate){
+        Link linkToNewMovieRenting = rentingService.updateRenting(rentingId, newRentingDate);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(linkToNewMovieRenting);

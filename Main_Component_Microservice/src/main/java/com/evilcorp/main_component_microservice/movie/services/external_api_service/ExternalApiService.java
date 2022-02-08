@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.movie.services.external_api_service;
 
+import com.evilcorp.main_component_microservice.exceptions.ServiceNotAvailableException;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,36 +32,50 @@ public class ExternalApiService {
     }
 
     public Movie translateMovieDescriptions(Movie movie){
-        String shortDescription = movie.getKurzbeschreibung();
-        String description = movie.getBeschreibung();
+        HttpEntity<MultiValueMap<String, String>> requestEntity = this.setupRequestEntity(movie);
+        List<TranslationObj> translations = this.sendRequestForTranslations(requestEntity);
+        return this.setMovieFieldWithTranslations(movie, translations);
+    }
 
+    private HttpEntity<MultiValueMap<String, String>> setupRequestEntity(Movie movie){
+        HttpHeaders headers = this.setupHeaders();
+        MultiValueMap<String, String> body = this.setupRequestBodyFrom(movie);
+        return new HttpEntity<>(body, headers);
+    }
 
+    private HttpHeaders setupHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        return headers;
+    }
 
+    private MultiValueMap<String, String> setupRequestBodyFrom(Movie movie){
+        String shortDescription = movie.getKurzbeschreibung();
+        String description = movie.getBeschreibung();
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("auth_key", authkey);
         body.add("text", shortDescription);
         body.add("text", description);
         body.add("target_lang", "EN");
+        return body;
+    }
 
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
-
+    private List<TranslationObj> sendRequestForTranslations( HttpEntity<MultiValueMap<String, String>> requestEntity){
         ResponseEntity<DeepLResponseObj> responseEntity = restTemplate.exchange(deepLURI, HttpMethod.POST, requestEntity, DeepLResponseObj.class);
-
         List<TranslationObj> translations;
         try {
             translations = responseEntity.getBody().getTranslations();
         }catch(NullPointerException e){
-            return null;
+            throw new ServiceNotAvailableException();
         }
+        return translations;
+    }
 
+    private Movie setMovieFieldWithTranslations(Movie movie, List<TranslationObj> translations){
         String translatedShortDescription = translations.get(0).getText();
         String translatedDescription = translations.get(1).getText();
-
         movie.setKurzbeschreibung(translatedShortDescription);
         movie.setBeschreibung(translatedDescription);
-
         return movie;
     }
 }

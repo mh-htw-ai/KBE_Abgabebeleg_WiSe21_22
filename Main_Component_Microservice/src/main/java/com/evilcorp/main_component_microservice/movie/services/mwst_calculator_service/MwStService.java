@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.movie.services.mwst_calculator_service;
 
+import com.evilcorp.main_component_microservice.exceptions.ServiceNotAvailableException;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -18,31 +19,26 @@ public class MwStService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public Movie calculateCostWithMwstFor(Movie movieObj){
-
-        float costWithoutMwst = (float) movieObj.getLeihPreis();
-        MwStObj requestContent = new MwStObj(costWithoutMwst);
-        HttpEntity<MwStObj> request = new HttpEntity<>(requestContent);
-
-        ResponseEntity<MwStObj> response;
-
-        try {
-            response = restTemplate.exchange(mwstCalculatorURI, HttpMethod.PUT, request, MwStObj.class);
-        }catch( HttpClientErrorException e){
-            e.printStackTrace();
-            return movieObj;
-        }catch (ResourceAccessException e){
-            log.error("Mwst-Microservice could not be reached!");
-            log.error("Mwst-Microservice might not have been started!");
-            return movieObj;
-        }
-
-        MwStObj responseBean = response.getBody();
-        assert responseBean != null;
-
+        HttpEntity<MwStObj> request = this.createMwStRequestObj(movieObj);
+        MwStObj responseBean = this.exchangeForResponse(request);
         double priceWithMwst = responseBean.getArtMitSteuer();
         movieObj.setLeihPreis(priceWithMwst);
-
         return movieObj;
     }
 
+    private HttpEntity<MwStObj> createMwStRequestObj(Movie movieObj){
+        float costWithoutMwst = (float) movieObj.getLeihPreis();
+        MwStObj requestContent = new MwStObj(costWithoutMwst);
+        return new HttpEntity<>(requestContent);
+    }
+
+    private MwStObj exchangeForResponse(HttpEntity<MwStObj> request){
+        ResponseEntity<MwStObj> response;
+        try {
+            response = restTemplate.exchange(mwstCalculatorURI, HttpMethod.PUT, request, MwStObj.class);
+        }catch( HttpClientErrorException | ResourceAccessException e){
+            throw new ServiceNotAvailableException();
+        }
+        return response.getBody();
+    }
 }
