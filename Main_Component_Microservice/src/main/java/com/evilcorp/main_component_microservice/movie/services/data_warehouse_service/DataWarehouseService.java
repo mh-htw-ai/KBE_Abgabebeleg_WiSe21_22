@@ -1,5 +1,7 @@
 package com.evilcorp.main_component_microservice.movie.services.data_warehouse_service;
 
+import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.MovieNotFoundException;
+import com.evilcorp.main_component_microservice.exceptions.MovieCouldNotBeManipulatedException;
 import com.evilcorp.main_component_microservice.exceptions.ServiceNotAvailableException;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import lombok.NoArgsConstructor;
@@ -25,34 +27,38 @@ public class DataWarehouseService {
     public Movie getMovieById(UUID movieId){
         HttpEntity<String> requestEntity = this.setupHttpEntityDefaultStringBody();
         Movie datawarehouseResponseMovie = this.sendRequestForMovie(movieId, requestEntity);
-        assert datawarehouseResponseMovie != null;
         return datawarehouseResponseMovie;
     }
 
     public List<Movie> getAllMovies(){
         HttpEntity<String> requestEntity = this.setupHttpEntityDefaultStringBody();
         Movie[] datawarehouseResponseMovies = this.sendRequestForMoviesArray(requestEntity);
-        assert datawarehouseResponseMovies != null;
         return List.of(datawarehouseResponseMovies);
     }
 
-    public boolean createMovie(Movie newMovie){
+    public void createMovie(Movie newMovie){
         List<Movie> listContainingNewMovie = List.of(newMovie);
         HttpEntity<List<Movie>> requestEntity = this.setupHttpEntityWithMovieListBody(listContainingNewMovie);
         ResponseEntity<UUID[]> responseEntity = this.sendRequestForMovieCreation(requestEntity);
-        return !responseEntity.getStatusCode().isError();
+        if(responseEntity.getStatusCode().isError()){
+            throw new MovieCouldNotBeManipulatedException("created");
+        }
     }
 
-    public boolean changeMovie(Movie changedMovie){
+    public void changeMovie(Movie changedMovie){
         HttpEntity<Movie> requestEntity = this.setupHttpEntityWithMovieBody(changedMovie);
         ResponseEntity<?> responseEntity = this.sendRequestForMovieChange(requestEntity);
-        return !responseEntity.getStatusCode().isError();
+        if(responseEntity.getStatusCode().isError()){
+            throw new MovieCouldNotBeManipulatedException("updated");
+        }
     }
 
-    public boolean deleteMovie(UUID filmId){
+    public void deleteMovie(UUID filmId){
         HttpEntity<String> requestEntity = this.setupHttpEntityWithDefaultBodyAndCustomUUIDHeaderField(filmId);
         ResponseEntity<?> responseEntity = this.sendRequestForMovieDeletion(requestEntity);
-        return !responseEntity.getStatusCode().isError();
+        if(responseEntity.getStatusCode().isError()){
+            throw new MovieCouldNotBeManipulatedException("deleted");
+        }
     }
 
 

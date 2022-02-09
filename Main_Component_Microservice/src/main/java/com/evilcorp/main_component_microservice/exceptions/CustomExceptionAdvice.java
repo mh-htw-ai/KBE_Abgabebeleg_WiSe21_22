@@ -2,6 +2,7 @@ package com.evilcorp.main_component_microservice.exceptions;
 
 import com.evilcorp.main_component_microservice.exceptions.EntityAlreadyExistsExceptions.EntityAlreadyExistsException;
 import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.EntityNotFoundException;
+import com.evilcorp.main_component_microservice.exceptions.ArgumentCouldNotBeParsedExceptions.UuidCouldNotBeParsedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,4 +52,14 @@ public class CustomExceptionAdvice {
     @ExceptionHandler(CsvCouldNotBeWrittenException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     String handleCsvCouldNotBeWrittenException(CsvCouldNotBeWrittenException e){return e.getMessage();}
+
+    @ResponseBody
+    @ExceptionHandler(UuidCouldNotBeParsedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String handleUUIDCouldNotBeParsedException(UuidCouldNotBeParsedException e){return e.getMessage();}
+
+    @ResponseBody
+    @ExceptionHandler(MovieCouldNotBeManipulatedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String handleMovieCouldNotBeManipulatedException(MovieCouldNotBeManipulatedException e){return e.getMessage();}
 }

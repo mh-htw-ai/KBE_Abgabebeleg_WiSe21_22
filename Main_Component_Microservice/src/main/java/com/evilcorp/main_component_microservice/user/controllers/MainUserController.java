@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.user.controllers;
 
+import com.evilcorp.main_component_microservice.ParserService;
 import com.evilcorp.main_component_microservice.user.UserService;
 import com.evilcorp.main_component_microservice.user.representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
@@ -20,11 +21,13 @@ import java.util.UUID;
 @RequestMapping("/users")
 public class  MainUserController{
 
+    private final ParserService parserService;
     private final UserService userService;
 
-    @GetMapping(value = "/{userId}",
+    @GetMapping(value = "/{userIdString}",
             produces = "application/json")
-    public ResponseEntity<UserRepresentation> getUser(@PathVariable UUID userId){
+    public ResponseEntity<UserRepresentation> getUser(@PathVariable String userIdString){
+        UUID userId = parserService.parseStringToUUID(userIdString);
         UserRepresentation userRepresentation = userService.getUser(userId);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
@@ -59,9 +62,10 @@ public class  MainUserController{
                 .body(linkToUpdatedUser);
     }
 
-    @DeleteMapping(value = "/delete/{userId}",
+    @DeleteMapping(value = "/delete/{userIdString}",
             produces = "application/json")
-    public ResponseEntity<?> deleteUser(@PathVariable UUID userId){
+    public ResponseEntity<?> deleteUser(@PathVariable String userIdString){
+        UUID userId = parserService.parseStringToUUID(userIdString);
         userService.deleteUser(userId);
         return ResponseEntity
                 .noContent()

@@ -30,8 +30,8 @@ public class UserRepresentationAssembler implements RepresentationModelAssembler
                 .rentingList(entity.rentingList)
                 .build();
 
-        userRepresentation.add( linkTo( methodOn(MainUserController.class).getUser( userRepresentation.getId() ) ).withSelfRel() );
-        userRepresentation.add( linkTo( methodOn(MainUserController.class).deleteUser( userRepresentation.getId() ) ).withRel("delete") );//sollte man einen delete link mit zurueckgeben?
+        userRepresentation.add( linkTo( methodOn(MainUserController.class).getUser( userRepresentation.getId().toString() ) ).withSelfRel() );
+        userRepresentation.add( linkTo( methodOn(MainUserController.class).deleteUser( userRepresentation.getId().toString() ) ).withRel("delete") );//sollte man einen delete link mit zurueckgeben?
 
         return userRepresentation;
     }

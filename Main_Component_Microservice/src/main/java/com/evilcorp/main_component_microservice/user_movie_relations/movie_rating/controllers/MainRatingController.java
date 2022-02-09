@@ -1,5 +1,6 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers;
 
+import com.evilcorp.main_component_microservice.ParserService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.SimpleMovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services.RatingService;
@@ -19,12 +20,14 @@ import java.util.UUID;
 @RequestMapping("/ratings")
 public class MainRatingController{
 
+    private final ParserService parserService;
     private final RatingService ratingService;
 
-    @GetMapping(value = "/{ratingId}",
+    @GetMapping(value = "/{ratingIdString}",
         produces = "application/json")
     @ResponseStatus(HttpStatus.FOUND)
-    public ResponseEntity<MovieRatingRepresentation> getMovieRating(@PathVariable UUID ratingId){
+    public ResponseEntity<MovieRatingRepresentation> getMovieRating(@PathVariable String ratingIdString){
+        UUID ratingId = parserService.parseStringToUUID(ratingIdString);
         MovieRatingRepresentation ratingRepresentation = ratingService.getMovieRating(ratingId);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
@@ -39,9 +42,10 @@ public class MainRatingController{
                 .body(ratingsRepresentation);
     }
 
-    @GetMapping(value = "/of_user/{userId}",
+    @GetMapping(value = "/of_user/{userIdString}",
             produces = "application/json")
-    public ResponseEntity<CollectionModel<MovieRatingRepresentation>> getAllMovieRatingsOfUser(@PathVariable UUID userId){
+    public ResponseEntity<CollectionModel<MovieRatingRepresentation>> getAllMovieRatingsOfUser(@PathVariable String userIdString){
+        UUID userId = parserService.parseStringToUUID(userIdString);
         CollectionModel<MovieRatingRepresentation> ratingRepresentations = ratingService.getAllMovieRatingsOfUserByRepo(userId);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
@@ -57,18 +61,20 @@ public class MainRatingController{
                 .body( linkToNewMovieRating );
     }
 
-    @PutMapping(value = "/update/{ratingId}",
+    @PutMapping(value = "/update/{ratingIdString}",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> updateRating(@PathVariable UUID ratingId, @RequestBody int newRatingValue){
+    public ResponseEntity<Link> updateRating(@PathVariable String ratingIdString, @RequestBody int newRatingValue){
+        UUID ratingId = parserService.parseStringToUUID(ratingIdString);
         Link linkToUpdatedMovieRating = ratingService.updateRating(ratingId, newRatingValue);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(linkToUpdatedMovieRating);
     }
 
-    @DeleteMapping(value = "/delete/{ratingId}")
-    public ResponseEntity<?> deleteRating(@PathVariable UUID ratingId){
+    @DeleteMapping(value = "/delete/{ratingIdString}")
+    public ResponseEntity<?> deleteRating(@PathVariable String ratingIdString){
+        UUID ratingId = parserService.parseStringToUUID(ratingIdString);
         ratingService.deleteRating(ratingId);
         return ResponseEntity
                 .noContent()

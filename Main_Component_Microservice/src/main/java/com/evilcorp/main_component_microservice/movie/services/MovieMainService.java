@@ -20,24 +20,26 @@ public class MovieMainService {
 
     public Movie getMovie(UUID movieId){
         Movie movieWithoutTranslatedDescriptionAndMwStIncludedPrice = dataWarehouseService.getMovieById( movieId );
+        if(movieWithoutTranslatedDescriptionAndMwStIncludedPrice == null) return null;
         return this.getMovieWithTranslatedDescriptionAndMwStIncludedPrice( movieWithoutTranslatedDescriptionAndMwStIncludedPrice );
     }
 
     public List<Movie> getAllMovies(){
         List<Movie> movieListWithoutTranslationAndMwSt = dataWarehouseService.getAllMovies();
+        if(movieListWithoutTranslationAndMwSt == null) return null;
         return this.getMovieListWithTranslationAndMwSt( movieListWithoutTranslationAndMwSt );
     }
 
-    public boolean createMovie(Movie movie){
-        return dataWarehouseService.createMovie(movie);
+    public void createMovie(Movie movie){
+        dataWarehouseService.createMovie(movie);
     }
 
-    public boolean updateMovie(Movie movie){
-        return dataWarehouseService.changeMovie(movie);
+    public void updateMovie(Movie movie){
+        dataWarehouseService.changeMovie(movie);
     }
 
-    public boolean deleteMovie(UUID movieId){
-        return dataWarehouseService.deleteMovie(movieId);
+    public void deleteMovie(UUID movieId){
+        dataWarehouseService.deleteMovie(movieId);
     }
 
 
