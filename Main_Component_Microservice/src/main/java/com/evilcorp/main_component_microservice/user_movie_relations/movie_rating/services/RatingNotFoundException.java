@@ -1,4 +1,6 @@
-package com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions;
+package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services;
+
+import com.evilcorp.main_component_microservice.exception_handling.EntityNotFoundException;
 
 import java.util.UUID;
 

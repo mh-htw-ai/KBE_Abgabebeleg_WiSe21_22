@@ -1,12 +1,9 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services;
 
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.MovieNotFoundException;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.RatingNotFoundException;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.UserNotFoundException;
+import com.evilcorp.main_component_microservice.user_movie_relations.MovieNotFoundException;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
-import com.evilcorp.main_component_microservice.user.UserService;
+import com.evilcorp.main_component_microservice.user.services.UserService;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
-import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.SimpleMovieRating;
@@ -60,14 +57,14 @@ public class RatingService {
         UUID userId = newSimpleMovieRating.getOwnerId();
         int rating = newSimpleMovieRating.getRating();
         MovieRating newRating = this.createMovieRating(userId, movieId, rating);
-        return linkTo( methodOn(MainRatingController.class).getMovieRating( newRating.getId() ) ).withSelfRel();
+        return linkTo( methodOn(MainRatingController.class).getMovieRating( newRating.getId().toString() ) ).withSelfRel();
     }
 
     public Link updateRating(UUID ratingId, int newRatingValue){
         MovieRating currentRating = this.getMovieRatingByRepo(ratingId);
         currentRating.setRating(newRatingValue);
         ratingRepository.save(currentRating);
-        return linkTo( methodOn(MainRatingController.class).getMovieRating( currentRating.getId() ) ).withSelfRel();
+        return linkTo( methodOn(MainRatingController.class).getMovieRating( currentRating.getId().toString() ) ).withSelfRel();
     }
 
     public void deleteRating(UUID ratingId){

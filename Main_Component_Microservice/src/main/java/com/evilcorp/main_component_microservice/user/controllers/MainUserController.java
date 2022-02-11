@@ -1,7 +1,7 @@
 package com.evilcorp.main_component_microservice.user.controllers;
 
-import com.evilcorp.main_component_microservice.ParserService;
-import com.evilcorp.main_component_microservice.user.UserService;
+import com.evilcorp.main_component_microservice.parsing.ParserService;
+import com.evilcorp.main_component_microservice.user.services.UserService;
 import com.evilcorp.main_component_microservice.user.representations.UserRepresentation;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,9 @@
-package com.evilcorp.main_component_microservice.exceptions;
+package com.evilcorp.main_component_microservice.exception_handling;
 
-import com.evilcorp.main_component_microservice.exceptions.EntityAlreadyExistsExceptions.EntityAlreadyExistsException;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.EntityNotFoundException;
-import com.evilcorp.main_component_microservice.exceptions.ArgumentCouldNotBeParsedExceptions.UuidCouldNotBeParsedException;
+import com.evilcorp.main_component_microservice.parsing.UuidCouldNotBeParsedException;
+import com.evilcorp.main_component_microservice.movie.services.ServiceNotAvailableException;
+import com.evilcorp.main_component_microservice.movie.services.csv_exporter_service.CsvCouldNotBeWrittenException;
+import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.MovieCouldNotBeManipulatedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
-public class CustomExceptionAdvice {
+public class CustomExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(EntityNotFoundException.class)

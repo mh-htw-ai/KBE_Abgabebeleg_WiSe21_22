@@ -1,16 +1,11 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.services;
 
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.RatingNotFoundException;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
-import com.evilcorp.main_component_microservice.user.UserService;
+import com.evilcorp.main_component_microservice.user.services.UserService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers.MainRatingController;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.MovieNotFoundException;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.RentingNotFoundException;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.UserNotFoundException;
+import com.evilcorp.main_component_microservice.user_movie_relations.MovieNotFoundException;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
-import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentationAssembler;
@@ -61,14 +56,14 @@ public class RentingService {
         UUID movieId = newRenting.getMovieId();
         UUID userId = newRenting.getRenterId();
         MovieRenting movieRenting = this.createMovieRenting(userId, movieId);
-        return linkTo( methodOn(MainRentingController.class).getMovieRenting( movieRenting.getId() ) ).withSelfRel();
+        return linkTo( methodOn(MainRentingController.class).getMovieRenting( movieRenting.getId().toString() ) ).withSelfRel();
     }
 
     public Link updateRenting(UUID rentingId, Date newRentingStart){
         MovieRenting currentRenting = this.getMovieRentingByRepo(rentingId);
         currentRenting.setStartOfRenting(newRentingStart);
         rentingRepository.save(currentRenting);
-        return linkTo( methodOn(MainRatingController.class).getMovieRating( rentingId ) ).withSelfRel();
+        return linkTo( methodOn(MainRatingController.class).getMovieRating( rentingId.toString() ) ).withSelfRel();
     }
 
     public void deleteRenting(UUID rentingId){

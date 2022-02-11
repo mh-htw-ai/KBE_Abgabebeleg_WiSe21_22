@@ -1,7 +1,6 @@
 package com.evilcorp.main_component_microservice.movie.services.csv_exporter_service;
 
 
-import com.evilcorp.main_component_microservice.exceptions.CsvCouldNotBeWrittenException;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.repositories.RatingRepository;
 import com.opencsv.CSVWriter;
@@ -10,7 +9,6 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers;
 
-import com.evilcorp.main_component_microservice.ParserService;
+import com.evilcorp.main_component_microservice.parsing.ParserService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.SimpleMovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services.RatingService;

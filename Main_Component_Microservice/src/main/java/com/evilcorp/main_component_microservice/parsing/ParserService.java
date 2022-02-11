@@ -1,6 +1,4 @@
-package com.evilcorp.main_component_microservice;
-
-import com.evilcorp.main_component_microservice.exceptions.ArgumentCouldNotBeParsedExceptions.UuidCouldNotBeParsedException;
+package com.evilcorp.main_component_microservice.parsing;
 
 import java.util.UUID;
 

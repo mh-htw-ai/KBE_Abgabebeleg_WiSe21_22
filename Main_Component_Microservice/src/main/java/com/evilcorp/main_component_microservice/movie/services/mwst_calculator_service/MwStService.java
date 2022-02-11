@@ -1,6 +1,6 @@
 package com.evilcorp.main_component_microservice.movie.services.mwst_calculator_service;
 
-import com.evilcorp.main_component_microservice.exceptions.ServiceNotAvailableException;
+import com.evilcorp.main_component_microservice.movie.services.ServiceNotAvailableException;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

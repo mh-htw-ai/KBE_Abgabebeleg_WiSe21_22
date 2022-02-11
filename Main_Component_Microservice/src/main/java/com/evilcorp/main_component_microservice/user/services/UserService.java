@@ -1,7 +1,5 @@
-package com.evilcorp.main_component_microservice.user;
+package com.evilcorp.main_component_microservice.user.services;
 
-import com.evilcorp.main_component_microservice.exceptions.EntityAlreadyExistsExceptions.UserAlreadyExistsException;
-import com.evilcorp.main_component_microservice.exceptions.EntityNotFoundExceptions.UserNotFoundException;
 import com.evilcorp.main_component_microservice.user.controllers.MainUserController;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
@@ -47,14 +45,14 @@ public class UserService {
         }catch(Exception e){
             throw new UserAlreadyExistsException(newUser.getId());
         }
-        return linkTo( methodOn(MainUserController.class).getUser( tempUser.getId() ) ).withSelfRel();
+        return linkTo( methodOn(MainUserController.class).getUser( tempUser.getId().toString() ) ).withSelfRel();
     }
 
     public Link updateUser(User updateUser){
         User existingUser = this.getUserByRepo(updateUser.getId());
         existingUser.update(updateUser);
         userRepository.save(existingUser);
-        return linkTo( methodOn(MainUserController.class).getUser( existingUser.getId() ) ).withSelfRel();
+        return linkTo( methodOn(MainUserController.class).getUser( existingUser.getId().toString() ) ).withSelfRel();
     }
 
     public void deleteUser(UUID userId){

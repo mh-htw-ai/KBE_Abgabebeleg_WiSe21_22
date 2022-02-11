@@ -1,6 +1,6 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.controllers;
 
-import com.evilcorp.main_component_microservice.ParserService;
+import com.evilcorp.main_component_microservice.parsing.ParserService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.services.RentingService;

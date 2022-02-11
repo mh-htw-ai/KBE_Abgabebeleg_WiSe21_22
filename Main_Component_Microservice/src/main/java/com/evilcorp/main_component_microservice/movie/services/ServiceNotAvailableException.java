@@ -1,4 +1,4 @@
-package com.evilcorp.main_component_microservice.exceptions;
+package com.evilcorp.main_component_microservice.movie.services;
 
 public class ServiceNotAvailableException extends RuntimeException{
     public ServiceNotAvailableException(){

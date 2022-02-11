@@ -17,17 +17,11 @@ public class AOPLogging {
     @Pointcut("execution(public * *(..))")
     private void publicMethod(){}
 
-    @Pointcut("execution(private * *(..))")
-    private void privateMethod(){}
-
     @Pointcut("execution(* com.evilcorp.main_component_microservice.user..*.*(..))")
     private void inUser(){}
 
     @Pointcut("publicMethod() && inUser()")
     private void publicInUser(){}
-
-    @Pointcut("privateMethod() && inUser()")
-    private void privateInUser(){}
 
     @Pointcut("execution(* com.evilcorp.main_component_microservice.movie..*.*(..))")
     private void inMovie(){}
@@ -35,17 +29,11 @@ public class AOPLogging {
     @Pointcut("publicMethod() && inMovie()")
     private void publicInMovie(){}
 
-    @Pointcut("privateMethod() && inMovie()")
-    private void privateInMovie(){}
-
     @Pointcut("execution(* com.evilcorp.main_component_microservice.user_movie_relations..*.*(..))")
     private void inMovieRelations(){}
 
     @Pointcut("publicMethod() && inMovieRelations()")
     private void publicInMovieRelations(){}
-
-    @Pointcut("privateMethod() && publicInMovieRelations()")
-    private void privateInMovieRelations(){}
 
     @Around("publicInUser() || publicInMovie() || publicInMovieRelations()")
     public Object logAroundPublic(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -64,23 +52,6 @@ public class AOPLogging {
         }
     }
 
-    @Around("privateInUser() || privateInMovie() || privateInMovieRelations()")
-    public Object logAroundPrivate(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (log.isDebugEnabled()) {
-            this.beforeMethodCallLoggingDebug(joinPoint);
-        }
-        try {
-            Object result = joinPoint.proceed();
-            if (log.isDebugEnabled()) {
-                this.afterMethodCallLoggingDebug(joinPoint, result);
-            }
-            return result;
-        } catch (IllegalArgumentException e) {
-            this.illegalArgumentExceptionLogging(joinPoint);
-            throw e;
-        }
-    }
-
     private void beforeMethodCallLogging(ProceedingJoinPoint joinPoint){
         log.info("\nEntering: {}.{}()\nArgument/s = {}",
                 joinPoint.getSignature().getDeclaringTypeName(),
@@ -89,20 +60,6 @@ public class AOPLogging {
     }
 
     private void afterMethodCallLogging(ProceedingJoinPoint joinPoint, Object result){
-        log.info("\nExiting: {}.{}()\nResult = {}",
-                joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(),
-                result);
-    }
-
-    private void beforeMethodCallLoggingDebug(ProceedingJoinPoint joinPoint){
-        log.info("\nEntering: {}.{}()\nArgument/s = {}",
-                joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(),
-                Arrays.toString(joinPoint.getArgs()));
-    }
-
-    private void afterMethodCallLoggingDebug(ProceedingJoinPoint joinPoint, Object result){
         log.info("\nExiting: {}.{}()\nResult = {}",
                 joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName(),
