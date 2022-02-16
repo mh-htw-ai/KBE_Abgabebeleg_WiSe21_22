@@ -9,8 +9,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="MyFilmClasses_Modul" />
         <module name="Gateway_Microservice" />
-        <module name="Data_Warehouse_Microservice" />
         <module name="Experimental_Modul" />
+        <module name="Data_Warehouse_Microservice" />
         <module name="Main_Component_Microservice" />
         <module name="MwSt_Microservice" />
       </profile>

@@ -25,7 +25,7 @@ public class MovieRatingRepresentationAssembler implements RepresentationModelAs
                 .ratingDate(entity.getRatingDate())
                 .build();
 
-        ratingRepresentation.add( linkTo( methodOn(MainRatingController.class).getMovieRating( ratingRepresentation.getId() ) ).withSelfRel() );
+        ratingRepresentation.add( linkTo( methodOn(MainRatingController.class).getMovieRating( ratingRepresentation.getId().toString() ) ).withSelfRel() );
 
         return ratingRepresentation;
     }

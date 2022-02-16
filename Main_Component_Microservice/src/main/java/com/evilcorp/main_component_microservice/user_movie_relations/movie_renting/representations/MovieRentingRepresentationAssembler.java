@@ -23,7 +23,7 @@ public class MovieRentingRepresentationAssembler implements RepresentationModelA
                 .startOfRenting(entity.getStartOfRenting())
                 .build();
 
-        rentingRepresentation.add( linkTo( methodOn(MainRentingController.class).getMovieRenting( rentingRepresentation.getId() ) ).withSelfRel() );
+        rentingRepresentation.add( linkTo( methodOn(MainRentingController.class).getMovieRenting( rentingRepresentation.getId().toString() ) ).withSelfRel() );
 
         return rentingRepresentation;
     }
