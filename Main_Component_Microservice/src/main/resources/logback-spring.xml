@@ -39,7 +39,7 @@
     </root>
 
     <!-- LOG "evilcorp" at DEBUG level -->
-    <logger name="com.evilcorp.main_component_microservice" level="debug" additivity="false">
+    <logger name="com.evilcorp.main_component_microservice" level="info" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
