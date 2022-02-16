@@ -9,5 +9,4 @@ class MwStMicroserviceApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
