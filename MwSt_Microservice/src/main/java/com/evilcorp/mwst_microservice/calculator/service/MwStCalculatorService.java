@@ -8,23 +8,10 @@ import org.springframework.stereotype.Service;
 public class MwStCalculatorService {
 
     public MehrwertsteuerModell calculate(MehrwertsteuerModell mwstModell){
-        if(this.toMuchValuesAreZero(mwstModell))throw new ToMuchMissingValuesException();
         if(this.steuerartIsNull(mwstModell))throw new CouldNotDetermineSteuerartException();
+        if(this.toMuchValuesAreZero(mwstModell))throw new TooMuchMissingValuesException();
         mwstModell = this.calculateMissingValues(mwstModell);
         return this.roundFloatingPointValues(mwstModell);
-    }
-
-    private float calculateArtikelpreis(float artMitSteuer, Mehrwertsteuerart mehrwertsteuerart){
-        return artMitSteuer / (1+mehrwertsteuerart.getProzentsatz());
-    }
-
-    private float calculateSteueranteil(float artikelPreis, Mehrwertsteuerart mehrwertsteuerart){
-        return artikelPreis * mehrwertsteuerart.getProzentsatz();
-    }
-
-    private float calculateArtMitSteuer(float artikelPreis, Mehrwertsteuerart mehrwertsteuerart){
-        float steueranteil  = artikelPreis * mehrwertsteuerart.getProzentsatz();
-        return artikelPreis + steueranteil;
     }
 
     private MehrwertsteuerModell calculateMissingValues(MehrwertsteuerModell mwstModell){
@@ -42,6 +29,19 @@ public class MwStCalculatorService {
         return new MehrwertsteuerModell(artikelPreis, steueranteil, artMitSteuer, mwstArt);
     }
 
+    private float calculateArtikelpreis(float artMitSteuer, Mehrwertsteuerart mehrwertsteuerart){
+        return artMitSteuer / (1+mehrwertsteuerart.getProzentsatz());
+    }
+
+    private float calculateSteueranteil(float artikelPreis, Mehrwertsteuerart mehrwertsteuerart){
+        return artikelPreis * mehrwertsteuerart.getProzentsatz();
+    }
+
+    private float calculateArtMitSteuer(float artikelPreis, Mehrwertsteuerart mehrwertsteuerart){
+        float steueranteil  = artikelPreis * mehrwertsteuerart.getProzentsatz();
+        return artikelPreis + steueranteil;
+    }
+
     private MehrwertsteuerModell roundFloatingPointValues(MehrwertsteuerModell mwstModell){
         float roundedArtikelPreis = Math.round(mwstModell.getArtikelpreis()*100.0f)/100.0f;
         float roundedSteueranteil = Math.round(mwstModell.getSteueranteil()*100.0f)/100.0f;
@@ -52,13 +52,13 @@ public class MwStCalculatorService {
         return mwstModell;
     }
 
+    private boolean steuerartIsNull(MehrwertsteuerModell mwstModell){
+        return mwstModell.getSteuertyp() == null;
+    }
+
     private boolean toMuchValuesAreZero(MehrwertsteuerModell mwstModell){
         float artikelPreis = mwstModell.getArtikelpreis();
         float artMitSteuer = mwstModell.getArtMitSteuer();
         return artikelPreis == 0 && artMitSteuer == 0;
-    }
-
-    private boolean steuerartIsNull(MehrwertsteuerModell mwstModell){
-        return mwstModell.getSteuertyp() == null;
     }
 }

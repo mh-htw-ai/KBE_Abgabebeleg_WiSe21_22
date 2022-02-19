@@ -1,7 +1,7 @@
 package com.evilcorp.mwst_microservice.calculator;
 
 import com.evilcorp.mwst_microservice.calculator.service.CouldNotDetermineSteuerartException;
-import com.evilcorp.mwst_microservice.calculator.service.ToMuchMissingValuesException;
+import com.evilcorp.mwst_microservice.calculator.service.TooMuchMissingValuesException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,9 +20,9 @@ public class CustomExceptionHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler(ToMuchMissingValuesException.class)
+    @ExceptionHandler(TooMuchMissingValuesException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String handleToMuchMissingValuesException(ToMuchMissingValuesException e){
+    String handleToMuchMissingValuesException(TooMuchMissingValuesException e){
         return e.getMessage();
     }
 
