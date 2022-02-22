@@ -13,9 +13,8 @@ spring:
         - id: MwSt_Microservice
           uri: http://localhost:21111/
           predicates:
-            - Path=/mwst/test
-
-        - id: MwSt_Microservice
-          uri: http://localhost:21111/
-          predicates:
-            - Path=/https/**
+            - Path=/mwst/api/v1.0/**
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
