@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -32,6 +33,7 @@ public class CsvExporterService {
 
     @Scheduled(cron = "0 0 12 * * ?")//0 seconds 0 minutes 12 hours
     public void exportRecentRatingsToCsv(){
+        this.createCsvDirIfNotAlreadyExists();
         List<MovieRating> ratingsSinceTheLastExport = ratingRepository.findAllByRatingDateAfter(lastDate);
         List<CsvObj> csvList = this.getCsvBeanList(ratingsSinceTheLastExport);
         try {
@@ -40,6 +42,11 @@ public class CsvExporterService {
             throw new CsvCouldNotBeWrittenException();
         }
         lastDate = new Date();
+    }
+
+    private void createCsvDirIfNotAlreadyExists(){
+        File file = new File(".\\Main_Component_Microservice\\csv");
+        file.mkdir();
     }
 
     private void writeCsvListToFile(List<CsvObj> csvList) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
