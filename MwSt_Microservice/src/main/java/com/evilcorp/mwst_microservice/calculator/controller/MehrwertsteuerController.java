@@ -12,7 +12,7 @@ import javax.validation.Valid;
 @RestController
 @Validated
 @AllArgsConstructor
-@RequestMapping("/mwst")
+@RequestMapping("/v1.0")
 public class MehrwertsteuerController {
 
     private final MwStCalculatorService mwStCalculatorService;
