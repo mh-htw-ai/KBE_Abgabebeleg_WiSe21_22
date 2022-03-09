@@ -2,7 +2,6 @@ package com.evilcorp.main_component_microservice.user_movie_relations.movie_rati
 
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers.MainRatingController;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
 import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;

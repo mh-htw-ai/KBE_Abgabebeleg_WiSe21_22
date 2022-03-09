@@ -1,7 +1,6 @@
 package com.evilcorp.data_warehouse_microservice.logic;
 
 import com.evilcorp.data_warehouse_microservice.model.FilmObjBewertung;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,15 +1,18 @@
 package com.evilcorp.data_warehouse_microservice;
 
+//@Configuration
+//@EnableAutoConfiguration
+//@ComponentScan("com.evilcorp.data_warehouse_microservice")
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DataWarehouseMicroserviceApplicationTests {
-
+public class DataWarehouseMicroserviceApplicationTests {
 
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
     }
 
 }

@@ -2,7 +2,6 @@ package com.evilcorp.main_component_microservice.user_movie_relations.movie_rent
 
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.controllers.MainRentingController;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
 import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
