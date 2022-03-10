@@ -27,6 +27,4 @@ public class UserRepresentation extends RepresentationModel<UserRepresentation> 
     private final String street_number;
     private final String postcode;
     private final String placeOfResidence;
-    private final List<MovieRenting> rentingList;
-    private final List<MovieRating> ratingList;
 }

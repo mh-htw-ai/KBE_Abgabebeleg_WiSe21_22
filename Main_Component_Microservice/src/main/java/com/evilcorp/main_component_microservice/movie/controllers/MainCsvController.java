@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/csv")
@@ -22,10 +21,5 @@ public class MainCsvController{
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    @PutMapping("/setup")
-    public void setupSampleData() {
-
     }
 }

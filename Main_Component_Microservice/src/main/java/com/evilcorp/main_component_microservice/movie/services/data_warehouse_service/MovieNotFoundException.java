@@ -1,4 +1,4 @@
-package com.evilcorp.main_component_microservice.user_movie_relations;
+package com.evilcorp.main_component_microservice.movie.services.data_warehouse_service;
 
 import com.evilcorp.main_component_microservice.exception_handling.EntityNotFoundException;
 

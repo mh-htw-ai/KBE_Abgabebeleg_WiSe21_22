@@ -60,6 +60,11 @@ public class UserService {
         userRepository.delete(userToBeDeleted);
     }
 
+    public boolean checkIfCorrespondingUserExists(UUID userId){
+        User correspondingUser = this.getUserByRepo(userId);
+        return correspondingUser != null;
+    }
+
     public User getUserByRepo(UUID userId){
         Optional<User> correspondingUserContainer = userRepository.findById(userId);
         return this.unwrapUserContainer(correspondingUserContainer, userId);
@@ -73,27 +78,5 @@ public class UserService {
             throw new UserNotFoundException(userId);
         }
         return user;
-    }
-
-    public void addNewRentingToUser(UUID userId, MovieRenting newRenting){
-        User correspondingUser = this.getUserByRepo(userId);
-        correspondingUser.addToRentings(newRenting);
-        userRepository.save(correspondingUser);
-    }
-
-    public void deleteRentingFromUser(User correspondingUser, MovieRenting rentingToBeDeleted) {
-        correspondingUser.removeFromRentings(rentingToBeDeleted);
-        userRepository.save(correspondingUser);
-    }
-
-    public void addNewRatingToUser(UUID userId, MovieRating newRating){
-        User correspondingUser = this.getUserByRepo(userId);
-        correspondingUser.addToRatings(newRating);
-        userRepository.save(correspondingUser);
-    }
-
-    public void deleteRatingFromUser(User correspondingUser, MovieRating ratingToBeDeleted){
-        correspondingUser.removeFromRatings(ratingToBeDeleted);
-        userRepository.save(correspondingUser);
     }
 }

@@ -35,12 +35,8 @@ public class MovieRenting {
     @NonNull
     private UUID movieId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_renter", nullable = false, columnDefinition = "UUID")
     @NonNull
-    @ToString.Exclude
-    @JsonBackReference
-    private User movieRenter;
+    private UUID renterId;
 
     private Date startOfRenting = new Date();
 }

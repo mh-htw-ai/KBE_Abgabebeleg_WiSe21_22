@@ -1,7 +1,5 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services;
 
-import com.evilcorp.main_component_microservice.user_movie_relations.MovieNotFoundException;
-import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import com.evilcorp.main_component_microservice.user.services.UserService;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
@@ -26,7 +24,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class RatingService {
 
     private final RatingRepository ratingRepository;
@@ -47,8 +44,8 @@ public class RatingService {
     }
 
     public CollectionModel<MovieRatingRepresentation> getAllMovieRatingsOfUserByRepo(UUID userId){
-        User supposedRatingOwner = userService.getUserByRepo(userId);
-        List<MovieRating> tempRatings = ratingRepository.findAllByRatingOwnerIs(supposedRatingOwner);
+        userService.checkIfCorrespondingUserExists(userId);
+        List<MovieRating> tempRatings = ratingRepository.findAllByOwnerIdIs(userId);
         return ratingRepresentationAssembler.toCollectionModel(tempRatings);
     }
 
@@ -69,8 +66,6 @@ public class RatingService {
 
     public void deleteRating(UUID ratingId){
         MovieRating ratingToBeDeleted = this.getMovieRatingByRepo(ratingId);
-        User correspondingUser = ratingToBeDeleted.getRatingOwner();
-        userService.deleteRatingFromUser(correspondingUser, ratingToBeDeleted);
         ratingRepository.delete(ratingToBeDeleted);
     }
 
@@ -90,18 +85,10 @@ public class RatingService {
     }
 
     private MovieRating createMovieRating(UUID userId, UUID movieId, int rating){
-        if(this.checkIfCorrespondingMovieExists(movieId)) {
-            User correspondingUser = userService.getUserByRepo(userId);
-            MovieRating movieRating = new MovieRating(movieId, correspondingUser, rating);
-            userService.addNewRatingToUser(userId, movieRating);
-            ratingRepository.save(movieRating);
-            return movieRating;
-        }
-        throw new MovieNotFoundException(movieId);
-    }
-
-    private boolean checkIfCorrespondingMovieExists(UUID movieId){
-        Movie correspondingMovie = dataWarehouseService.getMovieById( movieId );
-        return correspondingMovie != null;
+        userService.checkIfCorrespondingUserExists(userId);
+        dataWarehouseService.checkIfCorrespondingMovieExists(movieId);
+        MovieRating movieRating = new MovieRating(movieId, userId, rating);
+        ratingRepository.save(movieRating);
+        return movieRating;
     }
 }

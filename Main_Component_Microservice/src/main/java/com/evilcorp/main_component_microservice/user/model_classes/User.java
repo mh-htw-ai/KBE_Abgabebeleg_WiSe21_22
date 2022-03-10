@@ -74,20 +74,6 @@ public class User {
     @Size(min = 5, max = 40, message = "Place of residence must be between 5 and 40 characters!")
     private String placeOfResidence;
 
-    @OneToMany(mappedBy = "movieRenter", fetch = FetchType.LAZY)
-    @Column(name = "rentings")
-    @Getter
-    @ToString.Exclude
-    @JsonManagedReference
-    public List<MovieRenting> rentingList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "ratingOwner", fetch = FetchType.LAZY)
-    @Column(name = "ratings")
-    @Getter
-    @ToString.Exclude
-    @JsonManagedReference
-    public List<MovieRating> ratingList = new ArrayList<>();
-
     public void update(User user) {
         this.username = user.getUsername();
         this.firstname = user.getFirstname();
@@ -98,15 +84,4 @@ public class User {
         this.postcode = user.getPostcode();
         this.placeOfResidence = user.getPlaceOfResidence();
     }
-
-    public void addToRentings(MovieRenting newRenting) { this.rentingList.add(newRenting); }
-
-    public boolean removeFromRentings(MovieRenting renting){ return this.rentingList.remove(renting); }
-
-    public void addToRatings(MovieRating newRating) { this.ratingList.add(newRating); }
-
-    public boolean removeFromRatings(MovieRating rating){
-        return this.ratingList.remove(rating);
-    }
-
 }

@@ -13,8 +13,7 @@ import java.util.UUID;
 @Repository
 public interface RatingRepository extends JpaRepository<MovieRating, UUID> {
 
-    List<MovieRating> findAllByRatingOwnerIs(User ratingOwner);
+    List<MovieRating> findAllByOwnerIdIs(UUID ownerId);
 
     List<MovieRating> findAllByRatingDateAfter(Date ratingDate);
-
 }

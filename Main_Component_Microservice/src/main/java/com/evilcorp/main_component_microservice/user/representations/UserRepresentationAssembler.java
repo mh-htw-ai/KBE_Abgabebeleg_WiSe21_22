@@ -26,8 +26,6 @@ public class UserRepresentationAssembler implements RepresentationModelAssembler
                 .street_number(entity.getStreet_number())
                 .postcode(entity.getPostcode())
                 .placeOfResidence(entity.getPlaceOfResidence())
-                .ratingList(entity.ratingList)
-                .rentingList(entity.rentingList)
                 .build();
 
         userRepresentation.add( linkTo( methodOn(MainUserController.class).getUser( userRepresentation.getId().toString() ) ).withSelfRel() );

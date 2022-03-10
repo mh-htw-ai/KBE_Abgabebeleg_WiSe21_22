@@ -1,9 +1,7 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.services;
 
-import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import com.evilcorp.main_component_microservice.user.services.UserService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers.MainRatingController;
-import com.evilcorp.main_component_microservice.user_movie_relations.MovieNotFoundException;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
@@ -47,8 +45,8 @@ public class RentingService {
     }
 
     public CollectionModel<MovieRentingRepresentation> getAllRentingsOfUser(UUID userId){
-        User supposedMovieRenter = userService.getUserByRepo(userId);
-        List<MovieRenting> rentingsOfUser = rentingRepository.findAllByMovieRenterIs(supposedMovieRenter);
+        userService.checkIfCorrespondingUserExists(userId);
+        List<MovieRenting> rentingsOfUser = rentingRepository.findAllByRenterIdIs(userId);
         return rentingAssembler.toCollectionModel(rentingsOfUser);
     }
 
@@ -68,8 +66,6 @@ public class RentingService {
 
     public void deleteRenting(UUID rentingId){
         MovieRenting rentingToBeDeleted = this.getMovieRentingByRepo(rentingId);
-        User correspondingUser = rentingToBeDeleted.getMovieRenter();
-        userService.deleteRentingFromUser(correspondingUser, rentingToBeDeleted);
         rentingRepository.delete(rentingToBeDeleted);
     }
 
@@ -89,18 +85,10 @@ public class RentingService {
     }
 
     private MovieRenting createMovieRenting(UUID userId, UUID movieId){
-        if(this.checkIfCorrespondingMovieExists(movieId)) {
-            User correspondingUser = userService.getUserByRepo(userId);
-            MovieRenting movieRenting = new MovieRenting(movieId, correspondingUser);
-            userService.addNewRentingToUser(userId, movieRenting);
-            rentingRepository.save(movieRenting);
-            return movieRenting;
-        }
-        throw new MovieNotFoundException(movieId);
-    }
-
-    private boolean checkIfCorrespondingMovieExists(UUID movieId){
-        Movie correspondingMovie = dataWarehouseService.getMovieById( movieId );
-        return correspondingMovie != null;
+        userService.checkIfCorrespondingUserExists(userId);
+        dataWarehouseService.checkIfCorrespondingMovieExists(movieId);
+        MovieRenting movieRenting = new MovieRenting(movieId, userId);
+        rentingRepository.save(movieRenting);
+        return movieRenting;
     }
 }

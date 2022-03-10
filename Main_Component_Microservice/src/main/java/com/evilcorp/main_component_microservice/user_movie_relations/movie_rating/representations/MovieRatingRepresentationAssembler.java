@@ -20,22 +20,18 @@ public class MovieRatingRepresentationAssembler implements RepresentationModelAs
         MovieRatingRepresentation ratingRepresentation = MovieRatingRepresentation.builder()
                 .id(entity.getId())
                 .movieId(entity.getMovieId())
-                .ratingOwnerId(entity.getRatingOwner().getId())
+                .ratingOwnerId(entity.getOwnerId())
                 .rating(entity.getRating())
                 .ratingDate(entity.getRatingDate())
                 .build();
-
         ratingRepresentation.add( linkTo( methodOn(MainRatingController.class).getMovieRating( ratingRepresentation.getId().toString() ) ).withSelfRel() );
-
         return ratingRepresentation;
     }
 
     @Override
     public @NonNull CollectionModel<MovieRatingRepresentation> toCollectionModel(@NonNull Iterable<? extends MovieRating> entities) {
         CollectionModel<MovieRatingRepresentation> ratingRepresentations = RepresentationModelAssembler.super.toCollectionModel(entities);
-
         ratingRepresentations.add( linkTo( methodOn(MainRatingController.class).getAllMovieRatings() ).withSelfRel() );
-
         return ratingRepresentations;
     }
 }
