@@ -25,16 +25,6 @@ public class MainMovieController{
 
     private final ParserService parserService;
     private final MovieMainService movieMainService;
-    private final ExternalApiService externalApiService;
-
-
-    @GetMapping(value = "/translate/{text}")
-    public ResponseEntity<?> getTranslation(@PathVariable String text){
-        String translation = externalApiService.translateTextTest(text);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(translation);
-    }
 
     @GetMapping(value = "/{movieIdString}",
             produces = "application/json")

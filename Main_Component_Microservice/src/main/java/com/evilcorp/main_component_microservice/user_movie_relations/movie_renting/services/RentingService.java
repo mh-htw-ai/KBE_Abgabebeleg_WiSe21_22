@@ -1,18 +1,11 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.services;
 
 import com.evilcorp.main_component_microservice.user.services.UserService;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers.MainRatingController;
-import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.movie.services.data_warehouse_service.DataWarehouseService;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentationAssembler;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.controllers.MainRentingController;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.repositories.RentingRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,48 +13,39 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Service
 @AllArgsConstructor
 public class RentingService {
 
     private final RentingRepository rentingRepository;
-    private final MovieRentingRepresentationAssembler rentingAssembler;
     private final UserService userService;
     private final DataWarehouseService dataWarehouseService;
 
-    public MovieRentingRepresentation getMovieRenting(UUID rentingId){
-        MovieRenting renting = this.getMovieRentingByRepo(rentingId);
-        return rentingAssembler
-                .toModel(renting)
-                .add( linkTo(methodOn(MainRentingController.class).getAllMovieRentings()).withRel("rentings"));
+    public MovieRenting getMovieRenting(UUID rentingId){
+        return this.getMovieRentingByRepo(rentingId);
     }
 
-    public CollectionModel<MovieRentingRepresentation> getAllRentings(){
-        List<MovieRenting> rentings = rentingRepository.findAll();
-        return rentingAssembler.toCollectionModel(rentings);
+    public List<MovieRenting> getAllRentings(){
+        return rentingRepository.findAll();
     }
 
-    public CollectionModel<MovieRentingRepresentation> getAllRentingsOfUser(UUID userId){
+    public List<MovieRenting> getAllRentingsOfUser(UUID userId){
         userService.checkIfCorrespondingUserExists(userId);
-        List<MovieRenting> rentingsOfUser = rentingRepository.findAllByRenterIdIs(userId);
-        return rentingAssembler.toCollectionModel(rentingsOfUser);
+        return rentingRepository.findAllByRenterIdIs(userId);
     }
 
-    public Link rentMovie(SimpleMovieRenting newRenting){
+    public UUID rentMovie(SimpleMovieRenting newRenting){
         UUID movieId = newRenting.getMovieId();
         UUID userId = newRenting.getRenterId();
         MovieRenting movieRenting = this.createMovieRenting(userId, movieId);
-        return linkTo( methodOn(MainRentingController.class).getMovieRenting( movieRenting.getId().toString() ) ).withSelfRel();
+        return movieRenting.getId();
     }
 
-    public Link updateRenting(UUID rentingId, Date newRentingStart){
+    public MovieRenting updateRenting(UUID rentingId, Date newRentingStart){
         MovieRenting currentRenting = this.getMovieRentingByRepo(rentingId);
         currentRenting.setStartOfRenting(newRentingStart);
         rentingRepository.save(currentRenting);
-        return linkTo( methodOn(MainRatingController.class).getMovieRating( rentingId.toString() ) ).withSelfRel();
+        return currentRenting;
     }
 
     public void deleteRenting(UUID rentingId){

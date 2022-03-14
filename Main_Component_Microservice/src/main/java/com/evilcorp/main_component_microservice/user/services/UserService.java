@@ -1,58 +1,43 @@
 package com.evilcorp.main_component_microservice.user.services;
 
-import com.evilcorp.main_component_microservice.user.controllers.MainUserController;
 import com.evilcorp.main_component_microservice.user.model_classes.User;
 import com.evilcorp.main_component_microservice.user.repositories.UserRepository;
-import com.evilcorp.main_component_microservice.user.representations.UserRepresentation;
-import com.evilcorp.main_component_microservice.user.representations.UserRepresentationAssembler;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
 import lombok.AllArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Service
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserRepresentationAssembler userAssembler;
 
-    public UserRepresentation getUser(UUID userId){
-        User user = this.getUserByRepo(userId);
-        return userAssembler
-                .toModel(user)
-                .add( linkTo( methodOn(MainUserController.class).getAllUsers() ).withRel("users"));
+    public User getUser(UUID userId){
+        return this.getUserByRepo(userId);
     }
 
-    public CollectionModel<UserRepresentation> getAllUsers(){
-        List<User> users = userRepository.findAll();
-        return userAssembler.toCollectionModel(users);
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 
-    public Link createUser(User newUser){
+    public UUID createUser(User newUser){
         User tempUser;
         try {
             tempUser = userRepository.save(newUser);
         }catch(Exception e){
             throw new UserAlreadyExistsException(newUser.getId());
         }
-        return linkTo( methodOn(MainUserController.class).getUser( tempUser.getId().toString() ) ).withSelfRel();
+        return tempUser.getId();
     }
 
-    public Link updateUser(User updateUser){
+    public User updateUser(User updateUser){
         User existingUser = this.getUserByRepo(updateUser.getId());
         existingUser.update(updateUser);
         userRepository.save(existingUser);
-        return linkTo( methodOn(MainUserController.class).getUser( existingUser.getId().toString() ) ).withSelfRel();
+        return existingUser;
     }
 
     public void deleteUser(UUID userId){
@@ -62,10 +47,10 @@ public class UserService {
 
     public boolean checkIfCorrespondingUserExists(UUID userId){
         User correspondingUser = this.getUserByRepo(userId);
-        return correspondingUser != null;
+        return true;
     }
 
-    public User getUserByRepo(UUID userId){
+    private User getUserByRepo(UUID userId){
         Optional<User> correspondingUserContainer = userRepository.findById(userId);
         return this.unwrapUserContainer(correspondingUserContainer, userId);
     }
