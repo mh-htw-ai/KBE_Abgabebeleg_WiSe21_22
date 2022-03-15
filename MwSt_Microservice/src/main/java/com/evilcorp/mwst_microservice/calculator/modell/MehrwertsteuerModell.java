@@ -13,14 +13,14 @@ import javax.validation.constraints.NotNull;
 public class MehrwertsteuerModell {
 
     @DecimalMin(value="0.0")
-    private float Artikelpreis;
+    private float artikelpreis;
 
     @DecimalMin(value="0.0")
-    private float Steueranteil;
+    private float steueranteil;
 
     @DecimalMin(value="0.0")
-    private float ArtMitSteuer;
+    private float artMitSteuer;
 
     @NotNull
-    private Mehrwertsteuerart Steuertyp;
+    private Mehrwertsteuerart steuertyp;
 }
