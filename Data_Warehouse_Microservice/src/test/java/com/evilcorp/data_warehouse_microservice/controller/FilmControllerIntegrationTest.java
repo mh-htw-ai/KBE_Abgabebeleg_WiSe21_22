@@ -1,47 +1,36 @@
 package com.evilcorp.data_warehouse_microservice.controller;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
-//@SpringBootTest(classes = DataWarehouseMicroserviceApplication.class
-//        , webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/*
-@RunWith(SpringRunner.class)
-@SpringBootTest(
-        SpringBootTest.WebEnvironment.MOCK,
-        classes = DataWarehouseMicroserviceApplicationTests.class)
+@SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(
-        locations = "classpath:application-integrationtest.properties")
-
- */
-class FilmControllerIntegrationTest {
-/*
-    private static final Logger logger = LoggerFactory.getLogger(FilmControllerIntegrationTest.class);
+public class FilmControllerIntegrationTest {
 
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
-    @Autowired
-    private FilmObjRepository filmObjRepository;
+    private String path = "http://localhost:21139/film";
 
-*/
-@Test
-void getFilmAll() {
+    @Test
+    void getFilmAll() throws Exception {
+        mockMvc.perform(get(path + "/all"))
+                .andExpect(status().isOk());
+    }
 
-
-
-
-    //createTestEmployee("bob");
-/*
-    mvc.perform(get("/api/employees")
-                    .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content()
-                    .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$[0].name", is("bob")));
-*/
-}
+    @Test
+    void getNewUUIDForFilmFromDataWareHouse() throws Exception {
+        mockMvc.perform(get(path + "/newUuid"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.valueOf("text/plain;charset=UTF-8")));
+    }
 
     /*
     @Test
