@@ -23,14 +23,4 @@ public class DataWarehouseMicroserviceApplicationTests {
     @Autowired
     private MockMvc mockMvc;
 
-
-    //TODO: Hier weitermachen mit Anleitung: https://github.com/spring-guides/gs-testing-web/blob/main/complete/src/test/java/com/example/testingweb/TestingWebApplicationTest.java
-    //TODO: Hier die Übersicht: https://github.com/spring-guides/gs-testing-web/tree/main/complete <===
-    //TODO: Nach folgender Anleitung: https://spring.io/guides/gs/testing-web/ bei Schritt "Es ist schön, eine Plausibilitätsprüfung"...
-    @Test
-    public void shouldReturnDefaultMessage() throws Exception {
-        this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hello, World")));
-    }
-
-}
+   }
