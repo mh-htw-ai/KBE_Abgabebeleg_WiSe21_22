@@ -5,12 +5,8 @@ import com.evilcorp.data_warehouse_microservice.model.FilmObj;
 import com.evilcorp.data_warehouse_microservice.repository.FilmObjRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -68,7 +64,7 @@ public class FilmController {
         List<FilmObj> filmListe = filmObjRepository.findAllByGeloeschtFalse();
         String ausgabe;
         try {
-            ObjectMapper mapper = zielformatierung(mt);
+            ObjectMapper mapper = DataWarehouseLogik.zielformatierung(mt);
             ausgabe = mapper.writeValueAsString(filmListe);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -150,7 +146,7 @@ public class FilmController {
         }
         String ausgabe;
         try {
-            ObjectMapper mapper = zielformatierung(mt);
+            ObjectMapper mapper = DataWarehouseLogik.zielformatierung(mt);
             ausgabe = mapper.writeValueAsString(filmListe);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -297,7 +293,7 @@ public class FilmController {
         FilmObj film = this.filmObjRepository.findByIdAndGeloeschtIsFalse(uuid);
         String ausgabe;
         try {
-            ObjectMapper mapper = zielformatierung(mt);
+            ObjectMapper mapper = DataWarehouseLogik.zielformatierung(mt);
             ausgabe = mapper.writeValueAsString(film);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -309,27 +305,6 @@ public class FilmController {
         log.info("getFilm(): Film(" + film + ") wurde ermittelt und zurueckgeschickt.");
         return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
-
-
-    /**
-     * Funktion wandelt anhand des gewuenschten MediaTypes den gewünschten Mapper um
-     *
-     * @param mt - Zielt-MediaType
-     * @return Mapper anhand des MediaTypes
-     */
-    private ObjectMapper zielformatierung(MediaType mt) {
-        ObjectMapper mapper;
-        System.out.println("Zielformat: " + mt.toString());
-        if (mt.equals(MediaType.APPLICATION_XML)) {
-            mapper = new XmlMapper();
-            System.out.println("Umwandlung in XML.");
-        } else {
-            mapper = new JsonMapper();
-            System.out.println("Umwandlung in JSON.");
-        }
-        return mapper;
-    }
-
 
     /**
      * Funktion erstellt eine neue UUID nach eigenen Muster
