@@ -1,14 +1,9 @@
 package com.evilcorp.data_warehouse_microservice.controller;
 
-import static org.junit.Assert.*;
 
 import com.evilcorp.data_warehouse_microservice.model.FilmObj;
-import com.evilcorp.data_warehouse_microservice.model.FilmObjBewertung;
 import com.evilcorp.data_warehouse_microservice.repository.FilmObjRepository;
-import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,16 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -261,69 +252,7 @@ public class FilmControllerIntegrationTest {
 
         Assertions.assertEquals(MediaType.APPLICATION_JSON, MediaType.parseMediaType(Objects.requireNonNull(mvcResult.getResponse().getContentType())));
 
-        //TODO: Ergebnis in eine Liste/Objekt umwandeln und prüfen mit dem original Objekt.
-
-
         }
-
-
-
-
-    /*
-    @Test
-    void getFilmAll() {
-        String sPath = "/all";
-        //String p = "http://localhost:21131/film/all";
-        String url = "http://127.0.0.1:21131/film/all";
-
-        Assert.notNull(url, "'url' must not be null");
-
-        TestRestTemplate testRestTemplate = new TestRestTemplate();
-        //ResponseEntity<String> response = testRestTemplate.getForEntity(path + sPath, String.class);
-        ResponseEntity<String> response = testRestTemplate.getForEntity(url, String.class);
-
-        //assertEquals(response.getStatusCode(), HttpStatus.OK);
-
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl
-                = "http://localhost:8080/spring-rest/foos";
-        ResponseEntity<String> response
-                = restTemplate.getForEntity(fooResourceUrl + "/1", String.class);
-        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
-    }
-
-     */
-/*
-    @Test
-    void getFilmByHeader() {
-        fail("test not implement");
-    }
-
-    @Test
-    void getFilmByPath() {
-        fail("test not implement");
-    }
-
-    @Test
-    void getFilmByTitle() {
-        fail("test not implement");
-    }
-
-    @Test
-    void postFilms() {
-        fail("test not implement");
-    }
-
-    @Test
-    void deleteFilm() {
-        fail("test not implement");
-    }
-
-    @Test
-    void putFilm() {
-        fail("test not implement");
-    }
-    */
 
 
     private UUID getNewUUID (){
