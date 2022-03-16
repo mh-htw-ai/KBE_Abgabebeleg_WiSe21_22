@@ -1,7 +1,11 @@
-package com.evilcorp.mwst_microservice;
+package com.evilcorp.mwst_microservice.calculator.modell;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@AllArgsConstructor
+@Getter
 public enum Mehrwertsteuerart {
 
     @JsonProperty("standard")
@@ -10,12 +14,4 @@ public enum Mehrwertsteuerart {
     REDUZIERT(0.07f);
 
     private final float prozentsatz;
-
-    Mehrwertsteuerart(float prozentsatz){
-        this.prozentsatz = prozentsatz;
-    }
-
-    public float getProzentsatz() {
-        return prozentsatz;
-    }
 }
