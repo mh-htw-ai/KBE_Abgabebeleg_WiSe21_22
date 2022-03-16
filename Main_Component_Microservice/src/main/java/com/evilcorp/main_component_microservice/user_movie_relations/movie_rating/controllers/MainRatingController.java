@@ -1,17 +1,16 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.controllers;
 
 import com.evilcorp.main_component_microservice.parsing.ParserService;
+import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.MovieRating;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.model_classes.SimpleMovieRating;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.representations.MovieRatingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_rating.services.RatingService;
 import lombok.AllArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,50 +25,50 @@ public class MainRatingController{
     @GetMapping(value = "/{ratingIdString}",
         produces = "application/json")
     @ResponseStatus(HttpStatus.FOUND)
-    public ResponseEntity<MovieRatingRepresentation> getMovieRating(@PathVariable String ratingIdString){
+    public ResponseEntity<MovieRating> getMovieRating(@PathVariable String ratingIdString){
         UUID ratingId = parserService.parseStringToUUID(ratingIdString);
-        MovieRatingRepresentation ratingRepresentation = ratingService.getMovieRating(ratingId);
+        MovieRating rating = ratingService.getMovieRating(ratingId);
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(ratingRepresentation);
+                .status( HttpStatus.FOUND )
+                .body( rating );
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<CollectionModel<MovieRatingRepresentation>> getAllMovieRatings(){
-        CollectionModel<MovieRatingRepresentation> ratingsRepresentation = ratingService.getAllMovieRatings();
+    public ResponseEntity<List<MovieRating>> getAllMovieRatings(){
+        List<MovieRating> ratings = ratingService.getAllMovieRatings();
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(ratingsRepresentation);
+                .status( HttpStatus.FOUND )
+                .body( ratings );
     }
 
     @GetMapping(value = "/of_user/{userIdString}",
             produces = "application/json")
-    public ResponseEntity<CollectionModel<MovieRatingRepresentation>> getAllMovieRatingsOfUser(@PathVariable String userIdString){
+    public ResponseEntity<List<MovieRating>> getAllMovieRatingsOfUser(@PathVariable String userIdString){
         UUID userId = parserService.parseStringToUUID(userIdString);
-        CollectionModel<MovieRatingRepresentation> ratingRepresentations = ratingService.getAllMovieRatingsOfUserByRepo(userId);
+        List<MovieRating> ratings = ratingService.getAllMovieRatingsOfUserByRepo(userId);
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(ratingRepresentations);
+                .status( HttpStatus.FOUND )
+                .body( ratings );
     }
 
     @PostMapping(value = "/create",
             produces = "application/json")
-    public ResponseEntity<Link> rateMovie(@RequestBody SimpleMovieRating newRating){
-        Link linkToNewMovieRating = ratingService.rateMovie(newRating);
+    public ResponseEntity<UUID> rateMovie(@RequestBody SimpleMovieRating newRating){
+        UUID ratingId = ratingService.rateMovie(newRating);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body( linkToNewMovieRating );
+                .body( ratingId );
     }
 
     @PutMapping(value = "/update/{ratingIdString}",
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<Link> updateRating(@PathVariable String ratingIdString, @RequestBody int newRatingValue){
+    public ResponseEntity<MovieRating> updateRating(@PathVariable String ratingIdString, @RequestBody int newRatingValue){
         UUID ratingId = parserService.parseStringToUUID(ratingIdString);
-        Link linkToUpdatedMovieRating = ratingService.updateRating(ratingId, newRatingValue);
+        MovieRating updatedRating = ratingService.updateRating(ratingId, newRatingValue);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(linkToUpdatedMovieRating);
+                .status( HttpStatus.OK )
+                .body( updatedRating );
     }
 
     @DeleteMapping(value = "/delete/{ratingIdString}")

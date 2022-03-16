@@ -1,17 +1,16 @@
 package com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.controllers;
 
 import com.evilcorp.main_component_microservice.parsing.ParserService;
+import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.MovieRenting;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.model_classes.SimpleMovieRenting;
-import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.representations.MovieRentingRepresentation;
 import com.evilcorp.main_component_microservice.user_movie_relations.movie_renting.services.RentingService;
 import lombok.AllArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,52 +24,52 @@ public class MainRentingController{
     @GetMapping(value = "/{rentingIdString}",
             produces = "application/json")
     @ResponseStatus(HttpStatus.FOUND)
-    public ResponseEntity<MovieRentingRepresentation> getMovieRenting(@PathVariable String rentingIdString){
+    public ResponseEntity<MovieRenting> getMovieRenting(@PathVariable String rentingIdString){
         UUID rentingId = parserService.parseStringToUUID(rentingIdString);
-        MovieRentingRepresentation rentingRepresentation = rentingService.getMovieRenting(rentingId);
+        MovieRenting renting = rentingService.getMovieRenting(rentingId);
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(rentingRepresentation);
+                .status( HttpStatus.FOUND )
+                .body( renting );
     }
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.FOUND)
-    public ResponseEntity<CollectionModel<MovieRentingRepresentation>> getAllMovieRentings(){
-        CollectionModel<MovieRentingRepresentation> rentingsRepresentation = rentingService.getAllRentings();
+    public ResponseEntity<List<MovieRenting>> getAllMovieRentings(){
+        List<MovieRenting> rentings = rentingService.getAllRentings();
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(rentingsRepresentation);
+                .status( HttpStatus.FOUND )
+                .body( rentings );
     }
 
     @GetMapping(value = "/of_user/{userIdString}",
             produces = "application/json")
-    public ResponseEntity<CollectionModel<MovieRentingRepresentation>> getAllMovieRentingsOfUser(@PathVariable String userIdString){
+    public ResponseEntity<List<MovieRenting>> getAllMovieRentingsOfUser(@PathVariable String userIdString){
         UUID userId = parserService.parseStringToUUID(userIdString);
-        CollectionModel<MovieRentingRepresentation> rentingsRepresentation = rentingService.getAllRentingsOfUser(userId);
+        List<MovieRenting> rentings = rentingService.getAllRentingsOfUser(userId);
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(rentingsRepresentation);
+                .status( HttpStatus.FOUND )
+                .body( rentings );
     }
 
     @PostMapping(value = "/create",
             produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Link> rentMovie(@RequestBody SimpleMovieRenting newRenting){
-        Link linkToNewMovieRenting = rentingService.rentMovie(newRenting);
+    public ResponseEntity<UUID> rentMovie(@RequestBody SimpleMovieRenting newRenting){
+        UUID rentingId = rentingService.rentMovie(newRenting);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(linkToNewMovieRenting);
+                .status( HttpStatus.CREATED )
+                .body( rentingId );
     }
 
     @PutMapping(value = "/update/{rentingIdString}",
             produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Link> updateRenting(@PathVariable String rentingIdString, @RequestBody Date newRentingDate){
+    public ResponseEntity<MovieRenting> updateRenting(@PathVariable String rentingIdString, @RequestBody Date newRentingDate){
         UUID rentingId = parserService.parseStringToUUID(rentingIdString);
-        Link linkToNewMovieRenting = rentingService.updateRenting(rentingId, newRentingDate);
+        MovieRenting updatedRenting = rentingService.updateRenting(rentingId, newRentingDate);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(linkToNewMovieRenting);
+                .status( HttpStatus.CREATED )
+                .body( updatedRenting );
     }
 
     @DeleteMapping(value = "/delete/{rentingIdString}")

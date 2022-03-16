@@ -25,6 +25,7 @@ public class DataWarehouseService {
     public Movie getMovieById(UUID movieId){
         HttpEntity<String> requestEntity = this.setupHttpEntityDefaultStringBody();
         Movie datawarehouseResponseMovie = this.sendRequestForMovie(movieId, requestEntity);
+        if(datawarehouseResponseMovie == null) throw new MovieNotFoundException(movieId);
         return datawarehouseResponseMovie;
     }
 
@@ -57,6 +58,11 @@ public class DataWarehouseService {
         if(responseEntity.getStatusCode().isError()){
             throw new MovieCouldNotBeManipulatedException("deleted");
         }
+    }
+
+    public boolean checkIfCorrespondingMovieExists(UUID movieId){
+        this.getMovieById(movieId);
+        return true;
     }
 
 

@@ -11,6 +11,5 @@ import java.util.UUID;
 @Repository
 public interface RentingRepository extends JpaRepository<MovieRenting, UUID> {
 
-    List<MovieRenting> findAllByMovieRenterIs(User movieRenter);
-
+    List<MovieRenting> findAllByRenterIdIs(UUID renterId);
 }

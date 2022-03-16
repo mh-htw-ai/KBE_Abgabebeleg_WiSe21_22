@@ -35,19 +35,11 @@ public class MovieRating {
     @NonNull
     private UUID movieId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rating_owner", nullable = false, columnDefinition = "UUID")
     @NonNull
-    @ToString.Exclude
-    @JsonBackReference
-    private User ratingOwner;
+    private UUID ownerId;
 
     @NonNull
     private int rating;
 
     private Date ratingDate = new Date();
-
-    public void updateRatingDate(){
-        this.ratingDate = new Date();
-    }
 }
