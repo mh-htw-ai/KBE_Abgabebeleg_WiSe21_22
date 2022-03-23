@@ -1,0 +1,15 @@
+2022-03-23 21:15:18,819 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MwStServiceApplication using Java 16.0.1 on DESKTOP-R7S5H8N with PID 19816 (C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22\MwSt_Microservice\target\classes started by Marco in C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22)
+2022-03-23 21:15:18,823 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
+2022-03-23 21:15:18,826 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-03-23 21:15:18,971 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-03-23 21:15:18,972 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-03-23 21:15:21,054 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21111 (http)
+2022-03-23 21:15:21,068 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21111"]
+2022-03-23 21:15:21,069 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-03-23 21:15:21,070 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
+2022-03-23 21:15:21,155 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-03-23 21:15:21,156 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2182 ms
+2022-03-23 21:15:21,968 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-03-23 21:15:21,993 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21111"]
+2022-03-23 21:15:22,060 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21111 (http) with context path '/mwst/api'
+2022-03-23 21:15:22,083 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MwStServiceApplication in 4.275 seconds (JVM running for 6.405)
