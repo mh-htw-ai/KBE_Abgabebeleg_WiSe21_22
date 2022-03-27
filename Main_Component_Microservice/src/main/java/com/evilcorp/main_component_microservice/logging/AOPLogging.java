@@ -1,4 +1,4 @@
-package com.evilcorp.main_component_microservice.Logging;
+package com.evilcorp.main_component_microservice.logging;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

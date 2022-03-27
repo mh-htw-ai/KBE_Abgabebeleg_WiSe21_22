@@ -45,7 +45,7 @@ public class MovieMainService {
 
     private Movie getMovieWithTranslatedDescriptionAndMwStIncludedPrice(Movie movie){
         Movie movieWithMwStPrice = this.calculateMoviePriceWithMwSt(movie);
-        return this.translateMovieDescription(movieWithMwStPrice);
+        return movieWithMwStPrice;//this.translateMovieDescription(movieWithMwStPrice);
     }
 
     private Movie translateMovieDescription(Movie movie){
