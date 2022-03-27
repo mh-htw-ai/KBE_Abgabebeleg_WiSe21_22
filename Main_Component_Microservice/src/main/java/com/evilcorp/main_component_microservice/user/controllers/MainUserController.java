@@ -28,7 +28,7 @@ public class  MainUserController{
         UUID userId = parserService.parseStringToUUID(userIdString);
         User user = userService.getUser(userId);
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( user );
     }
 
@@ -36,7 +36,7 @@ public class  MainUserController{
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( users );
     }
 

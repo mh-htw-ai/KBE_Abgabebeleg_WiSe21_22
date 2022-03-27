@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MwStObj {
 
-    private float Artikelpreis;
-    private float Steueranteil;
-    private float ArtMitSteuer;
-    private String Steuertyp;
+    private float artikelpreis;
+    private float steueranteil;
+    private float artMitSteuer;
+    private String steuertyp;
 
     public MwStObj(float Artikelpreis){
-        this.Artikelpreis = Artikelpreis;
-        this.Steueranteil = 0f;
-        this.ArtMitSteuer = 0f;
-        this.Steuertyp = "standard";
+        this.artikelpreis = Artikelpreis;
+        this.steueranteil = 0f;
+        this.artMitSteuer = 0f;
+        this.steuertyp = "standard";
     }
 
 

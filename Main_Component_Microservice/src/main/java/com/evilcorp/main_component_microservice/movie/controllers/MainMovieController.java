@@ -13,9 +13,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Validated
 @AllArgsConstructor
 @RestController
@@ -31,7 +28,7 @@ public class MainMovieController{
         UUID movieId = parserService.parseStringToUUID(movieIdString);
         Movie responseMovie = movieMainService.getMovie(movieId);
         return ResponseEntity
-                .status(HttpStatus.FOUND)
+                .status(HttpStatus.OK)
                 .body(responseMovie);
     }
 
@@ -39,7 +36,7 @@ public class MainMovieController{
     public ResponseEntity<List<Movie>> getAllMovies(){
         List<Movie> responseMovies = movieMainService.getAllMovies();
         return ResponseEntity
-                .status(HttpStatus.FOUND)
+                .status(HttpStatus.OK)
                 .body(responseMovies);
     }
 
@@ -48,15 +45,17 @@ public class MainMovieController{
     public ResponseEntity<?> createMovie(@RequestBody @Valid Movie newMovie){
         movieMainService.createMovie(newMovie);
         return ResponseEntity
-                .ok( linkTo(methodOn(MainMovieController.class).getMovie(newMovie.getId().toString())).withSelfRel() );
+                .status(HttpStatus.OK)
+                .body(newMovie.getId());
     }
 
     @PutMapping(value = "/update",
             consumes = "application/json")
-    public ResponseEntity<?> updateMovie(@Valid @RequestBody Movie changedMovie){
+    public ResponseEntity<UUID> updateMovie(@Valid @RequestBody Movie changedMovie){
         movieMainService.updateMovie(changedMovie);
         return ResponseEntity
-                .ok( linkTo(methodOn(MainMovieController.class).getMovie(changedMovie.getId().toString())).withSelfRel() );
+                .status(HttpStatus.OK)
+                .body(changedMovie.getId());
     }
 
     @DeleteMapping(value = "/delete/{movieIdString}")

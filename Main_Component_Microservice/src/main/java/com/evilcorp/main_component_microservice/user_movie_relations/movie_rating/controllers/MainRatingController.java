@@ -47,7 +47,7 @@ public class MainRatingController{
         UUID userId = parserService.parseStringToUUID(userIdString);
         List<MovieRating> ratings = ratingService.getAllMovieRatingsOfUserByRepo(userId);
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( ratings );
     }
 

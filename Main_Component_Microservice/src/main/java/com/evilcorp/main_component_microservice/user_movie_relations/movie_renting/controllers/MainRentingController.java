@@ -47,7 +47,7 @@ public class MainRentingController{
         UUID userId = parserService.parseStringToUUID(userIdString);
         List<MovieRenting> rentings = rentingService.getAllRentingsOfUser(userId);
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( rentings );
     }
 
