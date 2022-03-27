@@ -1,4 +1,4 @@
-package com.evilcorp.main_component_microservice.Logging;
+package com.evilcorp.main_component_microservice.logging;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Aspect
 @Component
 @Slf4j
-public class AOPLogging {
+public class AOPLoggingConfig {
 
     @Pointcut("execution(public * *(..))")
     private void publicMethod(){}

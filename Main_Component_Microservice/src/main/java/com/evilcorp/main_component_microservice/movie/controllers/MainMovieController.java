@@ -3,7 +3,6 @@ package com.evilcorp.main_component_microservice.movie.controllers;
 import com.evilcorp.main_component_microservice.parsing.ParserService;
 import com.evilcorp.main_component_microservice.movie.model_classes.Movie;
 import com.evilcorp.main_component_microservice.movie.services.MovieMainService;
-import com.evilcorp.main_component_microservice.movie.services.external_api_service.ExternalApiService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

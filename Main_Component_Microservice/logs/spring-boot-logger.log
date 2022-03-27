@@ -116,80 +116,80 @@ Result = <302 FOUND Found,links: [<http://localhost:21121/main/api/v1.0/users/c0
 2022-03-23 12:57:21,265 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21121 (http) with context path '/main/api/v1.0'
 2022-03-23 12:57:21,289 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MainComponentMicroserviceApplication in 9.447 seconds (JVM running for 12.076)
 2022-03-23 12:57:21,299 INFO com.evilcorp.main_component_microservice.config.LoadDatabaseConfig [restartedMain] Setting up sample user data...
-2022-03-23 12:57:21,318 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,318 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [User(id=null, username=SaviorOfDaUniverse, firstname=Eduard, lastname=Laser, email=Laser@rbtv.com, street=Heinrichstraße, street_number=9-11, postcode=22769, placeOfResidence=Hamburg)]
-2022-03-23 12:57:21,534 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,534 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = User(id=0cecb31a-8396-48d0-9923-97676bdcd8b8, username=SaviorOfDaUniverse, firstname=Eduard, lastname=Laser, email=Laser@rbtv.com, street=Heinrichstraße, street_number=9-11, postcode=22769, placeOfResidence=Hamburg)
-2022-03-23 12:57:21,535 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,535 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [User(id=null, username=CountingCount, firstname=Graf, lastname=Zahl, email=theCount@sesa.me, street=Sesamestreet, street_number=42, postcode=42424, placeOfResidence=Sesamecity)]
-2022-03-23 12:57:21,603 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,603 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = User(id=1720066d-4a8e-4adb-89bc-eb92c6343ac1, username=CountingCount, firstname=Graf, lastname=Zahl, email=theCount@sesa.me, street=Sesamestreet, street_number=42, postcode=42424, placeOfResidence=Sesamecity)
-2022-03-23 12:57:21,604 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,604 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [User(id=null, username=ThePirate390, firstname=Guybrush, lastname=Threepwood, email=theGuy@theSea.com, street=Junglestreet, street_number=1, postcode=94090, placeOfResidence=ThePirateIsle)]
-2022-03-23 12:57:21,673 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,673 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = User(id=d1771387-7636-4965-a106-d09e1840e5c2, username=ThePirate390, firstname=Guybrush, lastname=Threepwood, email=theGuy@theSea.com, street=Junglestreet, street_number=1, postcode=94090, placeOfResidence=ThePirateIsle)
 2022-03-23 12:57:21,673 INFO com.evilcorp.main_component_microservice.config.LoadDatabaseConfig [restartedMain] Done!
 2022-03-23 12:57:21,673 INFO com.evilcorp.main_component_microservice.config.LoadDatabaseConfig [restartedMain] Setting up sample ratings data...
-2022-03-23 12:57:21,678 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,678 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRating(id=null, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, ownerId=0cecb31a-8396-48d0-9923-97676bdcd8b8, rating=3, ratingDate=Wed Mar 23 12:57:21 CET 2022)]
-2022-03-23 12:57:21,754 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,754 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRating(id=553bdf4f-7531-415d-8d10-f63d986ba097, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, ownerId=0cecb31a-8396-48d0-9923-97676bdcd8b8, rating=3, ratingDate=Wed Mar 23 12:57:21 CET 2022)
-2022-03-23 12:57:21,755 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,755 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRating(id=null, movieId=3f96520e-c811-4000-9525-cd28f1cfd6c5, ownerId=0cecb31a-8396-48d0-9923-97676bdcd8b8, rating=5, ratingDate=Wed Mar 23 12:57:21 CET 2022)]
-2022-03-23 12:57:21,823 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,823 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRating(id=980d8d92-0bed-40a0-bfa2-081ac6bf6b11, movieId=3f96520e-c811-4000-9525-cd28f1cfd6c5, ownerId=0cecb31a-8396-48d0-9923-97676bdcd8b8, rating=5, ratingDate=Wed Mar 23 12:57:21 CET 2022)
-2022-03-23 12:57:21,823 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,823 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRating(id=null, movieId=534dacaa-0cca-4e2d-958c-aea7d5dd6971, ownerId=0cecb31a-8396-48d0-9923-97676bdcd8b8, rating=1, ratingDate=Wed Mar 23 12:57:21 CET 2022)]
-2022-03-23 12:57:21,892 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,892 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRating(id=d0e1bb61-d551-4d55-830e-a9cb0c808d95, movieId=534dacaa-0cca-4e2d-958c-aea7d5dd6971, ownerId=0cecb31a-8396-48d0-9923-97676bdcd8b8, rating=1, ratingDate=Wed Mar 23 12:57:21 CET 2022)
-2022-03-23 12:57:21,893 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,893 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRating(id=null, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, ownerId=1720066d-4a8e-4adb-89bc-eb92c6343ac1, rating=3, ratingDate=Wed Mar 23 12:57:21 CET 2022)]
-2022-03-23 12:57:21,960 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,960 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRating(id=cccc7e99-dace-42ba-ab2a-cc9853143ace, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, ownerId=1720066d-4a8e-4adb-89bc-eb92c6343ac1, rating=3, ratingDate=Wed Mar 23 12:57:21 CET 2022)
-2022-03-23 12:57:21,961 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:21,961 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRating(id=null, movieId=00132566-85ad-41ec-9e0f-1e0998c71c03, ownerId=1720066d-4a8e-4adb-89bc-eb92c6343ac1, rating=4, ratingDate=Wed Mar 23 12:57:21 CET 2022)]
-2022-03-23 12:57:22,034 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,034 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRating(id=de72cef2-08d2-4dcc-b50e-29f5a71160bf, movieId=00132566-85ad-41ec-9e0f-1e0998c71c03, ownerId=1720066d-4a8e-4adb-89bc-eb92c6343ac1, rating=4, ratingDate=Wed Mar 23 12:57:21 CET 2022)
-2022-03-23 12:57:22,034 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,034 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRating(id=null, movieId=00132566-85ad-41ec-9e0f-1e0998c71c03, ownerId=d1771387-7636-4965-a106-d09e1840e5c2, rating=5, ratingDate=Wed Mar 23 12:57:21 CET 2022)]
-2022-03-23 12:57:22,102 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,102 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRating(id=f668b688-2741-433e-bed3-21c74d99d9fa, movieId=00132566-85ad-41ec-9e0f-1e0998c71c03, ownerId=d1771387-7636-4965-a106-d09e1840e5c2, rating=5, ratingDate=Wed Mar 23 12:57:21 CET 2022)
 2022-03-23 12:57:22,102 INFO com.evilcorp.main_component_microservice.config.LoadDatabaseConfig [restartedMain] Done!
 2022-03-23 12:57:22,103 INFO com.evilcorp.main_component_microservice.config.LoadDatabaseConfig [restartedMain] Setting up sample rentings data...
-2022-03-23 12:57:22,104 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,104 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRenting(id=null, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, renterId=0cecb31a-8396-48d0-9923-97676bdcd8b8, startOfRenting=Wed Mar 23 12:57:22 CET 2022)]
-2022-03-23 12:57:22,174 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,174 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRenting(id=60b679be-e4b2-494c-bbd7-5a5e5d1bd3bb, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, renterId=0cecb31a-8396-48d0-9923-97676bdcd8b8, startOfRenting=Wed Mar 23 12:57:22 CET 2022)
-2022-03-23 12:57:22,174 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,174 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRenting(id=null, movieId=3f96520e-c811-4000-9525-cd28f1cfd6c5, renterId=0cecb31a-8396-48d0-9923-97676bdcd8b8, startOfRenting=Wed Mar 23 12:57:22 CET 2022)]
-2022-03-23 12:57:22,243 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,243 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRenting(id=2f0cb13b-a1a0-4145-9c26-f412fa095c10, movieId=3f96520e-c811-4000-9525-cd28f1cfd6c5, renterId=0cecb31a-8396-48d0-9923-97676bdcd8b8, startOfRenting=Wed Mar 23 12:57:22 CET 2022)
-2022-03-23 12:57:22,243 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,243 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Entering: org.springframework.data.repository.CrudRepository.save()
 Argument/s = [MovieRenting(id=null, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, renterId=1720066d-4a8e-4adb-89bc-eb92c6343ac1, startOfRenting=Wed Mar 23 12:57:22 CET 2022)]
-2022-03-23 12:57:22,311 INFO com.evilcorp.main_component_microservice.Logging.AOPLogging [restartedMain] 
+2022-03-23 12:57:22,311 INFO com.evilcorp.main_component_microservice.logging.AOPLoggingConfig [restartedMain]
 Exiting: org.springframework.data.repository.CrudRepository.save()
 Result = MovieRenting(id=939fea39-428b-4ec2-8871-5953adbcbf11, movieId=8fe0805f-f442-412e-b9e0-3bf621ed0946, renterId=1720066d-4a8e-4adb-89bc-eb92c6343ac1, startOfRenting=Wed Mar 23 12:57:22 CET 2022)
 2022-03-23 12:57:22,312 INFO com.evilcorp.main_component_microservice.config.LoadDatabaseConfig [restartedMain] Done!
