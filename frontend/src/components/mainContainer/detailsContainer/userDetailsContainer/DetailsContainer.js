@@ -2,14 +2,31 @@
 import MoviesContainer from "../moviesContainer/MoviesContainer";
 import {StyledDetailsContainer} from "../../../styles/detailsContainerStyles/StyledDetailsContainer";
 import DetailedUser from "./DetailedUser";
+import {StyledEmptyLabelContainer} from "../../../styles/detailsContainerStyles/userDetailsRowStyles/StyledEmptyLabelContainer";
+import {useContext} from "react";
+import {UserDataContext} from "../../../UserDataContext";
 
 function DetailsContainer(){
 
-    return(
+    const{activeUser} = useContext(UserDataContext);
+
+    let content = (
         <StyledDetailsContainer>
-            <DetailedUser/>
-            <MoviesContainer/>
+            <StyledEmptyLabelContainer>Select a User!</StyledEmptyLabelContainer>
         </StyledDetailsContainer>
+    );
+
+    if(activeUser !== null){
+        content = (
+            <StyledDetailsContainer>
+                <DetailedUser user={activeUser}/>
+                <MoviesContainer/>
+            </StyledDetailsContainer>
+        );
+    }
+
+    return(
+        content
     );
 }
 

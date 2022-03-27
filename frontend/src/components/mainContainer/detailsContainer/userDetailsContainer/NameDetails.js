@@ -4,10 +4,10 @@ import {StyledNameDetails} from "../../../styles/detailsContainerStyles/userDeta
 
 function NameDetails(props){
 
-    const [username, setUsername] = useState(props.user.username);
-    const [firstname, setFirstname] = useState(props.user.firstname);
-    const [lastname, setLastname] = useState(props.user.lastname);
-    const [email, setEmail] = useState(props.user.email);
+    const [username, setUsername] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
 
     useEffect(()=>{
         if(props.user != null){

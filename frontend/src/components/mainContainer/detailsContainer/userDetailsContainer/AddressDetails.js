@@ -3,10 +3,10 @@ import {useEffect, useState} from "react";
 
 function AddressDetails(props){
 
-    const [street,setStreet] = useState(props.user.street);
-    const [streetnumber, setStreetnumber] = useState(props.user.street_number);
-    const [placeOfResidence, setPlaceOfResidence] = useState(props.user.placeOfResidence);
-    const [postcode, setPostcode] = useState(props.user.postcode);
+    const [street,setStreet] = useState("");
+    const [streetnumber, setStreetnumber] = useState("");
+    const [placeOfResidence, setPlaceOfResidence] = useState("");
+    const [postcode, setPostcode] = useState("");
 
     useEffect(()=>{
         if(props.user != null){

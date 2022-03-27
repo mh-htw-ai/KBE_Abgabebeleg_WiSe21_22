@@ -12,8 +12,6 @@ const UserDataContextProvider = ({children}) => {
     const deleteUserURL = "/main/api/v1.0/users/delete/";
 
     const getRatingsOfUserURL = "/main/api/v1.0/ratings/of_user/";
-    const postNewRatingURL = "/main/api/v1.0/ratings/create";
-    const putNewRatingURL = "/main/api/v1.0/ratings/update/";
 
     const getRentingsOfUserURL = "/main/api/v1.0/rentings/of_user/";
 

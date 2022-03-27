@@ -8,9 +8,8 @@ import {StyledEmptyLabelContainer} from "../../../styles/detailsContainerStyles/
 import NameDetails from "./NameDetails";
 import AddressDetails from "./AddressDetails";
 
-function DetailedUser(){
+function DetailedUser(props){
 
-    const {activeUser} = useContext(UserDataContext);
     const [id, setId] = useState("");
     const [username, setUsername] = useState("");
     const [firstname, setFirstname] = useState("");
@@ -22,35 +21,25 @@ function DetailedUser(){
     const [postcode, setPostcode] = useState("");
 
     useEffect(()=>{
-        if(activeUser != null){
-            setId(activeUser.id);
-            setUsername(activeUser.username);
-            setFirstname(activeUser.firstname);
-            setLastname(activeUser.lastname);
-            setEmail(activeUser.email);
-            setStreet(activeUser.street);
-            setStreetnumber(activeUser.street_number);
-            setPlaceOfResidence(activeUser.placeOfResidence);
-            setPostcode(activeUser.postcode);
+        if(props.user != null){
+            setId(props.user.id);
+            setUsername(props.user.username);
+            setFirstname(props.user.firstname);
+            setLastname(props.user.lastname);
+            setEmail(props.user.email);
+            setStreet(props.user.street);
+            setStreetnumber(props.user.street_number);
+            setPlaceOfResidence(props.user.placeOfResidence);
+            setPostcode(props.user.postcode);
         }
-    }, [activeUser]);
-
-    let content = (
-        <StyledEmptyLabelContainer>Select a User!</StyledEmptyLabelContainer>
-    );
-
-    if(activeUser !=null){
-        content = (
-            <StyledDetailedUser>
-                <NameDetails user={activeUser}/>
-                <AddressDetails user={activeUser}/>
-                <DetailedUserButtonRow/>
-            </StyledDetailedUser>
-        );
-    }
+    }, [props]);
 
     return(
-        content
+        <StyledDetailedUser>
+            <NameDetails user={props.user}/>
+            <AddressDetails user={props.user}/>
+            <DetailedUserButtonRow/>
+        </StyledDetailedUser>
     );
 }
 

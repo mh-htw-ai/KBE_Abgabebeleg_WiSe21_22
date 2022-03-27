@@ -7,6 +7,7 @@ export const StyledMainContainer = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
+    
     background-color: #564d4d;
     color: white;
 `

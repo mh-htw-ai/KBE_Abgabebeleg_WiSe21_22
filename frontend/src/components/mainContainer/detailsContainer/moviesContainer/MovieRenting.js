@@ -3,6 +3,8 @@ import {StyledAddButton} from "../../../styles/StyledAddButton";
 import {StyledCancelButton} from "../../../styles/userBarStyles/modalStyles/StyledCancelButton";
 import {UserDataContext} from "../../../UserDataContext";
 import axios from "axios";
+import {StyledMovieRentingDiv} from "../../../styles/detailsContainerStyles/moviesContainerStyles/StyledMovieRentingDiv";
+import {StyledDeleteButton} from "../../../styles/StyledDeleteButton";
 
 
 function MovieRenting(props){
@@ -56,23 +58,23 @@ function MovieRenting(props){
     }
 
     let content = (
-        <div>
+        <StyledMovieRentingDiv>
             Currently not Rented!
             <StyledAddButton onClick={createRenting}>
                 Rent Now
             </StyledAddButton>
-        </div>
+        </StyledMovieRentingDiv>
     );
 
     if(rentingDate !=  null){
         content = (
-            <div>
+            <StyledMovieRentingDiv>
                 <>Rented since:</>
                 <>{String(rentingDate)}</>
-                <StyledCancelButton onClick={deleteRenting}>
+                <StyledDeleteButton onClick={deleteRenting}>
                     Stop Renting
-                </StyledCancelButton>
-            </div>
+                </StyledDeleteButton>
+            </StyledMovieRentingDiv>
         );
     }
 

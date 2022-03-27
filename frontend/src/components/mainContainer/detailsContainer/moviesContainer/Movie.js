@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {StyledMovie} from "../../../styles/detailsContainerStyles/moviesContainerStyles/StyledMovie";
 import MovieRating from "./MovieRating";
 import MovieRenting from "./MovieRenting";
+import {StyledMovieDetailsDiv} from "../../../styles/detailsContainerStyles/moviesContainerStyles/StyledMovieDetailsDiv";
 
 function Movie(props){
 
@@ -46,7 +47,6 @@ function Movie(props){
             let rentingOfThisObj = userRentingObjs.filter(rentingObj => rentingObj.movieId === movie.id);
             if(rentingOfThisObj.length > 0) {
                 setRentingDateOfThis(rentingOfThisObj[0].startOfRenting);
-                console.log(rentingOfThisObj[0].id);
                 setRentingId(rentingOfThisObj[0].id);
             }else{
                 setRentingDateOfThis(null);
@@ -59,8 +59,8 @@ function Movie(props){
     return(
         <StyledMovie>
             <h1>{movie.titel}</h1>
-            <h4>{movie.kurzbeschreibung}</h4>
-            <h4>{movie.leihPreis}</h4>
+            <StyledMovieDetailsDiv>{movie.kurzbeschreibung}</StyledMovieDetailsDiv>
+            <StyledMovieDetailsDiv>{movie.leihPreis} € / Monat.</StyledMovieDetailsDiv>
             <MovieRating movieId={movie.id} ratingId={ratingId} rating={ratingOfThis}/>
             <MovieRenting movieId={movie.id} id={rentingId} rentingDate={rentingDateOfThis}/>
         </StyledMovie>
