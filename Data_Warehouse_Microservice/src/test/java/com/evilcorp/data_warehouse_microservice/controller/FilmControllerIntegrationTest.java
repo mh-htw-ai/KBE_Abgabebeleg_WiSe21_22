@@ -115,7 +115,7 @@ public class FilmControllerIntegrationTest {
                 .andReturn();
         try {
             UUID uuid =  UUID.fromString(mvcResult.getResponse().getContentAsString());
-            if(!uuid.toString().equals("")){
+            if(uuid.toString().equals("")){
                 fail("Es wurde keine UUID erstellt werden.");
             }
         } catch (IllegalArgumentException ex) {
