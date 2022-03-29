@@ -6,12 +6,12 @@ spring:
     gateway:
       routes:
         - id: Main_Component_Microservice
-          uri: http://localhost:21121/
+          uri: http://main:21121/
           predicates:
             - Path=/main/api/v1.0/**
 
         - id: MwSt_Microservice
-          uri: http://localhost:21111/
+          uri: http://mwst:21111/
           predicates:
             - Path=/mwst/api/v1.0/**
 logging:

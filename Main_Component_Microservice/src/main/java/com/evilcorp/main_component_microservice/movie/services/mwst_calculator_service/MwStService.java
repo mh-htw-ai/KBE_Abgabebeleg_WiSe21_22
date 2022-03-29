@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class MwStService {
 
-    private final String mwstCalculatorURI = "http://localhost:21111/mwst/api/v1.0/calculate_json";
+    private final String mwstCalculatorURI = "http://mwst:21111/mwst/api/v1.0/calculate_json";
     private final RestTemplate restTemplate = new RestTemplate();
 
     public Movie calculateCostWithMwstFor(Movie movieObj){

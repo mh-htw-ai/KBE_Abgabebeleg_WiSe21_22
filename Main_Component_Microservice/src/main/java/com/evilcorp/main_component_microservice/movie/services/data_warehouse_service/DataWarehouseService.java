@@ -19,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 public class DataWarehouseService {
 
-    private final static String dataWarehouseURI = "http://localhost:21131/film";
+    private final static String dataWarehouseURI = "http://datawarehouse:21131/film";
     private final RestTemplate restTemplate = new RestTemplate();
 
     public Movie getMovieById(UUID movieId){
