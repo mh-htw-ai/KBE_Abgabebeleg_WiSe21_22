@@ -60,8 +60,7 @@ public class  MainUserController{
                 .body( updatedUser );
     }
 
-    @DeleteMapping(value = "/delete/{userIdString}",
-            produces = "application/json")
+    @DeleteMapping(value = "/delete/{userIdString}")
     public ResponseEntity<?> deleteUser(@PathVariable String userIdString){
         UUID userId = parserService.parseStringToUUID(userIdString);
         userService.deleteUser(userId);

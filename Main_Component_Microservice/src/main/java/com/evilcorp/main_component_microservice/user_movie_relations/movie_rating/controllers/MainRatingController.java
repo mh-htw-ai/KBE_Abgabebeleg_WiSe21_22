@@ -24,12 +24,11 @@ public class MainRatingController{
 
     @GetMapping(value = "/{ratingIdString}",
         produces = "application/json")
-    @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<MovieRating> getMovieRating(@PathVariable String ratingIdString){
         UUID ratingId = parserService.parseStringToUUID(ratingIdString);
         MovieRating rating = ratingService.getMovieRating(ratingId);
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( rating );
     }
 
@@ -37,7 +36,7 @@ public class MainRatingController{
     public ResponseEntity<List<MovieRating>> getAllMovieRatings(){
         List<MovieRating> ratings = ratingService.getAllMovieRatings();
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( ratings );
     }
 

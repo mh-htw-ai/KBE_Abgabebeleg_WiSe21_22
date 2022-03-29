@@ -45,7 +45,7 @@ public class MainMovieController{
     public ResponseEntity<?> createMovie(@RequestBody @Valid Movie newMovie){
         movieMainService.createMovie(newMovie);
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(newMovie.getId());
     }
 
@@ -63,7 +63,7 @@ public class MainMovieController{
         UUID movieId = parserService.parseStringToUUID(movieIdString);
         movieMainService.deleteMovie(movieId);
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
+                .noContent()
                 .build();
     }
 }
