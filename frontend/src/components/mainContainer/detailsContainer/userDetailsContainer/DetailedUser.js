@@ -1,24 +1,21 @@
 
-import {useContext, useEffect, useState} from "react";
-import {UserDataContext} from "../../../UserDataContext";
-import DetailedUserButtonRow from "./DetailedUserButtonRow";
+import { useEffect, useState} from "react";
+import DetailedUserButtonRow from "./detailedUserButtonRow/DetailedUserButtonRow";
 import {StyledDetailedUser} from "../../../styles/detailsContainerStyles/userDetailsRowStyles/StyledDetailedUser";
-import {StyledUserDetailsContainer} from "../../../styles/detailsContainerStyles/userDetailsRowStyles/StyledUserDetailsContainer";
-import {StyledEmptyLabelContainer} from "../../../styles/detailsContainerStyles/userDetailsRowStyles/StyledEmptyLabelContainer";
 import NameDetails from "./NameDetails";
 import AddressDetails from "./AddressDetails";
 
 function DetailedUser(props){
 
-    const [id, setId] = useState("");
-    const [username, setUsername] = useState("");
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [email, setEmail] = useState("");
-    const [street, setStreet] = useState("");
-    const [streetnumber, setStreetnumber] = useState("");
-    const [placeOfResidence, setPlaceOfResidence] = useState("");
-    const [postcode, setPostcode] = useState("");
+    const [setId] = useState("");
+    const [setUsername] = useState("");
+    const [setFirstname] = useState("");
+    const [setLastname] = useState("");
+    const [setEmail] = useState("");
+    const [setStreet] = useState("");
+    const [setStreetnumber] = useState("");
+    const [setPlaceOfResidence] = useState("");
+    const [setPostcode] = useState("");
 
     useEffect(()=>{
         if(props.user != null){

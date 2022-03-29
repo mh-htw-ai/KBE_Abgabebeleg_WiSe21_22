@@ -11,8 +11,9 @@ function MovieRating(props){
 
     const postNewRatingURL = "/main/api/v1.0/ratings/create";
     const putNewRatingURL = "/main/api/v1.0/ratings/update/";
-    const {activeUser, postNewRating, putUpdatedRating} = useContext(UserDataContext);
-    const[movieId, setMovieId] = useState(props.movieId);
+    const deleteRatingURL = "/main/api/v1.0/ratings/delete/";
+    const {activeUser} = useContext(UserDataContext);
+    const[movieId] = useState(props.movieId);
     const[ratingId, setRatingId] = useState(props.ratingId);
     const[initialRating, setInitialRating] = useState()
     const[rating, setRating] = useState(props.rating);
@@ -27,7 +28,7 @@ function MovieRating(props){
 
     function changeRatingValue(newRatingValue){
         if(newRatingValue!==rating && newRatingValue<=5 && newRatingValue>=0) {
-            if (newRatingValue == 0) {
+            if (initialRating === 0) {
                 let newRatingObj = {
                     movieId: movieId,
                     ownerId: activeUser.id,
@@ -46,7 +47,7 @@ function MovieRating(props){
                         }
                     })
                     .catch(error => console.log(error));
-            } else {
+            } else if(newRatingValue !== 0) {
                 let finalURL = putNewRatingURL+ratingId;
                 axios
                     .put(finalURL, newRatingValue, {
@@ -57,6 +58,16 @@ function MovieRating(props){
                     .then((response) => {
                         if(response.status < 300){
                             setInitialRating(newRatingValue);
+                        }
+                    })
+                    .catch(error => console.log(error));
+            } else {
+                let finalURL = deleteRatingURL+ratingId;
+                axios
+                    .delete(finalURL)
+                    .then((response) => {
+                        if(response.status < 300){
+                            setInitialRating(0);
                         }
                     })
                     .catch(error => console.log(error));

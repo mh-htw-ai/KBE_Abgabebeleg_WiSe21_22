@@ -1,13 +1,13 @@
 
 
 import ReactModal from "react-modal";
-import {DialogInputContainer} from "../../../styles/userBarStyles/modalStyles/DialogInputContainer";
-import {DialogInputPair} from "../../../styles/userBarStyles/modalStyles/DialogInputPair";
-import {DialogInputRow} from "../../../styles/userBarStyles/modalStyles/DialogInputRow";
+import {StyledDialogInputContainer} from "../../../styles/userBarStyles/modalStyles/StyledDialogInputContainer";
+import {StyledDialogInputPair} from "../../../styles/userBarStyles/modalStyles/StyledDialogInputPair";
+import {StyledDialogInputRow} from "../../../styles/userBarStyles/modalStyles/StyledDialogInputRow";
 import '../../../styles/userBarStyles/modalStyles/ReactModal.css'
-import {DialogInput} from "../../../styles/userBarStyles/modalStyles/DialogInput";
-import {DialogButtonRow} from "../../../styles/userBarStyles/modalStyles/DialogButtonRow";
-import {DialogTitleRow} from "../../../styles/userBarStyles/modalStyles/DialogTitleRow";
+import {StyledDialogInput} from "../../../styles/userBarStyles/modalStyles/StyledDialogInput";
+import {StyledDialogButtonRow} from "../../../styles/userBarStyles/modalStyles/StyledDialogButtonRow";
+import {StyledDialogTitleRow} from "../../../styles/userBarStyles/modalStyles/StyledDialogTitleRow";
 import {useContext, useState} from "react";
 import {StyledSubmitButton} from "../../../styles/userBarStyles/modalStyles/StyledSubmitButton";
 import {StyledCancelButton} from "../../../styles/userBarStyles/modalStyles/StyledCancelButton";
@@ -80,57 +80,57 @@ function Modal(props){
     }
     return(
         <ReactModal className="Add-User-Modal" overlayClassName="Overlay" isOpen={props.isOpen}>
-                <DialogTitleRow>
+                <StyledDialogTitleRow>
                     Enter New User Data:
-                </DialogTitleRow>
-                <DialogInputContainer>
-                    <DialogInputRow>
-                        <DialogInputPair>
+                </StyledDialogTitleRow>
+                <StyledDialogInputContainer>
+                    <StyledDialogInputRow>
+                        <StyledDialogInputPair>
                             Username:
-                            <DialogInput onChange={getUsernameInputValue}/>
-                        </DialogInputPair>
-                    </DialogInputRow>
-                    <DialogInputRow>
-                        <DialogInputPair>
+                            <StyledDialogInput onChange={getUsernameInputValue}/>
+                        </StyledDialogInputPair>
+                    </StyledDialogInputRow>
+                    <StyledDialogInputRow>
+                        <StyledDialogInputPair>
                             Firstname:
-                            <DialogInput onChange={getFirstnameInputValue}/>
-                        </DialogInputPair>
-                        <DialogInputPair>
+                            <StyledDialogInput onChange={getFirstnameInputValue}/>
+                        </StyledDialogInputPair>
+                        <StyledDialogInputPair>
                             Lastname:
-                            <DialogInput onChange={getLastnameInputValue}/>
-                        </DialogInputPair>
-                    </DialogInputRow>
-                    <DialogInputRow>
-                        <DialogInputPair>
+                            <StyledDialogInput onChange={getLastnameInputValue}/>
+                        </StyledDialogInputPair>
+                    </StyledDialogInputRow>
+                    <StyledDialogInputRow>
+                        <StyledDialogInputPair>
                             Email:
-                            <DialogInput onChange={getEmailInputValue}/>
-                        </DialogInputPair>
-                    </DialogInputRow>
-                    <DialogInputRow>
-                        <DialogInputPair>
+                            <StyledDialogInput onChange={getEmailInputValue}/>
+                        </StyledDialogInputPair>
+                    </StyledDialogInputRow>
+                    <StyledDialogInputRow>
+                        <StyledDialogInputPair>
                             Street:
-                            <DialogInput onChange={getStreetInputValue}/>
-                        </DialogInputPair>
-                        <DialogInputPair>
+                            <StyledDialogInput onChange={getStreetInputValue}/>
+                        </StyledDialogInputPair>
+                        <StyledDialogInputPair>
                             Streetnumber:
-                            <DialogInput onChange={getStreetnumberInputValue}/>
-                        </DialogInputPair>
-                    </DialogInputRow>
-                    <DialogInputRow>
-                        <DialogInputPair>
+                            <StyledDialogInput onChange={getStreetnumberInputValue}/>
+                        </StyledDialogInputPair>
+                    </StyledDialogInputRow>
+                    <StyledDialogInputRow>
+                        <StyledDialogInputPair>
                             Place of Residence:
-                            <DialogInput onChange={getPlaceOfResidenceInputValue}/>
-                        </DialogInputPair>
-                        <DialogInputPair>
+                            <StyledDialogInput onChange={getPlaceOfResidenceInputValue}/>
+                        </StyledDialogInputPair>
+                        <StyledDialogInputPair>
                             Postcode:
-                            <DialogInput onChange={getPostcodeInputValue}/>
-                        </DialogInputPair>
-                    </DialogInputRow>
-                </DialogInputContainer>
-                <DialogButtonRow>
+                            <StyledDialogInput onChange={getPostcodeInputValue}/>
+                        </StyledDialogInputPair>
+                    </StyledDialogInputRow>
+                </StyledDialogInputContainer>
+                <StyledDialogButtonRow>
                     <StyledSubmitButton onClick={submit}>Submit</StyledSubmitButton>
                     <StyledCancelButton onClick={props.hide}>Cancel</StyledCancelButton>
-                </DialogButtonRow>
+                </StyledDialogButtonRow>
         </ReactModal>
     );
 }

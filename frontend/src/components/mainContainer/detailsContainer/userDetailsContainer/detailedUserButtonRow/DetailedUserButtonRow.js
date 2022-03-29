@@ -1,7 +1,7 @@
 
-import UpdateButton from "../../UpdateButton";
-import DeleteButton from "../../DeleteButton";
-import {StyledDetailedUserButtonRow} from "../../../styles/detailsContainerStyles/userDetailsRowStyles/StyledDetailedUserButtonRow";
+import UpdateButton from "../../../UpdateButton";
+import DeleteButton from "../../../DeleteButton";
+import {StyledDetailedUserButtonRow} from "../../../../styles/detailsContainerStyles/userDetailsRowStyles/StyledDetailedUserButtonRow";
 import {useState} from "react";
 import DeleteModal from "./DeleteModal";
 import UpdateModal from "./UpdateModal";

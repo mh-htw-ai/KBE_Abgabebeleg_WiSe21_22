@@ -1,12 +1,11 @@
 
 import ReactModal from "react-modal";
-import {DialogButtonRow} from "../../../styles/userBarStyles/modalStyles/DialogButtonRow";
-import {StyledAddButton} from "../../../styles/StyledAddButton";
+import {StyledDialogButtonRow} from "../../../styles/userBarStyles/modalStyles/StyledDialogButtonRow";
 import {StyledCancelButton} from "../../../styles/userBarStyles/modalStyles/StyledCancelButton";
 import {StyledSubmitButton} from "../../../styles/userBarStyles/modalStyles/StyledSubmitButton";
-import {DialogTitleRow} from "../../../styles/userBarStyles/modalStyles/DialogTitleRow";
+import {StyledDialogTitleRow} from "../../../styles/userBarStyles/modalStyles/StyledDialogTitleRow";
 import {useState} from "react";
-import {DialogInput} from "../../../styles/userBarStyles/modalStyles/DialogInput";
+import {StyledDialogRatingInput} from "../../../styles/detailsContainerStyles/moviesContainerStyles/StyledDialogRatingInput";
 
 function RatingModal(props){
 
@@ -23,12 +22,12 @@ function RatingModal(props){
 
     return(
         <ReactModal  className="Rating-Modal" overlayClassName="Overlay" isOpen={props.isOpen}>
-            <DialogTitleRow>Enter new Rating Value:</DialogTitleRow>
-            <DialogInput type="text" onChange={getRatingInputValue}/>
-            <DialogButtonRow>
+            <StyledDialogTitleRow>Enter new Rating Value:</StyledDialogTitleRow>
+            <StyledDialogRatingInput type="text" onChange={getRatingInputValue}/>
+            <StyledDialogButtonRow>
                 <StyledSubmitButton onClick={submitNewRating}>Submit</StyledSubmitButton>
                 <StyledCancelButton onClick={props.hide}>Cancel</StyledCancelButton>
-            </DialogButtonRow>
+            </StyledDialogButtonRow>
         </ReactModal>
     );
 }

@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 
-export const DialogInput = styled.input`
+export const StyledDialogInput = styled.input`
     
     background-color: #695d5d;
     border-radius: 5px;

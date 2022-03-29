@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 
-export const DialogInputContainer = styled.div`
+export const StyledDialogInputContainer = styled.div`
     width: 380px;
     padding: 10px;   
     font-size: 16px;

@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 
-export const Dialog = styled.div`
+export const StyledDialog = styled.div`
 
     position:fixed;
     background: antiquewhite;

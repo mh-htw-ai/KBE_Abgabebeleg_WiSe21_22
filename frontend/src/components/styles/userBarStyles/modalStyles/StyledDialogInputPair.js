@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 
-export const DialogInputPair = styled.div`
+export const StyledDialogInputPair = styled.div`
     margin-left: 10px;
     margin-right: 10px;  
     max-width: 200px;

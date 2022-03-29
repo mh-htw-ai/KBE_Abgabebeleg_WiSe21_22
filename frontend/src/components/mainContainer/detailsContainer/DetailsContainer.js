@@ -1,10 +1,10 @@
 
-import MoviesContainer from "../moviesContainer/MoviesContainer";
-import {StyledDetailsContainer} from "../../../styles/detailsContainerStyles/StyledDetailsContainer";
-import DetailedUser from "./DetailedUser";
-import {StyledEmptyLabelContainer} from "../../../styles/detailsContainerStyles/userDetailsRowStyles/StyledEmptyLabelContainer";
+import MoviesContainer from "./moviesContainer/MoviesContainer";
+import {StyledDetailsContainer} from "../../styles/detailsContainerStyles/StyledDetailsContainer";
+import DetailedUser from "./userDetailsContainer/DetailedUser";
+import {StyledEmptyLabelContainer} from "../../styles/detailsContainerStyles/userDetailsRowStyles/StyledEmptyLabelContainer";
 import {useContext} from "react";
-import {UserDataContext} from "../../../UserDataContext";
+import {UserDataContext} from "../../UserDataContext";
 
 function DetailsContainer(){
 
