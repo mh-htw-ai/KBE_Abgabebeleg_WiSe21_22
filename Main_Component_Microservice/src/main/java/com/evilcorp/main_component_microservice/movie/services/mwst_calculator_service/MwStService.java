@@ -21,13 +21,13 @@ public class MwStService {
     public Movie calculateCostWithMwstFor(Movie movieObj){
         HttpEntity<MwStObj> request = this.createMwStRequestObj(movieObj);
         MwStObj responseBean = this.exchangeForResponse(request);
-        double priceWithMwst = responseBean.getArtMitSteuer();
+        float priceWithMwst = responseBean.getArtMitSteuer();
         movieObj.setLeihPreis(priceWithMwst);
         return movieObj;
     }
 
     private HttpEntity<MwStObj> createMwStRequestObj(Movie movieObj){
-        float costWithoutMwst = (float) movieObj.getLeihPreis();
+        float costWithoutMwst = movieObj.getLeihPreis();
         MwStObj requestContent = new MwStObj(costWithoutMwst);
         return new HttpEntity<>(requestContent);
     }

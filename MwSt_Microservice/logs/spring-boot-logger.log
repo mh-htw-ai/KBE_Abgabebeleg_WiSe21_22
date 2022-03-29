@@ -1,15 +1,57 @@
-2022-03-23 21:15:18,819 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MwStServiceApplication using Java 16.0.1 on DESKTOP-R7S5H8N with PID 19816 (C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22\MwSt_Microservice\target\classes started by Marco in C:\Users\Marco\Programmierung\KBE_Abgabebeleg_WiSe21_22)
-2022-03-23 21:15:18,823 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
-2022-03-23 21:15:18,826 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
-2022-03-23 21:15:18,971 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2022-03-23 21:15:18,972 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2022-03-23 21:15:21,054 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21111 (http)
-2022-03-23 21:15:21,068 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21111"]
-2022-03-23 21:15:21,069 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
-2022-03-23 21:15:21,070 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
-2022-03-23 21:15:21,155 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
-2022-03-23 21:15:21,156 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2182 ms
-2022-03-23 21:15:21,968 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
-2022-03-23 21:15:21,993 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21111"]
-2022-03-23 21:15:22,060 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21111 (http) with context path '/mwst/api'
-2022-03-23 21:15:22,083 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MwStServiceApplication in 4.275 seconds (JVM running for 6.405)
+2022-03-29 19:53:18,681 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MwStServiceApplication using Java 11 on Schläptop with PID 5408 (C:\Users\nickl\Desktop\KBE Projekt Dateien\KBE Project\KBE_Abgabebeleg_WiSe21_22\MwSt_Microservice\target\classes started by carpediem in C:\Users\nickl\Desktop\KBE Projekt Dateien\KBE Project\KBE_Abgabebeleg_WiSe21_22)
+2022-03-29 19:53:18,681 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
+2022-03-29 19:53:18,681 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-03-29 19:53:18,869 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-03-29 19:53:18,869 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-03-29 19:53:23,981 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21111 (http)
+2022-03-29 19:53:23,997 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21111"]
+2022-03-29 19:53:23,997 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-03-29 19:53:23,997 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
+2022-03-29 19:53:24,616 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-03-29 19:53:24,616 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 5747 ms
+2022-03-29 19:53:26,482 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-03-29 19:53:26,513 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21111"]
+2022-03-29 19:53:26,513 WARN org.springframework.context.support.AbstractApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 21111 is already in use
+2022-03-29 19:53:26,529 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Pausing ProtocolHandler ["http-nio-21111"]
+2022-03-29 19:53:26,529 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Stopping service [Tomcat]
+2022-03-29 19:53:26,545 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Stopping ProtocolHandler ["http-nio-21111"]
+2022-03-29 19:53:26,545 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Destroying ProtocolHandler ["http-nio-21111"]
+2022-03-29 19:53:26,560 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-03-29 19:53:26,607 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 21111 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 21111 or configure this application to listen on another port.
+
+2022-03-29 19:54:16,707 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting MwStServiceApplication using Java 11 on Schläptop with PID 6692 (C:\Users\nickl\Desktop\KBE Projekt Dateien\KBE Project\KBE_Abgabebeleg_WiSe21_22\MwSt_Microservice\target\classes started by carpediem in C:\Users\nickl\Desktop\KBE Projekt Dateien\KBE Project\KBE_Abgabebeleg_WiSe21_22)
+2022-03-29 19:54:16,707 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.6.1, Spring v5.3.13
+2022-03-29 19:54:16,707 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-03-29 19:54:16,769 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-03-29 19:54:16,769 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-03-29 19:54:18,318 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 21111 (http)
+2022-03-29 19:54:18,334 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-21111"]
+2022-03-29 19:54:18,334 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-03-29 19:54:18,334 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.55]
+2022-03-29 19:54:18,521 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-03-29 19:54:18,521 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1752 ms
+2022-03-29 19:54:20,392 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-03-29 19:54:20,423 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-21111"]
+2022-03-29 19:54:21,695 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 21111 (http) with context path '/mwst/api/v1.0'
+2022-03-29 19:54:21,726 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started MwStServiceApplication in 6.081 seconds (JVM running for 8.052)
+2022-03-29 19:54:50,386 INFO org.apache.juli.logging.DirectJDKLog [http-nio-21111-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-03-29 19:54:50,388 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-21111-exec-2] Initializing Servlet 'dispatcherServlet'
+2022-03-29 19:54:50,389 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-21111-exec-2] Completed initialization in 1 ms
+2022-03-29 19:54:50,725 INFO com.evilcorp.mwst_microservice.logging.AOPLoggingConfig [http-nio-21111-exec-2] Enter: com.evilcorp.mwst_microservice.calculator.controller.MehrwertsteuerController.calculateFromJSON() with argument[s] = [com.evilcorp.mwst_microservice.calculator.modell.MehrwertsteuerModell@5f490168]
+2022-03-29 19:54:50,763 INFO com.evilcorp.mwst_microservice.logging.AOPLoggingConfig [http-nio-21111-exec-2] Enter: com.evilcorp.mwst_microservice.calculator.service.MwStCalculatorService.calculate() with argument[s] = [com.evilcorp.mwst_microservice.calculator.modell.MehrwertsteuerModell@5f490168]
+2022-03-29 19:54:50,766 INFO com.evilcorp.mwst_microservice.logging.AOPLoggingConfig [http-nio-21111-exec-2] Exit: com.evilcorp.mwst_microservice.calculator.service.MwStCalculatorService.calculate() with result = com.evilcorp.mwst_microservice.calculator.modell.MehrwertsteuerModell@235b26bc
+2022-03-29 19:54:50,767 INFO com.evilcorp.mwst_microservice.logging.AOPLoggingConfig [http-nio-21111-exec-2] Exit: com.evilcorp.mwst_microservice.calculator.controller.MehrwertsteuerController.calculateFromJSON() with result = com.evilcorp.mwst_microservice.calculator.modell.MehrwertsteuerModell@235b26bc
