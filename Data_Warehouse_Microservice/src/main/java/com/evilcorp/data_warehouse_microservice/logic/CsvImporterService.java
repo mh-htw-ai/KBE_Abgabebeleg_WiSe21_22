@@ -12,10 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class CsvImporterService {
@@ -136,13 +133,15 @@ public class CsvImporterService {
                     log.info("Zeile(" + zeile + "): Film-Bewertung: " + attributes[0] + ", " + attributes[1] + ", " + attributes[2]);
                     filmBew = FilmObjBewertung
                             .builder()
-                            .filmUuid(UUID.fromString(String.valueOf(attributes[0])))
-                            .Gesamtwertung(Integer.parseInt(attributes[1]))
+                            .filmUuid(UUID.fromString(String.valueOf(attributes[1])))
+                            .Gesamtwertung(Integer.parseInt(attributes[0]))
                             .Zuschauerzahl(Integer.parseInt(attributes[2]))
                             .build();
                     filmBew.createDate(); // Aktuelles Datum wird nur fuer die DB erstellt.
                     log.info(filmBew.toString());
+                    log.info("Filmbewertung wurde erstellt.");
                     bewertungen.add(filmBew);
+                    log.info("Filmbewertung gespeichert..");
                 }
                 line = br.readLine();
                 zeile++;
