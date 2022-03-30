@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class FilmObjBewertung {
 
+    //TODO: UUID für Bewertungen benutzen
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @CsvIgnore
     @Getter @Setter
@@ -43,7 +44,7 @@ public class FilmObjBewertung {
      * @return Beispiel: "UUID", "Gesamtwertung", "Zuschauerzahl"
      */
     public static String[] getCsvHeader(){
-        return new String[]{"UUID", "Gesamtwertung", "Zuschauerzahl"};
+        return new String[]{"GESAMTWERTUNG", "UUID", "ZUSCHAUERZAHL"};
     }
 
 

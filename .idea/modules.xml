@@ -3,12 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Data_Warehouse_Microservice/Data_Warehouse_Microservice.iml" filepath="$PROJECT_DIR$/Data_Warehouse_Microservice/Data_Warehouse_Microservice.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Experimental_Modul/Experimental_Modul.iml" filepath="$PROJECT_DIR$/Experimental_Modul/Experimental_Modul.iml" />
       <module fileurl="file://$PROJECT_DIR$/Gateway_Microservice/Gateway_Microservice.iml" filepath="$PROJECT_DIR$/Gateway_Microservice/Gateway_Microservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/KBE_Abgabebeleg_WiSe21_22.iml" filepath="$PROJECT_DIR$/KBE_Abgabebeleg_WiSe21_22.iml" />
       <module fileurl="file://$PROJECT_DIR$/Main_Component_Microservice/Main_Component_Microservice.iml" filepath="$PROJECT_DIR$/Main_Component_Microservice/Main_Component_Microservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/MwSt_Microservice/MwSt_Microservice.iml" filepath="$PROJECT_DIR$/MwSt_Microservice/MwSt_Microservice.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MyFilmClasses/MyFilmClasses_Modul/MyFilmClasses_Modul.iml" filepath="$PROJECT_DIR$/MyFilmClasses/MyFilmClasses_Modul/MyFilmClasses_Modul.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
     </modules>
   </component>
 </project>

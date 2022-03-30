@@ -7,10 +7,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="MyFilmClasses_Modul" />
         <module name="Gateway_Microservice" />
         <module name="Data_Warehouse_Microservice" />
-        <module name="Experimental_Modul" />
         <module name="Main_Component_Microservice" />
         <module name="MwSt_Microservice" />
       </profile>
@@ -21,7 +19,7 @@
       <module name="Gateway_Microservice" target="11" />
       <module name="Main_Component_Microservice" target="11" />
       <module name="MwSt_Microservice" target="11" />
-      <module name="MyFilmClasses_Modul" target="16" />
+      <module name="MyFilmClasses_Modul" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

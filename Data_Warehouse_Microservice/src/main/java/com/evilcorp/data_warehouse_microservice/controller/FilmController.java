@@ -5,11 +5,8 @@ import com.evilcorp.data_warehouse_microservice.model.FilmObj;
 import com.evilcorp.data_warehouse_microservice.repository.FilmObjRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,9 +21,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/film")
+@Slf4j
 public class FilmController {
 
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
+    //private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     private final FilmObjRepository filmObjRepository;
 
@@ -66,7 +64,7 @@ public class FilmController {
         List<FilmObj> filmListe = filmObjRepository.findAllByGeloeschtFalse();
         String ausgabe;
         try {
-            ObjectMapper mapper = zielformatierung(mt);
+            ObjectMapper mapper = DataWarehouseLogik.zielformatierung(mt);
             ausgabe = mapper.writeValueAsString(filmListe);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -81,7 +79,7 @@ public class FilmController {
 
 
     /**
-     * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID
+     * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID ueber den Header
      *
      * @param uuid   - gesuchte UUID in UUID-Format
      * @param accept - Zielformat der Response
@@ -92,35 +90,31 @@ public class FilmController {
             , headers = "UUID"
     )
     @ResponseBody
-    public ResponseEntity<String> getFilm(
+    public ResponseEntity<String> getFilmByHeader(
             @RequestHeader("UUID") UUID uuid,
             @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
     ) {
-        log.info("getFilm() wird ausgeführt.");
-        MediaType mt = DataWarehouseLogik.checkAccept(accept); //Ueberpruefung der Akzeptierten Formate
-        if (mt == null) {
-            log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
-            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        }
-        log.info("UUDI konnte erstellt werden und wird nun in DB ermittelt.");
-        if (!this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(uuid)) {
-            log.info("UUID(" + uuid.toString() + ") konnte nicht ermittelt werden oder ist bereits geloescht.");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        FilmObj film = this.filmObjRepository.findByIdAndGeloeschtIsFalse(uuid);
-        String ausgabe;
-        try {
-            ObjectMapper mapper = zielformatierung(mt);
-            ausgabe = mapper.writeValueAsString(film);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            log.error("Fehler beim Umwandeln zur " + mt + "-Objekt.");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(mt);
-        log.info("getFilm(): Film(" + film + ") wurde ermittelt und zurueckgeschickt.");
-        return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
+        return getFilmByUuid(uuid, accept);
+    }
+
+
+    /**
+     * Funktion ist der Endpoint fuer das holen eines einzelnen Filmes anhand der UUID ueber den Path
+     *
+     * @param uuid   - gesuchte UUID in UUID-Format
+     * @param accept - Zielformat der Response
+     * @return Film-Objekt im Zielformat
+     */
+    @RequestMapping(
+            method = RequestMethod.GET
+            , value = "/uuid={uuid}"
+    )
+    @ResponseBody
+    public ResponseEntity<String> getFilmByPath(
+            @PathVariable UUID uuid,
+            @RequestHeader(HttpHeaders.ACCEPT) MediaType accept
+    ) {
+        return getFilmByUuid(uuid, accept);
     }
 
 
@@ -152,7 +146,7 @@ public class FilmController {
         }
         String ausgabe;
         try {
-            ObjectMapper mapper = zielformatierung(mt);
+            ObjectMapper mapper = DataWarehouseLogik.zielformatierung(mt);
             ausgabe = mapper.writeValueAsString(filmListe);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -278,24 +272,39 @@ public class FilmController {
 
 
     /**
-     * Funktion wandelt anhand des gewuenschten MediaTypes den gewünschten Mapper um
+     * Funktion ermittelt den Film anhand der UUID
      *
-     * @param mt - Zielt-MediaType
-     * @return Mapper anhand des MediaTypes
+     * @param uuid   - gesuchte UUID in UUID-Format
+     * @param accept - Zielformat der Response
+     * @return Film-Objekt im Zielformat
      */
-    private ObjectMapper zielformatierung(MediaType mt) {
-        ObjectMapper mapper;
-        System.out.println("Zielformat: " + mt.toString());
-        if (mt.equals(MediaType.APPLICATION_XML)) {
-            mapper = new XmlMapper();
-            System.out.println("Umwandlung in XML.");
-        } else {
-            mapper = new JsonMapper();
-            System.out.println("Umwandlung in JSON.");
+    private ResponseEntity<String> getFilmByUuid(UUID uuid, MediaType accept){
+        log.info("getFilm() wird ausgeführt.");
+        MediaType mt = DataWarehouseLogik.checkAccept(accept); //Ueberpruefung der Akzeptierten Formate
+        if (mt == null) {
+            log.info("Angefordertes Mediatype-Format wird nicht unterstützt.");
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
-        return mapper;
+        log.info("UUDI konnte erstellt werden und wird nun in DB ermittelt.");
+        if (!this.filmObjRepository.existsFilmObjByIdAndGeloeschtIsFalse(uuid)) {
+            log.info("UUID(" + uuid.toString() + ") konnte nicht ermittelt werden oder ist bereits geloescht.");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        FilmObj film = this.filmObjRepository.findByIdAndGeloeschtIsFalse(uuid);
+        String ausgabe;
+        try {
+            ObjectMapper mapper = DataWarehouseLogik.zielformatierung(mt);
+            ausgabe = mapper.writeValueAsString(film);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            log.error("Fehler beim Umwandeln zur " + mt + "-Objekt.");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(mt);
+        log.info("getFilm(): Film(" + film + ") wurde ermittelt und zurueckgeschickt.");
+        return new ResponseEntity<>(ausgabe, header, HttpStatus.OK);
     }
-
 
     /**
      * Funktion erstellt eine neue UUID nach eigenen Muster

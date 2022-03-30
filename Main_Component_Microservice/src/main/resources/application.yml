@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: Main_Component_Microservice
+server:
+  port: 21121

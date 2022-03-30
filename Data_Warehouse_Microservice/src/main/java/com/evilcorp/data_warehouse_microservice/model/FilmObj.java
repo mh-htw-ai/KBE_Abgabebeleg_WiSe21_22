@@ -14,11 +14,11 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Data //Signalisiert eine Datenbank-Data
 @Builder //Erstellt automatisch einen Builder mit saemtlichen Attributen des Objektes
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "FilmObj") // Legt fest wie die Tabelle in der Datenbank benannt werden soll.
+//@Table(name = "FilmObj") // Legt fest wie die Tabelle in der Datenbank benannt werden soll.
+@Table
 public class FilmObj implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(FilmObj.class);
@@ -26,24 +26,41 @@ public class FilmObj implements Serializable {
     @Id
     @Getter
     @Setter
-    @Column(name = "id", unique = true)
+    @Column(unique = true)
+    //@Column(name = "id", unique = true)
     private UUID id;
 
     @Getter
     @Setter
-    @Column(name = "titel")
+    @Column
+    //@Column(name = "titel")
     private String titel;
 
     @Getter
     @Setter
-    @Column(name = "leihPreis")
+    @Column
+    //@Column(name = "leihPreis")
     private double leihPreis;
 
     @JsonIgnore
     @Getter
     @Setter
-    @Column(name = "geloescht")
+    @Column
+    //@Column(name = "geloescht")
     private boolean geloescht = false;
+
+    @Getter
+    @Setter
+    //@Column(name = "kurzbeschreibung")
+    @Column
+    private String kurzbeschreibung ;
+
+    //@JsonIgnore
+    @Getter
+    @Setter
+    @Column(length = 65535, columnDefinition = "text")
+    //@Column(name = "beschreibung",length = 65535, columnDefinition = "text")
+    private String beschreibung;
 
     @Override
     public String toString(){
@@ -55,24 +72,4 @@ public class FilmObj implements Serializable {
         }
         return "";
     }
-
 }
-
-    /*
-@Data //Signalisiert eine Datenbank-Data
-@Builder //Erstellt automatisch einen Builder mit saemtlichen Attributen des Objektes
-//@SuperBuilder
-//@Entity //Bestimmt für Spring Boot, dass dieses Objekt eine Tabelle in der Datenbank darstellt.
-@Table(name = "Film") // Legt fest wie die Tabelle in der Datenbank benannt werden soll.
-//@DiscriminatorValue("FilmObj")
-public class FilmObj extends FilmInformation {
-    private static final Logger log = LoggerFactory.getLogger(FilmObj.class);
-
-    //TODO: Quelle für Vererbung in Jar-Bib mit Spring Boot lesen: https://www.spring-boot-blog.de/blog/jpa-inheritance/
-
-    public FilmObj() {
-        super();
-
-    }
-
- */

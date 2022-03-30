@@ -12,10 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class CsvImporterService {
@@ -108,8 +105,14 @@ public class CsvImporterService {
         log.info("importFilmObjFromCsv(): wird ausgeführt.");
         String dateiEndung = ".csv";
         if (!pathFile.startsWith(dateiEndung, pathFile.length() - dateiEndung.length())) {
-            log.error("Datei(" + pathFile + ") ist keine CSV-Datei.");
-            return null;
+            String err = "Datei(" + pathFile + ") ist keine CSV-Datei.";
+            log.error(err);
+            throw new UnsupportedEncodingException(err);
+        }
+        if(!isFileExist(pathFile)){
+            String err = "Datei(" + pathFile + ") konnte nicht gefunden werden.";
+            log.error(err);
+            throw new FileNotFoundException(err);
         }
         FilmObjBewertung filmBew;
         List<FilmObjBewertung> bewertungen = new ArrayList<>();
@@ -118,20 +121,27 @@ public class CsvImporterService {
         try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
             String line = br.readLine();
             while (line != null) {
-                String[] attributes = line.split(",");
+                String[] attributes = line.replace("\"","").split(",");
                 if (zeile == 0) {
+                    if(!isHeader(attributes)){
+                        String err = "CSV-File besitzt nicht das richtige Formatierung.";
+                        log.error(err);
+                        throw new UnsupportedEncodingException(err);
+                    }
                     log.info("Zeile(" + zeile + "):Header wird eingelesen und besitzt folgende Attribute: " + attributes[0] + ", " + attributes[1] + ", " + attributes[2]);
                 } else {
                     log.info("Zeile(" + zeile + "): Film-Bewertung: " + attributes[0] + ", " + attributes[1] + ", " + attributes[2]);
                     filmBew = FilmObjBewertung
                             .builder()
-                            .filmUuid(UUID.fromString(String.valueOf(attributes[0]).replace("\"","")))
-                            .Gesamtwertung(Integer.parseInt(attributes[1].replace("\"","")))
-                            .Zuschauerzahl(Integer.parseInt(attributes[2].replace("\"","")))
+                            .filmUuid(UUID.fromString(String.valueOf(attributes[1])))
+                            .Gesamtwertung(Integer.parseInt(attributes[0]))
+                            .Zuschauerzahl(Integer.parseInt(attributes[2]))
                             .build();
                     filmBew.createDate(); // Aktuelles Datum wird nur fuer die DB erstellt.
                     log.info(filmBew.toString());
+                    log.info("Filmbewertung wurde erstellt.");
                     bewertungen.add(filmBew);
+                    log.info("Filmbewertung gespeichert..");
                 }
                 line = br.readLine();
                 zeile++;
@@ -143,5 +153,27 @@ public class CsvImporterService {
         return bewertungen;
     }
 
+
+    private static boolean isFileExist(String _path){
+        File file = new File(_path);
+        return file.exists();
+    }
+
+
+    private static boolean isHeader(String[] elem){
+        String[] header = FilmObjBewertung.getCsvHeader();
+        if(header.length != elem.length){
+            log.error("Fehlerhafter Header(Spaltenanzahl) ermittelt.");
+            return false;
+        }
+        for(int i = 0; i < header.length; i++){
+            if(!header[i].equals(elem[i])){
+                log.error("header[" + i + "]: '" + header[i] + "' != elem[" + i + "]: '" + elem[i] + "'");
+                log.error("Unterschiedliche Header(Spalten) ermittelt.");
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

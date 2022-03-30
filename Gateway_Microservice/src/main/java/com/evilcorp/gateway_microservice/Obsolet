@@ -1,0 +1,59 @@
+
+    /*
+    @Bean
+    public RouteLocator myRoutes(RouteLocatorBuilder builder) {
+        return builder.routes().build();
+    }
+*/
+/*
+    @Bean
+    public RouteLocator myRoutes(RouteLocatorBuilder builder) {
+        log.info("-------------------------------------------------------------");
+        log.info("-------------------------------------------------------------");
+        log.info("myRoutes() wird ausgefuehrt.");
+        RouteLocator rl = builder.routes()
+                .route(p -> p
+                        .path("/get")
+                        .filters(f -> f.addRequestHeader("Hello", "World"))
+                        //.uri("localhost:21141/gw/test"))
+                        .uri("localhost:21141/gw/tester"))
+                .build();
+        log.info("rl: " + rl.toString());
+        log.info("-------------------------------------------------------------");
+        log.info("-------------------------------------------------------------");
+        return rl;
+    }*/
+
+    /*
+     * @Bean
+     *     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
+     *         log.info("-------------------------------------------------------------");
+     *         log.info("-------------------------------------------------------------");
+     *         log.info("myRoutes() wird ausgefuehrt.");
+     *         RouteLocator rl = builder.routes()
+     *                 .route(p -> p
+     *                         .path("/get")
+     *                         .filters(f -> f.addRequestHeader("Hello", "World"))
+     *                         //.uri("localhost:21141/gw/test"))
+     *                         .uri("http://httpbin.org:80"))
+     *                 .route(p -> p
+     *                         .host("*.circuitbreaker.com")
+     *                         .filters(f -> f.circuitBreaker(config -> config
+     *                                 .setName("mycmd")
+     *                                 .setFallbackUri("forward:/fallback")))
+     *                         .uri("http://httpbin.org:80"))
+     *                 .build();
+     *         log.info("rl: " + rl.toString());
+     *         log.info("-------------------------------------------------------------");
+     *         log.info("-------------------------------------------------------------");
+     *         return rl;
+     *     }
+     */
+
+/*
+    @RequestMapping("/fallback")
+    public Mono<String> fallback() {
+        return Mono.just("fallback");
+    }
+
+ */
