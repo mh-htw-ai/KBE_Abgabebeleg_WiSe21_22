@@ -17,7 +17,7 @@ class CsvImporterServiceTest {
 
     String testdateiName = "testDateiFilmBewertung.csv";
     String path = new File("").getAbsoluteFile().toString();
-    String csvHeader = "\"UUID\",\"Gesamtwertung\",\"Zuschauerzahl\"";
+    String csvHeader = "\"GESAMTWERTUNG\",\"UUID\",\"ZUSCHAUERZAHL\"";
     List<FilmObjBewertung> testListe;
     String aktPath = "";
 
@@ -181,7 +181,7 @@ class CsvImporterServiceTest {
     }
 
     private String getCsvZeileFromFilmObj(FilmObjBewertung bew) {
-        return "\"" + bew.getFilmUuid().toString() + "\",\"" + bew.getGesamtwertung() + "\",\"" + bew.getZuschauerzahl() + "\"";
+        return "\"" + bew.getGesamtwertung() + "\",\"" + bew.getFilmUuid().toString() + "\",\"" + bew.getZuschauerzahl() + "\"";
     }
 
     private boolean checkAttributeFilmObjBew(FilmObjBewertung exp, FilmObjBewertung act) {
