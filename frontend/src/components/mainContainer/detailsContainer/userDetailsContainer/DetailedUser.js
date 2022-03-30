@@ -7,15 +7,15 @@ import AddressDetails from "./AddressDetails";
 
 function DetailedUser(props){
 
-    const [setId] = useState("");
-    const [setUsername] = useState("");
-    const [setFirstname] = useState("");
-    const [setLastname] = useState("");
-    const [setEmail] = useState("");
-    const [setStreet] = useState("");
-    const [setStreetnumber] = useState("");
-    const [setPlaceOfResidence] = useState("");
-    const [setPostcode] = useState("");
+    const [id, setId] = useState("");
+    const [username, setUsername] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [street, setStreet] = useState("");
+    const [streetnumber, setStreetnumber] = useState("");
+    const [placeOfResidence, setPlaceOfResidence] = useState("");
+    const [postcode, setPostcode] = useState("");
 
     useEffect(()=>{
         if(props.user != null){
