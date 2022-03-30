@@ -15,19 +15,19 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class MwStService {
 
-    private final String mwstCalculatorURI = "http://localhost:21111/mwst/json_request";
+    private final String mwstCalculatorURI = "http://mwst:21111/mwst/api/v1.0/calculate_json";
     private final RestTemplate restTemplate = new RestTemplate();
 
     public Movie calculateCostWithMwstFor(Movie movieObj){
         HttpEntity<MwStObj> request = this.createMwStRequestObj(movieObj);
         MwStObj responseBean = this.exchangeForResponse(request);
-        double priceWithMwst = responseBean.getArtMitSteuer();
+        float priceWithMwst = responseBean.getArtMitSteuer();
         movieObj.setLeihPreis(priceWithMwst);
         return movieObj;
     }
 
     private HttpEntity<MwStObj> createMwStRequestObj(Movie movieObj){
-        float costWithoutMwst = (float) movieObj.getLeihPreis();
+        float costWithoutMwst = movieObj.getLeihPreis();
         MwStObj requestContent = new MwStObj(costWithoutMwst);
         return new HttpEntity<>(requestContent);
     }

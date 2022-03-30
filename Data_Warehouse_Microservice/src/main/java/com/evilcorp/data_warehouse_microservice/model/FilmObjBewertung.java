@@ -44,7 +44,7 @@ public class FilmObjBewertung {
      * @return Beispiel: "UUID", "Gesamtwertung", "Zuschauerzahl"
      */
     public static String[] getCsvHeader(){
-        return new String[]{"UUID", "Gesamtwertung", "Zuschauerzahl"};
+        return new String[]{"GESAMTWERTUNG", "UUID", "ZUSCHAUERZAHL"};
     }
 
 

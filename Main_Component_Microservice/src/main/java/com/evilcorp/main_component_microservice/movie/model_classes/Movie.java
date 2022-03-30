@@ -20,7 +20,7 @@ public class Movie {
     private String titel;
     @NotNull(message = "Price cannot be null")
     @DecimalMin(value="0.0", inclusive = false, message = "Price must be bigger than 0.0!")
-    private double leihPreis;
+    private float leihPreis;
     @NotBlank
     @Size(min = 10, max = 100, message = "Short description must be between 10 and 100 characters!")
     private String kurzbeschreibung;

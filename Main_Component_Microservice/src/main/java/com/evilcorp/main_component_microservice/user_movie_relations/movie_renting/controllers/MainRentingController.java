@@ -23,21 +23,19 @@ public class MainRentingController{
 
     @GetMapping(value = "/{rentingIdString}",
             produces = "application/json")
-    @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<MovieRenting> getMovieRenting(@PathVariable String rentingIdString){
         UUID rentingId = parserService.parseStringToUUID(rentingIdString);
         MovieRenting renting = rentingService.getMovieRenting(rentingId);
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( renting );
     }
 
     @GetMapping(produces = "application/json")
-    @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<List<MovieRenting>> getAllMovieRentings(){
         List<MovieRenting> rentings = rentingService.getAllRentings();
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK)
                 .body( rentings );
     }
 
@@ -47,13 +45,12 @@ public class MainRentingController{
         UUID userId = parserService.parseStringToUUID(userIdString);
         List<MovieRenting> rentings = rentingService.getAllRentingsOfUser(userId);
         return ResponseEntity
-                .status( HttpStatus.FOUND )
+                .status( HttpStatus.OK )
                 .body( rentings );
     }
 
     @PostMapping(value = "/create",
             produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UUID> rentMovie(@RequestBody SimpleMovieRenting newRenting){
         UUID rentingId = rentingService.rentMovie(newRenting);
         return ResponseEntity
@@ -63,12 +60,11 @@ public class MainRentingController{
 
     @PutMapping(value = "/update/{rentingIdString}",
             produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MovieRenting> updateRenting(@PathVariable String rentingIdString, @RequestBody Date newRentingDate){
         UUID rentingId = parserService.parseStringToUUID(rentingIdString);
         MovieRenting updatedRenting = rentingService.updateRenting(rentingId, newRentingDate);
         return ResponseEntity
-                .status( HttpStatus.CREATED )
+                .status( HttpStatus.OK )
                 .body( updatedRenting );
     }
 

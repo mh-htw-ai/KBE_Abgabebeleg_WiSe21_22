@@ -16,7 +16,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,9 +39,9 @@ public class FilmControllerIntegrationTest {
     @Autowired
     private FilmObjRepository filmObjRepository;
 
-    private String path = "http://localhost:21139/film";
+    private final String path = "http://localhost:21139/film";
 
-    private static ArrayList<FilmObj> filmObjList = new ArrayList<>();
+    private final static ArrayList<FilmObj> filmObjList = new ArrayList<>();
 
 
     @BeforeAll
@@ -113,7 +114,10 @@ public class FilmControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.valueOf("text/plain;charset=UTF-8")))
                 .andReturn();
         try {
-            UUID uuid = UUID.fromString(mvcResult.getResponse().getContentAsString());
+            UUID uuid =  UUID.fromString(mvcResult.getResponse().getContentAsString());
+            if(uuid.toString().equals("")){
+                fail("Es wurde keine UUID erstellt werden.");
+            }
         } catch (IllegalArgumentException ex) {
             Assertions.fail("String inkorrekt for UUID.");
         }
