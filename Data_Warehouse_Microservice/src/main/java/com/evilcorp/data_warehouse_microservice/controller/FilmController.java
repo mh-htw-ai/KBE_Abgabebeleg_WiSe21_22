@@ -24,8 +24,6 @@ import java.util.UUID;
 @Slf4j
 public class FilmController {
 
-    //private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-
     private final FilmObjRepository filmObjRepository;
 
 

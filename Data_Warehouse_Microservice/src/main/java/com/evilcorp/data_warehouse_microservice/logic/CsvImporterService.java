@@ -79,7 +79,6 @@ public class CsvImporterService {
      */
     public static String exportFilmObjToCsv(List<FilmObjBewertung> liste, String dateiName) {
         String path = "Data_Warehouse_Microservice\\target\\";
-        //String path ="Data_Warehouse_Microservice\\src/main\\resources\\";
         return CsvImporterService.exportFilmObjToCsv(liste, dateiName, path);
     }
 

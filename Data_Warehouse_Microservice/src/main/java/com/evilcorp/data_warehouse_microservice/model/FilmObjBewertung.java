@@ -16,7 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class FilmObjBewertung {
 
-    //TODO: UUID für Bewertungen benutzen
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @CsvIgnore
     @Getter @Setter

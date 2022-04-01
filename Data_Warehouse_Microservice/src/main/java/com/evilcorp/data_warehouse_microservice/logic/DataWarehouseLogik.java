@@ -13,6 +13,7 @@ public class DataWarehouseLogik {
 
     private static final Logger log = LoggerFactory.getLogger(FilmObj.class);
 
+
     /**
      * Funktion ueberprueft die erlaubten Mediatypen
      * @param accept angeforderter Mediatype als String
@@ -22,6 +23,7 @@ public class DataWarehouseLogik {
            MediaType mt = MediaType.parseMediaType(accept);
         return checkAccept(mt);
     }
+
 
     /**
      * Funktion ueberprueft die erlaubten Mediatypen
@@ -37,6 +39,7 @@ public class DataWarehouseLogik {
         }
         return null;
     }
+
 
     /**
      * Funktion wandelt anhand des gewuenschten MediaTypes den gewünschten Mapper um

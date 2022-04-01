@@ -18,7 +18,7 @@ public class LoadDatabase {
 
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
-    //Dies solle eine Standarddatenbank implementieren
+    //Dies solle in eine Standarddatenbank immer neu implementiert werden
     @Bean
     CommandLineRunner initDatabase(FilmObjRepository filmObjRepository, FilmObjBewertungRepository filmObjBewertungRepository) {
 

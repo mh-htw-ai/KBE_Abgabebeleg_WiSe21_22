@@ -77,7 +77,6 @@ public class BewertungController {
     public ResponseEntity<String> getStartExport(){
         log.info("getStartExport() wird ausgeführt.");
         List<FilmObjBewertung> liste = filmObjBewertungRepository.findAll();
-        //String path = CsvImporterService.exportFilmObjToCsv(liste);
         String path = CsvImporterService.exportFilmObjToCsv( liste, "name.csv");
         if(path == null){
             log.info("CSV-Datei konnte nicht erstellt werden.");
